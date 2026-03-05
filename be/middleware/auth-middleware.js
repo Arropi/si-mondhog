@@ -1,3 +1,5 @@
+import jwt from 'jsonwebtoken'
+
 export default function authMiddleware(req, res, next) {
     const {authorization} = req.headers
     if(!authorization){
@@ -6,10 +8,12 @@ export default function authMiddleware(req, res, next) {
         })
     } 
     try {
-        const secretToken = process.env.SECRET_TOKEN
+        const secretToken = process.env.JWT_SECRET
+        console.log()
         const token = authorization.split(' ')[1]
         const jwtDecode = jwt.verify(token, secretToken)
         req.user = jwtDecode
+        console.log(req.user)
         next()
     } catch (error) {
         console.log(error)

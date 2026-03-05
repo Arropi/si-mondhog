@@ -1,0 +1,22 @@
+import { Router } from "express";
+import authMiddleware from "../middleware/auth-middleware.js";
+
+const router = Router();
+
+/**
+ * @swagger
+ * /api/profile:
+ *   get:
+ *     summary: Get user profile
+ *     tags: [User]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: User profile retrieved successfully
+ *       401:
+ *         description: Unauthorized
+ */
+router.get("/profile", authMiddleware)
+
+export default router
