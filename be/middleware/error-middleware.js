@@ -14,7 +14,6 @@ export function errorMiddleware(err, req, res, next) {
       error = new Error(message);
       error.statusCode = 400;
     }
-
     if (err.name === "ValidationError") {
       const message = Object.values(err.errors)
         .map((val) => val.message)
