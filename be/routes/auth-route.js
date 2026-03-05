@@ -51,7 +51,7 @@ const router = Router();
  *               properties:
  *                 message:
  *                   type: string
- *                   example: "Invalid email or password"
+ *                   example: "Invalid email"
  *       500:
  *          description: Internal server error.
  *          content:
