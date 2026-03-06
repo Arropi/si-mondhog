@@ -17,7 +17,7 @@ export const authOptions: NextAuthOptions = {
     callbacks: {
         async signIn({ user }) {
             if (!user.email?.endsWith("mail.ugm.ac.id")) {
-                return false;
+                return "/loginFailed";
             }
             return true;
         },
@@ -37,6 +37,7 @@ export const authOptions: NextAuthOptions = {
                 console.log("==> Hasil dari express: ", result)
                 token.role = result?.user?.role
                 token.accessToken = result?.token
+                token.id = result?.user?._id
                 token.email = user.email
             }
             return token
@@ -44,6 +45,7 @@ export const authOptions: NextAuthOptions = {
         async session({ session, token }) {
             session.user.role = token.role
             session.user.accessToken = token.accessToken
+            session.user.id = token.id
             return session
         },
     },
