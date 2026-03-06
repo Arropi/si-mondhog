@@ -6,7 +6,10 @@ export async function login(req, res) {
         }
         const { username, email } = req.body
         const {status, ...result} = await loginService(username, email)
-        res.status(status).json(result)
+        res.status(status).json({
+            "message": status === 201 ? "User created successfully" : "Login successfully",
+            ...result
+        })
     } catch (error) {
         // console.log(error.name)
         // console.error(error)

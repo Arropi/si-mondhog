@@ -2,7 +2,7 @@ export function errorMiddleware(err, req, res, next) {
   try {
     let error = { ...err };
     error.message = err.message;
-    console.error(err);
+    console.error(err.name);
     if (err.name === "CastError") {
       const message = "Resource not found";
       error = new Error(message);

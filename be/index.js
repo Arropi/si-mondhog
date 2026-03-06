@@ -10,6 +10,7 @@ import userRoutes from './routes/user-route.js'
 import { connectDB } from './config/database.js'
 import { specs, swaggerUi } from './config/swagger.js'
 import { errorMiddleware } from './middleware/error-middleware.js'
+import authMiddleware from './middleware/auth-middleware.js'
 
 const app = express()
 const PORT = process.env.PORT
@@ -20,6 +21,8 @@ app.use(cors())
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs))
 
 app.use('/api/auth', authRoutes)
+
+app.use(authMiddleware)
 
 app.use("/api", userRoutes)
 

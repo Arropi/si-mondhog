@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { login } from "../controllers/auth-controller.js";
+import { userValidation } from "../validations/user-validation.js";
 
 const router = Router();
 
@@ -51,7 +52,7 @@ const router = Router();
  *               properties:
  *                 message:
  *                   type: string
- *                   example: "Invalid email"
+ *                   example: "Invalid email, please using ugm email"
  *       500:
  *          description: Internal server error.
  *          content:
@@ -63,6 +64,6 @@ const router = Router();
  *                    type: string
  *                    example: "Internal server error"
  */
-router.post("/login", login);
+router.post("/login", userValidation, login);
 
 export default router;
