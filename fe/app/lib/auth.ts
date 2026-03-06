@@ -8,11 +8,42 @@ export const authOptions: NextAuthOptions = {
             clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
         }),
     ],
+    session: {
+        strategy: 'jwt'
+    },
+    jwt: {
+        maxAge: 60 * 60 * 24
+    },
     callbacks: {
         async signIn({ user }) {
-            return user.email?.endsWith("ugm.ac.id") ?? false
+            if (!user.email?.endsWith("mail.ugm.ac.id")) {
+                return false;
+            }
+            return true;
+        },
+        async jwt({ token, user, account }) {
+            if (account) {
+                console.log("user nya: ", user.name, "dengan email: ", user.email)
+                const fetching = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/login`, {
+                    method: 'POST',
+                    credentials: 'include',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        email: user.email,
+                        username: user.name
+                    }),
+                })
+                const result = await fetching.json()
+                console.log("==> Hasil dari express: ", result)
+                token.role = result?.user?.role
+                token.accessToken = result?.token
+                token.email = user.email
+            }
+            return token
         },
         async session({ session, token }) {
+            session.user.role = token.role
+            session.user.accessToken = token.accessToken
             return session
         },
     },
