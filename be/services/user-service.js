@@ -4,7 +4,9 @@ import {randomBytes, createHash} from "crypto"
 export async function profileService(id, idFromToken) {
     try {
         if (id !== idFromToken) {
-            throw new Error("Forbidden");
+            const error = new Error("Forbidden: You don't have permission to access this resource");
+            error.statusCode = 403;
+            throw error;
         }
         const token = randomBytes(3).toString("hex")
         console.log("Generated token:", token);

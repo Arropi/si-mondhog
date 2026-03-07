@@ -18,7 +18,7 @@ import (
 	"github.com/shirou/gopsutil/v3/mem"
 )
 
-const backendURL = "http://localhost:3000/api/agent"
+const backendURL = "http://localhost:3030/api/agent"
 
 type Config struct {
 	MachineID string `json:"machine_id"`

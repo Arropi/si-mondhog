@@ -1,5 +1,6 @@
 import swaggerJsdoc from "swagger-jsdoc"
 import swaggerUi from "swagger-ui-express"
+import { swaggerComponents } from "./swagger-components.js"
 
 const options = {
     definition: {
@@ -9,15 +10,7 @@ const options = {
             version: "1.0.0",
             description: "API documentation for SiMONDHOG backend endpoints"
         },
-        // components: {
-        //     securitySchemes: {
-        //         bearerAuth: {
-        //             type: "http",
-        //             scheme: "bearer",
-        //             bearerFormat: "JWT"
-        //         }
-        //     }
-        // }
+        ...swaggerComponents
     },
     apis: ["./routes/*.js"]
 }

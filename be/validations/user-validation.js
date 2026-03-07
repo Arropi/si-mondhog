@@ -7,7 +7,7 @@ export function userValidation(req, res, next) {
           iss.input === undefined
             ? "Field Username Cannot Be Empty"
             : "Invalid input on username",
-      })
+      }).min(1, "Field Username Cannot Be Empty")
       .parse(req.body.username);
     const email = z
       .email({
@@ -24,13 +24,11 @@ export function userValidation(req, res, next) {
     next();
   } catch (error) {
     if (error instanceof ZodError) {
-      res.status(400).json({
-        message: error.issues[0].message,
-      });
+      const err = new Error(error.issues[0].message);
+      err.statusCode = 400;
+      next(err);
     } else {
-      res.status(500).json({
-        message: error.message,
-      });
+      next(error);
     }
   }
 }
