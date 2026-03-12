@@ -6,10 +6,9 @@ export default function authMiddleware(req, res, next) {
         return res.status(403).json({
             "message": "Token needed"
         })
-    } 
+    }
     try {
         const secretToken = process.env.JWT_SECRET
-        console.log()
         const token = authorization.split(' ')[1]
         const jwtDecode = jwt.verify(token, secretToken)
         req.user = jwtDecode

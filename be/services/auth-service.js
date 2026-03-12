@@ -13,7 +13,6 @@ export async function loginService(username, email) {
             return { user, token, status: 200}
         }
     } catch (error) {
-        console.log(error)
         throw error
     }
 }
