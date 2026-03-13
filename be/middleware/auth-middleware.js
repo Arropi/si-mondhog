@@ -3,9 +3,9 @@ import jwt from 'jsonwebtoken'
 export default function authMiddleware(req, res, next) {
     const {authorization} = req.headers
     if(!authorization){
-        return res.status(403).json({
-            "message": "Token needed"
-        })
+        const error = new Error("Token needed");
+        error.statusCode = 403;
+        throw error;
     }
     try {
         const secretToken = process.env.JWT_SECRET
@@ -14,9 +14,8 @@ export default function authMiddleware(req, res, next) {
         req.user = jwtDecode
         next()
     } catch (error) {
-        console.log(error)
-        return res.status(401).json({
-            "message": "Authorize failed"
-        })
+        const err = new Error("Authorize failed");
+        err.statusCode = 401;
+        next(err)
     }
 }
