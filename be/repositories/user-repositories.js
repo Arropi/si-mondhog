@@ -30,6 +30,16 @@ export async function findUserById(id) {
     }
 }
 
+export async function searchUserFromEmail(email) {
+    try {
+        const user = await User.find({ email: { $regex: email, $options: "i" } }, {email: 1}).limit(8).lean()
+        return user
+    } catch (error) {
+        console.log(error)
+        throw error
+    }
+}
+
 export async function updateUserProfile(id, name) {
     try {
         const updatedUser = await User.findByIdAndUpdate(id, { name }, { new: true })

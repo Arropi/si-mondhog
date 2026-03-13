@@ -4,6 +4,7 @@ import { createUser, findUserByEmail } from "../repositories/user-repositories.j
 export async function loginService(username, email) {
     try {
         const user = await findUserByEmail(email)
+        console.log(user)
         if (!user) {
             const newUser = await createUser(username, email)
             const token = jwt.sign({ id: newUser._id, role: newUser.role }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRES_IN }) 
