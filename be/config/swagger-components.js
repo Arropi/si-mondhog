@@ -1,7 +1,5 @@
 /**
- * Swagger Reusable Components
- * File ini berisi komponen-komponen yang dapat digunakan kembali di berbagai endpoint
- * 
+  * File ini untuk reusable components pada dokumentasi
  * Cara penggunaan:
  * 1. Import di file swagger.js utama
  * 2. Gunakan $ref untuk mereferensikan komponen
@@ -36,6 +34,77 @@ export const swaggerComponents = {
             type: "string",
             enum: ["user", "admin"],
             example: "user",
+          },
+          createdAt: {
+            type: "string",
+            format: "date-time",
+            example: "2024-01-15T10:30:00.000Z",
+          },
+          updatedAt: {
+            type: "string",
+            format: "date-time",
+            example: "2024-01-15T10:30:00.000Z",
+          },
+        },
+      },
+      Machine: {
+        type: "object",
+        properties: {
+          _id: {
+            type: "string",
+            example: "64a1f0c2e1b2c3d4e5f67890",
+          },
+          hostname: {
+            type: "string",
+            example: "LAB-PC-01",
+          },
+          os: {
+            type: "string",
+            enum: ["Windows", "Linux", "macOS"],
+            example: "Linux",
+          },
+          status: {
+            type: "string",
+            enum: ["Pending", "Online", "Offline"],
+            example: "Online",
+          },
+          createdAt: {
+            type: "string",
+            format: "date-time",
+            example: "2024-01-15T10:30:00.000Z",
+          },
+          updatedAt: {
+            type: "string",
+            format: "date-time",
+            example: "2024-01-15T10:30:00.000Z",
+          },
+        },
+      },
+      MachineCreatedResponse: {
+        type: "object",
+        properties: {
+          _id: {
+            type: "string",
+            example: "64a1f0c2e1b2c3d4e5f67890",
+          },
+          hostname: {
+            type: "string",
+            example: "LAB-PC-01",
+          },
+          os: {
+            type: "string",
+            enum: ["Windows", "Linux", "macOS"],
+            example: "Linux",
+          },
+          status: {
+            type: "string",
+            enum: ["Pending"],
+            example: "Pending",
+          },
+          token: {
+            type: "string",
+            description: "Raw activation token returned only once after machine creation",
+            example: "a1b2c3",
           },
           createdAt: {
             type: "string",
@@ -118,14 +187,32 @@ export const swaggerComponents = {
         },
       },
       Unauthorized: {
-        description: "Unauthorized - Missing or invalid token",
+        description: "Unauthorized - Token invalid, expired, or malformed",
+        content: {
+          "application/json": {
+            schema: {
+              $ref: "#/components/schemas/Error",
+            },
+            examples: {
+              invalidOrExpiredToken: {
+                summary: "Token invalid atau expired",
+                value: {
+                  message: "Authorize failed",
+                },
+              },
+            },
+          },
+        },
+      },
+      TokenRequired: {
+        description: "Forbidden - Token harus disertakan pada header Authorization",
         content: {
           "application/json": {
             schema: {
               $ref: "#/components/schemas/Error",
             },
             example: {
-              message: "Token is required",
+              message: "Token needed",
             },
           },
         },

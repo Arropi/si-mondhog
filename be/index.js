@@ -8,6 +8,7 @@ import cors from 'cors'
 import authRoutes from './routes/auth-route.js'
 import userRoutes from './routes/user-route.js'
 import machineRoutes from './routes/machine-route.js'
+import agentRoutes from './routes/agent-route.js'
 import { connectDB } from './config/database.js'
 import { specs, swaggerUi } from './config/swagger.js'
 import { errorMiddleware } from './middleware/error-middleware.js'
@@ -22,6 +23,8 @@ app.use(cors())
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs))
 
 app.use('/api/auth', authRoutes)
+
+app.use('/api/agent', agentRoutes)
 
 app.use(authMiddleware)
 
