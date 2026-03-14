@@ -20,7 +20,7 @@ const machineSchema = new mongoose.Schema({
         default: null
     },
     cpuCores: {
-        type: Number ,
+        type: Number,
         default: null
     },
     totalRam: {
