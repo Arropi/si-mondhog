@@ -98,25 +98,19 @@ export const swaggerComponents = {
               missingField: {
                 summary: "Missing required field",
                 value: {
-                  message: "Field Email Cannot Be Empty",
-                },
-              },
-              invalidEmail: {
-                summary: "Invalid email format",
-                value: {
-                  message: "Invalid email, please using ugm email",
-                },
-              },
-              noBody: {
-                summary: "No request body provided",
-                value: {
-                  message: "Bad Request: No data provided",
+                  message: "One of field Cannot Be Empty",
                 },
               },
               invalidInput: {
                 summary: "Invalid input format",
                 value: {
-                  message: "Invalid input on username",
+                  message: "Invalid input from field, please check your data",
+                },
+              },
+              noBody: {
+                summary: "No request body provided",
+                value: {
+                  message: "Invalid input",
                 },
               },
             },

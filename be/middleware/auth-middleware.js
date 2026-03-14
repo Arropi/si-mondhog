@@ -12,7 +12,6 @@ export default function authMiddleware(req, res, next) {
         const token = authorization.split(' ')[1]
         const jwtDecode = jwt.verify(token, secretToken)
         req.user = jwtDecode
-        console.log(req.user)
         next()
     } catch (error) {
         console.log(error)

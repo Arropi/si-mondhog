@@ -7,6 +7,7 @@ import express from 'express'
 import cors from 'cors'
 import authRoutes from './routes/auth-route.js'
 import userRoutes from './routes/user-route.js'
+import machineRoutes from './routes/machine-route.js'
 import { connectDB } from './config/database.js'
 import { specs, swaggerUi } from './config/swagger.js'
 import { errorMiddleware } from './middleware/error-middleware.js'
@@ -25,7 +26,7 @@ app.use('/api/auth', authRoutes)
 app.use(authMiddleware)
 
 app.use("/api", userRoutes)
-
+app.use("/api/devices", machineRoutes)
 app.use(errorMiddleware)
 
 app.get('/', (req, res) => {

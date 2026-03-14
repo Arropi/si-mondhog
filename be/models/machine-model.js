@@ -6,28 +6,34 @@ const machineSchema = new mongoose.Schema({
         required: true,
     },
     os: {
-        type: Enum,
-        values: ['Windows', 'Linux', 'macOS'],
+        type: String,
+        enum: ['Windows', 'Linux', 'macOS'],
         required: true,
         default: 'Windows',
     },
     activationToken: {
-        type: String | null,
+        type: String,
+        default: null
     },
     hashApiKey: {
-        type: String | null,
+        type: String,
+        default: null
     },
     cpuCores: {
-        type: Number | null,
+        type: Number ,
+        default: null
     },
     totalRam: {
-        type: Number | null,
+        type: Number,
+        default: null
     },
     totalDisk: {
-        type: Number | null,
+        type: Number,
+        default: null
     },
     lastSeen: {
-        type: Date | null,
+        type: Date,
+        default: null,
     }
 }, { timestamps: true })
 
