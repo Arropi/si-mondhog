@@ -1,6 +1,6 @@
-import { profileService } from "../services/user-service.js"
+import { profileService, searchUserService } from "../services/user-service.js"
 
-export async function userController(req, res) {
+export async function userController(req, res, next) {
     try {
         const { id } = req.user
         const { id : idParam } = req.params
@@ -16,6 +16,19 @@ export async function userController(req, res) {
                 "message": "Forbidden"
             })
         }
-        throw error
+        next(error)
+    }
+}
+
+export async function userSearchController(req, res, next) {
+    try {
+        const { search = ""} = req.query
+        const user = await searchUserService(search)
+        res.status(200).json({
+            "message": "User search retrieved successfully",
+            "user": user
+        })
+    } catch (error) {
+        next(error)
     }
 }

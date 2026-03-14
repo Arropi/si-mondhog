@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"runtime"
 	"time"
 
 	"github.com/kardianos/service"
@@ -49,9 +50,6 @@ func (p *program) Stop(s service.Service) error {
 
 func main() {
 
-	activation := flag.String("activation", "", "activation token")
-	flag.Parse()
-
 	svcConfig := &service.Config{
 		Name:        "MonitoringAgent",
 		DisplayName: "Monitoring Agent",
@@ -59,7 +57,37 @@ func main() {
 	}
 
 	prg := &program{}
-	s, _ := service.New(prg, svcConfig)
+
+	s, err := service.New(prg, svcConfig)
+	if err != nil {
+		fmt.Println("Service create error:", err)
+		return
+	}
+
+	if len(os.Args) > 1 {
+
+		cmd := os.Args[1]
+
+		if cmd == "stop" {
+			service.Control(s, "stop")
+			fmt.Println("Service stopped")
+			return
+		}
+
+		if cmd == "uninstall" {
+
+			service.Control(s, "stop")
+			service.Control(s, "uninstall")
+
+			deleteConfig()
+
+			fmt.Println("Service and config removed")
+			return
+		}
+	}
+
+	activation := flag.String("activation", "", "activation token")
+	flag.Parse()
 
 	if *activation != "" {
 
@@ -71,29 +99,69 @@ func main() {
 
 		fmt.Println("Activation success")
 
-		s.Install()
-		s.Start()
+		err = s.Install()
+		if err != nil {
+			fmt.Println("Service install error:", err)
+			return
+		}
+
+		err = s.Start()
+		if err != nil {
+			fmt.Println("Service start error:", err)
+			return
+		}
 
 		fmt.Println("Service installed and started")
 
 		return
 	}
 
-	err := s.Run()
+	err = s.Run()
 	if err != nil {
 		fmt.Println(err)
 	}
 }
 
+func deleteConfig() {
+
+	configPath := getConfigPath()
+
+	err := os.Remove(configPath)
+	if err == nil {
+		fmt.Println("Config deleted")
+		return
+	}
+
+	if os.IsNotExist(err) {
+		fmt.Println("Config not found")
+		return
+	}
+
+	fmt.Println("Error deleting config:", err)
+}
+
 func getConfigPath() string {
 
-	dir, _ := os.UserConfigDir()
+	var baseDir string
 
-	agentDir := filepath.Join(dir, "monitoring-agent")
+	switch runtime.GOOS {
 
-	os.MkdirAll(agentDir, 0755)
+	case "windows":
+		baseDir = "C:\\ProgramData\\monitoring-agent"
 
-	return filepath.Join(agentDir, "config.json")
+	case "linux":
+		baseDir = "/var/lib/monitoring-agent"
+
+	case "darwin":
+		baseDir = "/usr/local/var/monitoring-agent"
+
+	default:
+		baseDir = "./monitoring-agent"
+	}
+
+	os.MkdirAll(baseDir, 0755)
+
+	return filepath.Join(baseDir, "config.json")
 }
 
 func activate(token string) error {
@@ -119,10 +187,15 @@ func activate(token string) error {
 
 	defer resp.Body.Close()
 
-	body, _ := io.ReadAll(resp.Body)
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return err
+	}
+
+	fmt.Println("Activation response:", string(body))
 
 	if resp.StatusCode != 200 {
-		return fmt.Errorf(string(body))
+		return fmt.Errorf("bootstrap failed: %s", string(body))
 	}
 
 	var result BootstrapResponse
@@ -162,6 +235,7 @@ func loadConfig() (*Config, error) {
 }
 
 func runAgentLoop() {
+	fmt.Println("Agent started")
 
 	cfg, err := loadConfig()
 	if err != nil {
@@ -169,12 +243,16 @@ func runAgentLoop() {
 		return
 	}
 
+	fmt.Printf("Loaded config: %+v\n", cfg)
+
 	interval := time.Duration(cfg.Interval) * time.Second
 
 	for {
 
+		fmt.Println("Sending heartbeat")
 		sendHeartbeat(cfg)
 
+		fmt.Println("Sending metrics")
 		sendMetrics(cfg)
 
 		time.Sleep(interval)
@@ -182,6 +260,7 @@ func runAgentLoop() {
 }
 
 func getMachineSpecs() map[string]interface{} {
+	
 
 	hostInfo, _ := host.Info()
 

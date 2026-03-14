@@ -15,7 +15,7 @@ export function machineCreateValidation(req, res, next) {
                         ? "Field OS Cannot Be Empty"
                         : "Invalid input on OS",
             }),
-        }).nonEmpty("Field cannot be empty").parse(req.body);
+        }).parse(req.body);
         next();
     } catch (error) {
         if (error instanceof ZodError) {
