@@ -230,6 +230,19 @@ export const swaggerComponents = {
           },
         },
       },
+      TooManyRequests: {
+        description: "Too many requests - Rate limit exceeded",
+        content: {
+          "application/json": {
+            schema: {
+              $ref: "#/components/schemas/Error",
+            },
+            example: {
+              message: "Too many requests, please try again later",
+            },
+          },
+        },
+      },
       NotFound: {
         description: "Resource not found",
         content: {
