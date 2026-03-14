@@ -3,6 +3,7 @@
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "../../utils/cn";
 import Image from "next/image";
+import Link from "next/link"; // Import Link dari Next.js
 
 const statusVariants = cva(
     "w-full py-2 px-4 rounded-full text-center text-xs md:text-sm font-semibold transition-colors mt-6 uppercase tracking-wider group cursor-pointer border border-transparent hover:bg-white duration-300",
@@ -21,6 +22,7 @@ const statusVariants = cva(
 );
 
 export interface DeviceCardProps extends React.HTMLAttributes<HTMLDivElement>, VariantProps<typeof statusVariants> {
+    id: string; // Tambahkan ID untuk routing
     name: string;
     os: "windows" | "macOS" | "linux";
     status: "online" | "offline" | "pending";
@@ -53,7 +55,7 @@ const OsIcons = {
     )
 }
 
-export function DeviceCard({ name, os, status, className, ...props }: DeviceCardProps) {
+export function DeviceCard({ id, name, os, status, className, ...props }: DeviceCardProps) {
     return (
         <div
             className={cn(
@@ -71,14 +73,14 @@ export function DeviceCard({ name, os, status, className, ...props }: DeviceCard
                 <span className="text-xs md:text-sm text-gray-500 font-medium capitalize">{os === "macOS" ? "MacOS" : os}</span>
             </div>
 
-            <div className={cn(statusVariants({ status }))}>
+            <Link href={`/devices/${id}`} className={cn(statusVariants({ status }), "block")}>
                 <span className="block group-hover:hidden">
                     {status}
                 </span>
                 <span className="hidden group-hover:block font-bold !normal-case capitalize duration-300 transition-all">
                     View Detail &rarr;
                 </span>
-            </div>
+            </Link>
         </div>
     )
 }

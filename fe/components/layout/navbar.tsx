@@ -17,7 +17,7 @@ const Navbar = () => {
     const { scrollY } = useScroll();
 
     useMotionValueEvent(scrollY, 'change', (latest) => {
-        setIsScrolled(latest > 30);
+        setIsScrolled(latest > 20);
     })
 
     const toggleMenu = () => {
@@ -32,29 +32,19 @@ const Navbar = () => {
 
     return (
         <motion.nav className={cn("flex items-center bg-white justify-between px-8 py-4 border-b border-gray-200 shadow-md sticky top-0 z-50 transition-all duration-300 ease-in-out", isScrolled && "scale-90 px-12 rounded-4xl top-5 border border-gray-200 delay-100 bg-white/5 backdrop-blur-[1.5px]")}>
-            <div className="flex items-center gap-12 delay-200">
+            <div className="flex items-center gap-20 delay-200">
                 {/* Logo Icon */}
                 <div className="flex items-center gap-3">
-                    <div className="text-red-500 border border-gray-200 bg-white p-1 rounded-md shadow-sm">
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="24"
-                            height="24"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                        >
-                            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
-                        </svg>
-                    </div>
-                    <span className="text-xl font-bold text-gray-900 tracking-tight">SyMon</span>
+                    <Image
+                        src="/images/iconSymon.svg"
+                        alt="Logo"
+                        width={75}
+                        height={75}
+                    />
                 </div>
 
                 {/* Navbar rdirect */}
-                <div className="hidden md:flex items-center gap-8">
+                <div className="hidden md:flex items-center gap-10">
                     {navLinks.map((link) => {
                         const isActive = pathname === link.href;
                         return (

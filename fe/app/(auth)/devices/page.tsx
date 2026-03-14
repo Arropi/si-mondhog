@@ -5,11 +5,11 @@ type SearchParams = Promise<{ [key: string]: string | string[] | undefined }> | 
 export default async function Devices(props: { searchParams?: SearchParams }) {
     const searchParams = await props.searchParams;
     const query = typeof searchParams?.query === 'string' ? searchParams.query : "";
-    const status = typeof searchParams?.status === 'string' ? searchParams.status : "all";
+    const os = typeof searchParams?.os === 'string' ? searchParams.os : "all";
 
     return (
-        <div className="h-[200vh]">
-            <DevicesPage query={query} status={status} />
+        <div className="h-full">
+            <DevicesPage query={query} os={os} />
         </div>
     )
 }

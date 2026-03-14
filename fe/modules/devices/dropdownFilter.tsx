@@ -2,17 +2,17 @@
 
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
 
-export default function DropdownFilter({ initialStatus = "all" }: { initialStatus?: string }) {
+export default function DropdownFilter({ initialOs = "all" }: { initialOs?: string }) {
     const searchParams = useSearchParams();
     const pathname = usePathname();
     const { replace } = useRouter();
 
-    const handleFilter = (status: string) => {
+    const handleFilter = (osValue: string) => {
         const params = new URLSearchParams(searchParams.toString());
-        if (status && status !== "all") {
-            params.set("status", status);
+        if (osValue && osValue !== "all") {
+            params.set("os", osValue);
         } else {
-            params.delete("status");
+            params.delete("os");
         }
         // Update URL untuk fetching ulang data secara otomatis
         replace(`${pathname}?${params.toString()}`);
@@ -22,12 +22,12 @@ export default function DropdownFilter({ initialStatus = "all" }: { initialStatu
         <select
             className="block w-full p-[9px] text-sm text-gray-500 border border-gray-200 rounded-xl bg-white focus:ring-blue-500 focus:border-blue-500 appearance-none outline-none cursor-pointer"
             onChange={(e) => handleFilter(e.target.value)}
-            defaultValue={initialStatus || searchParams.get("status")?.toString() || "all"}
+            defaultValue={initialOs || searchParams.get("os")?.toString() || "all"}
         >
             <option value="all">All Devices</option>
-            <option value="online">Online</option>
-            <option value="offline">Offline</option>
-            <option value="pending">Pending</option>
+            <option value="Windows">Windows</option>
+            <option value="macOS">macOS</option>
+            <option value="Linux">Linux</option>
         </select>
     );
 }
