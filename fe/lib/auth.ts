@@ -34,7 +34,7 @@ export const authOptions: NextAuthOptions = {
                     }),
                 })
                 const result = await fetching.json()
-                console.log("==> Hasil dari express: ", result)
+                console.log("INI TOKENNYA LEK ====>", result?.token)
                 token.role = result?.user?.role
                 token.accessToken = result?.token
                 token.id = result?.user?._id

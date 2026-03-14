@@ -1,4 +1,3 @@
-import { div } from "framer-motion/client"
 import { cn } from "../../utils/cn"
 
 export default function DeviceMonitorCard({

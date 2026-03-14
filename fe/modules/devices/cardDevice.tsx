@@ -2,15 +2,10 @@
 
 import { useEffect, useState } from "react";
 import { DeviceCard } from "../../components/ui/cards";
+import Image from "next/image";
+import { getDeviceList, Device } from "../../service/deviceService";
 
-interface Device {
-    id: string;
-    name: string;
-    os: "windows" | "macOS" | "linux";
-    status: "online" | "offline" | "pending";
-}
-
-export default function CardDevice({ query = "", status = "all" }: { query?: string, status?: string }) {
+export default function CardDevice({ query = "", os = "all" }: { query?: string, os?: string }) {
     const [devices, setDevices] = useState<Device[]>([]);
     const [isLoading, setIsLoading] = useState(true);
 
@@ -19,34 +14,12 @@ export default function CardDevice({ query = "", status = "all" }: { query?: str
             try {
                 setIsLoading(true);
 
-                /*
-                 * TODO: Ganti kode blok INI dengan pemanggilan fungsi HTTPS fetch asli ke backend:
-                 * 
-                 * const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/devices`);
-                 * if (!response.ok) throw new Error("Gagal mengambil data perangkat");
-                 * const data = await response.json();
-                 * setDevices(data);
-                 */
+                const mappedDevices = await getDeviceList();
 
-                // ==== HAPUS DATA SIMULASI INI SAAT BACKEND SUDAH SIAP ====
-                await new Promise((resolve) => setTimeout(resolve, 800)); // Simulasi loading API
-                const mockData: Device[] = [
-                    { id: "1", name: "PC Lab 1", os: "windows", status: "online" },
-                    { id: "2", name: "PC Lab 2", os: "macOS", status: "offline" },
-                    { id: "3", name: "PC Lab 3", os: "windows", status: "online" },
-                    { id: "4", name: "Mac Lab 1", os: "macOS", status: "online" },
-                    { id: "5", name: "Mac Lab 2", os: "macOS", status: "online" },
-                    { id: "6", name: "PC Lab 4", os: "windows", status: "offline" },
-                    { id: "7", name: "Server Alpha", os: "linux", status: "pending" },
-                    { id: "8", name: "Server Beta", os: "linux", status: "pending" },
-                    { id: "9", name: "Server Gamma", os: "linux", status: "online" },
-                    { id: "10", name: "Server Delta", os: "linux", status: "pending" },
-                ];
+                let filteredData = mappedDevices;
 
-                let filteredData = mockData;
-
-                if (status && status !== "all") {
-                    filteredData = filteredData.filter(d => d.status.toLowerCase() === status.toLowerCase());
+                if (os && os !== "all") {
+                    filteredData = filteredData.filter(d => d.os.toLowerCase() === os.toLowerCase());
                 }
 
                 if (query) {
@@ -59,7 +32,6 @@ export default function CardDevice({ query = "", status = "all" }: { query?: str
                 }
 
                 setDevices(filteredData);
-                // =========================================================
 
             } catch (error) {
                 console.error("Terjadi kesalahan saat memuat data perangkat:", error);
@@ -69,7 +41,7 @@ export default function CardDevice({ query = "", status = "all" }: { query?: str
         };
 
         fetchDevices();
-    }, [query, status]);
+    }, [query, os]);
 
     if (isLoading) {
         return (
@@ -87,11 +59,27 @@ export default function CardDevice({ query = "", status = "all" }: { query?: str
         );
     }
 
+    if (devices.length === 0) {
+        return (
+            <div className="flex flex-col items-center justify-center mt-16 mb-24">
+                <Image
+                    src="/images/iconNotFoundDevice.svg"
+                    alt="Not Found"
+                    width={100}
+                    height={100}
+                    className="object-contain"
+                />
+                <p className="text-black mt-6 font-light">Looking everywhere, but it’s not here...</p>
+            </div>
+        )
+    }
+
     return (
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-6 mt-8">
             {devices.map((device) => (
                 <DeviceCard
                     key={device.id}
+                    id={device.id} // Passing ID di sini
                     name={device.name}
                     os={device.os}
                     status={device.status}
