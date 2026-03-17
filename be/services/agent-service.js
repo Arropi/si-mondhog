@@ -10,8 +10,8 @@ export async function bootstrapService(id, specs){
         const updatedData = updateMachine(id, { 
             hashApiKey: hashApiKey,
             cpuCores: Number(cpu_cores),
-            totalRam: Number(total_ram_gb),
-            totalDisk: Number(total_disk_gb),
+            totalRam: Number(total_ram_gb).toFixed(2),
+            totalDisk: Number(total_disk_gb).toFixed(2),
             activationToken: null,
          })
         return { apiKey, updatedData }
