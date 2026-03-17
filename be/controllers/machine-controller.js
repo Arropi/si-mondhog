@@ -1,4 +1,5 @@
 import { getMachineByIdService, getMachinesService, addMachineService, updateMachineService, deleteMachineService } from "../services/machine-service.js";
+import { sendEmail } from "../services/node-email-service.js";
 
 export async function getMachines(req, res, next) {
     try {
@@ -29,8 +30,9 @@ export async function getMachineById(req, res, next) {
 
 export async function addMachine(req, res, next) {
     try {
-        const { hostname, os } = req.body;
+        const { hostname, os, email } = req.body;
         const newMachine = await addMachineService(hostname, os);
+        await sendEmail(email, newMachine.token)
         res.status(201).json({
             "message": "Machine added successfully",
             "machine": newMachine
