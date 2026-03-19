@@ -26,7 +26,7 @@ export async function getDeviceStats(): Promise<DeviceStats> {
     try {
         const session = await getServerSession(authOptions);
         const token = (session?.user as any)?.accessToken;
-        const response = await fetch(`${API_BASE_URL}/devices`, {
+        const response = await fetch(`${API_BASE_URL}/devices?limit=100`, {
             cache: "no-store",
             headers: {
                 "Authorization": `Bearer ${token}`,
@@ -68,7 +68,7 @@ export async function getDeviceList(): Promise<Device[]> {
     try {
         const session = await getServerSession(authOptions);
         const token = (session?.user as any)?.accessToken;
-        const response = await fetch(`${API_BASE_URL}/devices`, {
+        const response = await fetch(`${API_BASE_URL}/devices?limit=100`, {
             cache: "no-store",
             headers: {
                 "Authorization": `Bearer ${token}`,
@@ -130,7 +130,7 @@ export async function getDeviceById(id: string) {
     try {
         const session = await getServerSession(authOptions);
         const token = (session?.user as any)?.accessToken;
-        
+
         const response = await fetch(`${API_BASE_URL}/devices/${id}`, {
             cache: "no-store",
             headers: {
@@ -164,7 +164,7 @@ export async function updateDeviceService(id: string, data: { hostname?: string;
             },
             body: JSON.stringify(data)
         });
-        
+
         if (!response.ok) {
             const errorResponse = await response.json();
             return { success: false, message: errorResponse.message || "Failed to update device" };
@@ -189,15 +189,51 @@ export async function deleteDeviceService(id: string) {
                 "Authorization": `Bearer ${token}`,
             }
         });
-        
+
         if (!response.ok) {
             const errorResponse = await response.json();
             return { success: false, message: errorResponse.message || "Gagal menghapus device" };
         }
-        
+
         return { success: true, message: "Device berhasil dihapus!" };
     } catch (error: any) {
         console.error("Gagal Hapus:", error);
         return { success: false, message: "Terjadi kesalahan di jaringan peladen." };
+    }
+}
+
+export async function getPerformanceData(id: string) {
+    try {
+        const session = await getServerSession(authOptions);
+        const token = (session?.user as any)?.accessToken;
+        const response = await fetch(`${API_BASE_URL}/devices/${id}/performance`, {
+            cache: "no-store",
+            headers: {
+                "Authorization": `Bearer ${token}`,
+            }
+        });
+        if (!response.ok) return null; // Jika BE belum siap, return null
+        const data = await response.json();
+        return data.performance;
+    } catch (error) {
+        return null; // Jika error/jaringan mati, return null
+    }
+}
+
+export async function getLogDeviceActivity(id: string) {
+    try {
+        const session = await getServerSession(authOptions);
+        const token = (session?.user as any)?.accessToken;
+        const response = await fetch(`${API_BASE_URL}/devices/${id}/logs`, {
+            cache: "no-store",
+            headers: {
+                "Authorization": `Bearer ${token}`,
+            }
+        });
+        if (!response.ok) return null; // Jika BE belum siap, return null
+        const data = await response.json();
+        return data.logs || [];
+    } catch (error) {
+        return null; // Jika error/jaringan mati, return null
     }
 }

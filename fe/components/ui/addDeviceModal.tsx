@@ -1,3 +1,5 @@
+"use client"
+
 import { useState } from "react";
 import { cn } from "../../utils/cn";
 
@@ -29,7 +31,7 @@ export default function AddDeviceModal({
 
     return (
         <div className="fixed inset-0 z-100 flex items-center justify-center bg-gray-900/40 backdrop-blur-[2px] px-4">
-            <div className="absolute inset-0" onClick={!isLoading ? onClose : undefined} />
+            <div className="absolute inset-0" />
 
             <div className="bg-white rounded-2xl w-full max-w-md p-8 shadow-2xl relative z-10 border border-gray-100 text-left">
                 <h2 className="text-xl font-bold text--primary mb-6">Add Device</h2>
@@ -49,7 +51,7 @@ export default function AddDeviceModal({
                             }}
                             disabled={isLoading}
                             className={cn(
-                                "w-full px-4 py-2.5 rounded-lg border focus:outline-none text-sm text-black",
+                                "w-full px-4 py-2.5 rounded-lg border focus:outline-none text-sm text-black truncate",
                                 hasError
                                     ? "border--secondary focus:border--secondary focus:ring-1 focus:ring--secondary bg-red-50"
                                     : "border-gray-200 focus:border-purple-500 focus:ring-1 focus:ring-purple-500"
@@ -83,7 +85,8 @@ export default function AddDeviceModal({
                             onInvalid={() => setHasError(true)}
                             onChange={(e) => {
                                 setHasError(false);
-                                setEmail(e.target.value);e                                  }}
+                                setEmail(e.target.value); e
+                            }}
                             disabled={isLoading}
                             className={cn(
                                 "w-full px-4 py-2.5 rounded-lg border focus:outline-none text-sm text-black",

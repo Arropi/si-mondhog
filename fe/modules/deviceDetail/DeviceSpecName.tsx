@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, JSX } from "react";
 import { updateDeviceService } from "@/service/deviceService";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
@@ -66,7 +66,7 @@ export default function DeviceInfoCardClient({
                 <div className="flex flex-col gap-4">
                     <input 
                         ref={inputRef}
-                        className="text-2xl font-extrabold text-gray-900 focus:outline-none bg-transparent border-b border-gray-200 focus:border--primary pb-1 caret-black w-full"
+                        className="text-2xl font-extrabold text-gray-900 truncate focus:outline-none bg-transparent border-b border-gray-200 focus:border--primary pb-1 caret-black w-full"
                         value={hostname}
                         onChange={e => setHostname(e.target.value)}
                         onKeyDown={e => {
@@ -107,9 +107,9 @@ export default function DeviceInfoCardClient({
                     </div>
                 </div>
                 
-                <div className="flex items-center gap-3 mb-2">
-                    <h1 className="text-2xl font-extrabold text-gray-900">{currentHostname}</h1>
-                    <span className={`${statusColor} text-[10px] font-bold px-2 py-1 rounded-md tracking-widest`}>{status}</span>
+                <div className="flex items-center gap-3 mb-2 overflow-hidden">
+                    <h1 className="text-2xl font-extrabold text-gray-900 truncate max-w-[250px]">{currentHostname}</h1>
+                    <span className={`${statusColor} text-[10px] font-bold px-2 py-1 rounded-md tracking-widest flex-shrink-0`}>{status}</span>
                 </div>
             </div>
             

@@ -5,7 +5,7 @@ import Link from "next/link";
 
 const Footer = () => {
     return (
-        <footer className="bg--primary text-white py-16 px-4 md:px-12 w-full">
+        <footer className="bg--primary text-white py-16 px-4 md:px-12 w-full mt-24">
             <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between gap-12 md:gap-8">
                 {/* left section */}
                 <div className="flex-1 max-w-sm">
@@ -106,6 +106,12 @@ const Footer = () => {
                         </a>
                     </div>
                 </div>
+            </div>
+
+            <hr className="h-px my-8 bg-white/10 border-0 max-w-7xl mx-auto mt-14" />
+
+            <div className="flex justify-center items-center mt-10">
+                <p className="text-sm font-medium text-[#E9D5FF]">© 2026 SyMon - Device Monitoring System. All rights reserved.</p>
             </div>
         </footer>
     )
