@@ -2,7 +2,6 @@
 
 import { AreaChart, Area, ResponsiveContainer, Tooltip } from "recharts";
 
-// Data dummy sesuai dengan grafik pada gambar
 const dummyRAM = [
   { name: "60", value: 80 }, { name: "55", value: 83 }, { name: "50", value: 81 },
   { name: "45", value: 84 }, { name: "40", value: 82 }, { name: "35", value: 81 },

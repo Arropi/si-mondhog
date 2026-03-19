@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { createDeviceService } from "../../service/deviceService"
-import AddDeviceModal from "../../components/device/addDeviceModal";
+import AddDeviceModal from "../../components/ui/addDeviceModal";
 import { useRouter } from "next/navigation";
 import SuccessAlertModal from "../../components/ui/successAlertModal";
 
@@ -11,7 +11,6 @@ export default function ButtonAddDevice() {
     const [isOpen, setIsOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
 
-    // state data form
     const [hostname, setHostname] = useState("");
     const [selectedOS, setSelectedOS] = useState<"Linux" | "Windows" | "macOS">("Linux");
     const [email, setEmail] = useState("");
@@ -20,18 +19,15 @@ export default function ButtonAddDevice() {
         emailSentTo: ""
     })
 
-    // function submit
     const handleAddDevice = async (e?: React.FormEvent) => {
         if (e) e.preventDefault();
         
-        // Jangan biarkan email dikirimkan kosong!
         if (!hostname.trim() || !selectedOS || !email.trim()) {
             return; 
         }
 
         setIsLoading(true);
 
-        // Sematkan variabel email saat akan melakukan fetch
         const result = await createDeviceService({ hostname, os: selectedOS, email });
 
         if (result.success) {
@@ -39,7 +35,6 @@ export default function ButtonAddDevice() {
                 show: true,
                 emailSentTo: email
             })
-            // untuk sukses otomatis reset form dan menutup modal
             setHostname("");
             setSelectedOS("Linux");
             setEmail("");

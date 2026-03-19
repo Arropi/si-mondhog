@@ -2,7 +2,6 @@
 
 import { AreaChart, Area, ResponsiveContainer, Tooltip } from "recharts";
 
-// Data dummy dengan pola gergaji (naik turun tajam)
 const dummyCPU = [
   { name: "60", value: 30 }, { name: "55", value: 45 }, { name: "50", value: 35 },
   { name: "45", value: 65 }, { name: "40", value: 40 }, { name: "35", value: 50 },
@@ -35,7 +34,6 @@ export default function GraphicCPU() {
       
       <div className="w-full h-48 border border-gray-50 rounded-xl overflow-hidden flex items-end bg-[#FAFAFC] relative">
          <ResponsiveContainer width="100%" height="100%">
-             {/* Area chart linear tanpa kurva halus (type="linear") untuk grafik gergaji  */}
              <AreaChart data={dummyCPU} margin={{ top: 10, right: 0, left: 0, bottom: 0 }}>
                <Tooltip 
                  contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}

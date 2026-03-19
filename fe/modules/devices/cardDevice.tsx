@@ -4,10 +4,19 @@ import { useEffect, useState } from "react";
 import { DeviceCard } from "../../components/ui/cards";
 import Image from "next/image";
 import { getDeviceList, Device } from "../../service/deviceService";
+import Pagination from "@/components/device/pagination";
+import { useRouter, useSearchParams, usePathname } from "next/navigation";
 
-export default function CardDevice({ query = "", os = "all" }: { query?: string, os?: string }) {
+export default function CardDevice({ query = "", os = "all", initialPage = 1 }: { query?: string, os?: string, initialPage?: number }) {
     const [devices, setDevices] = useState<Device[]>([]);
     const [isLoading, setIsLoading] = useState(true);
+    const itemsPerPage = 10;
+
+    const router = useRouter();
+    const pathname = usePathname();
+    const searchParams = useSearchParams();
+
+    const currentPage = initialPage;
 
     useEffect(() => {
         const fetchDevices = async () => {
@@ -43,6 +52,14 @@ export default function CardDevice({ query = "", os = "all" }: { query?: string,
         fetchDevices();
     }, [query, os]);
 
+    const handlePageChange = (newPage: number) => {
+        const params = new URLSearchParams(searchParams.toString());
+        params.set("page", newPage.toString());
+        router.push(`${pathname}?${params.toString()}`);
+    };
+
+    const currentItems = devices.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+
     if (isLoading) {
         return (
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-6 mt-8">
@@ -75,16 +92,25 @@ export default function CardDevice({ query = "", os = "all" }: { query?: string,
     }
 
     return (
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-6 mt-8">
-            {devices.map((device) => (
-                <DeviceCard
-                    key={device.id}
-                    id={device.id} // Passing ID di sini
-                    name={device.name}
-                    os={device.os}
-                    status={device.status}
-                />
-            ))}
-        </div>
+        <>
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-6 mt-8">
+                {currentItems.map((device) => (
+                    <DeviceCard
+                        key={device.id}
+                        id={device.id}
+                        name={device.name}
+                        os={device.os}
+                        status={device.status}
+                    />
+                ))}
+            </div>
+
+            {/* Pagination Section */}
+            <Pagination
+                currentPage={currentPage}
+                totalPages={Math.ceil(devices.length / itemsPerPage)}
+                onPageChange={handlePageChange}
+            />
+        </>
     );
 }
