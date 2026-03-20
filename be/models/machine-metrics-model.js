@@ -5,6 +5,7 @@ const machineMetricsSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "Machine",
         required: true,
+        index: true,
     },
     cpuUsage: {
         type: Number,
@@ -21,8 +22,16 @@ const machineMetricsSchema = new mongoose.Schema({
     timestamp: {
         type: Date,
         default: Date.now,
+        index: true
     }
 })
+
+machineMetricsSchema.virtual("formattedTimestamp").get(function() {
+    return this.timestamp.toLocaleString("id-ID", { timeZone: "Asia/Jakarta" });
+})
+
+machineMetricsSchema.set("toObject", { virtuals: true })
+machineMetricsSchema.set("toJSON", { virtuals: true })
 
 const MachineMetrics = mongoose.model("MachineMetrics", machineMetricsSchema)
 export default MachineMetrics
