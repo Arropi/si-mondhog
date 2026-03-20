@@ -4,11 +4,14 @@ import { sendEmail } from "../services/node-email-service.js";
 export async function getMachines(req, res, next) {
     try {
         const { page = 1, limit = 10 } = req.query;
-        const { machines, totalMachines } = await getMachinesService(parseInt(page), parseInt(limit));
+        const { machines, totalMachines, stats } = await getMachinesService(parseInt(page), parseInt(limit));
         res.status(200).json({
             "message": "Machines retrieved successfully",
-            "machines": machines,
-            "totalMachines": totalMachines
+            "datas": {
+                machines,
+                stats,
+                totalMachines
+            }
         });
     } catch (error) {
         next(error);
@@ -18,10 +21,10 @@ export async function getMachines(req, res, next) {
 export async function getMachineById(req, res, next) {
     try {
         const { _id } = req.params;
-        const machine = await getMachineByIdService(_id)
+        const data = await getMachineByIdService(_id)
         res.status(200).json({
             "message": "Machine retrieved successfully",
-            "machine": machine
+            "datas": data
         });
     } catch (error) {
         next(error);
