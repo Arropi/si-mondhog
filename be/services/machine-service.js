@@ -1,8 +1,14 @@
+import { getLogsByMachineId, 
+  getMetricsByMachineId, 
+  getMetcricsTest, 
+  getHighestStats 
+} from "../repositories/machine-metrics-repositories.js";
 import {
     createMachine,
   deleteMachine,
   findMachineById,
   getPaginatedMachines,
+  getStatsStatusMachine,
   updateMachine,
 } from "../repositories/machine-repositories.js";
 import { randomBytes, createHash } from "crypto";
@@ -15,16 +21,8 @@ export async function getMachinesService(page, limit) {
       error.statusCode = 404;
       throw error;
     }
-    machines = machines.map((machine) => ({
-      ...machine,
-      status: machine.activationToken
-        ? "Pending"
-        : machine.lastSeen &&
-            Date.now() - machine.lastSeen.getTime() < 5 * 60 * 1000
-          ? "Online"
-          : "Offline",
-    }));
-    return { machines, totalMachines };
+    const stats = await getStatsStatusMachine()
+    return { machines, totalMachines, stats: stats[0] };
   } catch (error) {
     throw error;
   }
@@ -38,16 +36,16 @@ export async function getMachineByIdService(id) {
       error.statusCode = 404;
       throw error;
     }
-    machine = {
-      ...machine._doc,
-      status: machine.activationToken
-        ? "Pending"
-        : machine.lastSeen &&
-            Date.now() - machine.lastSeen.getTime() < 5 * 60 * 1000
-          ? "Online"
-          : "Offline",
-    };
-    return machine;
+    const [logs, metrics, highestStats] = await Promise.allSettled([
+      getLogsByMachineId(id),
+      getMetricsByMachineId(id),
+      getHighestStats(id)
+    ])
+    return { 
+      machine, 
+      logs: logs.status === "fulfilled" ? logs.value : null, 
+      metrics: metrics.status === "fulfilled" ? metrics.value : null,
+      highestStats: highestStats.status === "fulfilled" ? highestStats.value : null };
   } catch (error) {
     throw error;
   }

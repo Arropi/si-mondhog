@@ -21,13 +21,13 @@ const PORT = process.env.PORT
 app.use(express.json())
 app.use(cors())
 
-app.use(arcjetMiddleware)
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs))
 
+app.use('/api/agent', agentRoutes)
+
+// app.use(arcjetMiddleware)
 
 app.use('/api/auth', authRoutes)
-
-app.use('/api/agent', agentRoutes)
 
 app.use(authMiddleware)
 
@@ -41,5 +41,5 @@ app.get('/', (req, res) => {
 
 app.listen(PORT, async () => {
   console.log(`Server is running on port ${PORT}`)
-  await connectDB(process.env.DB_URI)
+  await connectDB()
 })

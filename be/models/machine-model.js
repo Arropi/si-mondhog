@@ -37,5 +37,18 @@ const machineSchema = new mongoose.Schema({
     }
 }, { timestamps: true })
 
+// machineSchema.virtual("status").get(function () {
+//     if (this.activationToken) {
+//         return "Pending";
+//     } else if (this.lastSeen && Date.now() - this.lastSeen.getTime() < 5 * 60 * 1000) {
+//         return "Online";
+//     } else {        
+//         return "Offline";
+//     }
+// })
+
+// machineSchema.set("toObject", { virtuals: true })
+// machineSchema.set("toJSON", { virtuals: true })
+
 const Machine = mongoose.model("Machine", machineSchema)
 export default Machine
