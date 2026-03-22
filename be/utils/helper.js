@@ -4,6 +4,65 @@ export function getTimeWeeksAgo() {
   return { oneWeekAgo, thisNightDay };
 }
 
+export function grouppingType(type) {
+  switch (type) {
+    case "1h":
+      return {
+        year: { $year: "$timestamp" },
+        month: { $month: "$timestamp" },
+        day: { $dayOfMonth: "$timestamp" },
+        hour: { $hour: "$timestamp" },
+      };
+    case "12h":
+      return {
+        year: { $year: "$timestamp" },
+        month: { $month: "$timestamp" },
+        day: { $dayOfMonth: "$timestamp" },
+        hour: {
+          $multiply: [
+            {
+              $floor: {
+                $divide: [
+                  {
+                    $add: [{ $hour: "$timestamp" }, 7],
+                  },
+                  12,
+                ],
+              },
+            },
+            5,
+          ],
+        },
+      };
+    case "1d":
+      return {
+        year: { $year: "$timestamp" },
+        month: { $month: "$timestamp" },
+        day: { $dayOfMonth: "$timestamp" },
+        hour: { $literal: 17 },
+      };
+    default:
+      return {
+        year: { $year: "$timestamp" },
+        month: { $month: "$timestamp" },
+        day: { $dayOfMonth: "$timestamp" },
+        hour: { $hour: "$timestamp" },
+      };
+  }
+}
+
+export function helperFormattedTimestamp() {
+  return {
+    formattedTimestamp: {
+      $dateToString: {
+        format: "%d/%m/%Y, %H:%M:%S",
+        date: "$timestamp",
+        timezone: "Asia/Jakarta",
+      },
+    },
+  };
+}
+
 export function helperStatusMachine() {
   return {
     status: {

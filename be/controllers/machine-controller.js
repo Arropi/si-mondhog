@@ -21,7 +21,8 @@ export async function getMachines(req, res, next) {
 export async function getMachineById(req, res, next) {
     try {
         const { _id } = req.params;
-        const data = await getMachineByIdService(_id)
+        const { timeSeries = "1h" } = req.query
+        const data = await getMachineByIdService(_id, timeSeries);
         res.status(200).json({
             "message": "Machine retrieved successfully",
             "datas": data
