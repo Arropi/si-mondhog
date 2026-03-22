@@ -5,7 +5,6 @@ interface DropdownFilterBarProps {
 }
 
 export default async function DropdownFilterBar({ os }: DropdownFilterBarProps) {
-    // Bagian server-side untuk dropdown filter
     return (
         <div className="w-full sm:w-48 relative">
             <DropdownFilter initialOs={os} />
