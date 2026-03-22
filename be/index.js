@@ -9,6 +9,8 @@ import authRoutes from './routes/auth-route.js'
 import userRoutes from './routes/user-route.js'
 import machineRoutes from './routes/machine-route.js'
 import agentRoutes from './routes/agent-route.js'
+import dashboardRoutes from './routes/dashboard-route.js'
+import csvRoutes from './routes/csv-route.js'
 import { connectDB } from './config/database.js'
 import { specs, swaggerUi } from './config/swagger.js'
 import { errorMiddleware } from './middleware/error-middleware.js'
@@ -33,6 +35,8 @@ app.use(authMiddleware)
 
 app.use("/api", userRoutes)
 app.use("/api/devices", machineRoutes)
+app.use("/api/csv", csvRoutes)
+app.use("/api/dashboard", dashboardRoutes)
 app.use(errorMiddleware)
 
 app.get('/', (req, res) => {

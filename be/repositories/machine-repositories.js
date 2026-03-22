@@ -137,3 +137,11 @@ export async function getMachineByApiKey(hashApiKey) {
     throw error;
   }
 }
+
+export async function getLogsMachineId(machineId){
+  try {
+    
+  } catch (error) {
+    throw error
+  }
+}

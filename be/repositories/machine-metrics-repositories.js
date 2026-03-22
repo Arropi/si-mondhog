@@ -1,6 +1,6 @@
 import mongoose from "mongoose"
 import MachineMetrics from "../models/machine-metrics-model.js"
-import { getTimeWeeksAgo } from "../utils/helper.js"
+import { getTimeWeeksAgo, grouppingType, helperFormattedTimestamp } from "../utils/helper.js"
 
 export async function addNewData(dataMetrics) {
     try {
@@ -12,9 +12,10 @@ export async function addNewData(dataMetrics) {
     }
 }
 
-export async function getMetricsByMachineId(machineId){
+export async function getMetricsByMachineId(machineId, type){
     try {
         const { oneWeekAgo, thisNightDay } = getTimeWeeksAgo();
+        console.log(grouppingType(type))
         const metrics = await MachineMetrics.aggregate([
             {
                 $match: {
@@ -27,12 +28,7 @@ export async function getMetricsByMachineId(machineId){
             }, 
             {
                 $group: {
-                    _id: {
-                        year: { $year: "$timestamp" },
-                        month: { $month: "$timestamp" },
-                        day: { $dayOfMonth: "$timestamp" },
-                        hour: { $hour: "$timestamp" }
-                    },
+                    _id: grouppingType(type),
                     averageCpuUsage: { $avg: "$cpuUsage" },
                     averageRamUsage: { $avg: "$ramUsage" },
                     averageDiskUsage: { $avg: "$diskUsage" }
@@ -81,10 +77,10 @@ export async function getMetcricsTest(machineId) {
                     machineId: new mongoose.Types.ObjectId(machineId),
                     timestamp: {
                         $gte: oneWeekAgo,
-                        $lte: new Date()
+                        $lte: thisNightDay
                     }
                 }
-            },
+            }
         ])
         return metrics
     } catch (error) {
@@ -94,7 +90,86 @@ export async function getMetcricsTest(machineId) {
 
 export async function getLogsByMachineId(machineId) {
     try {
-        const metrics = await MachineMetrics.find({ machineId }, {  machineId: 0, __v: 0 }).sort({ timestamp: -1 }).limit(10)
+        const metrics = await MachineMetrics.aggregate([
+            {
+                $addFields: helperFormattedTimestamp()
+            },
+            {
+                $match: {
+                    machineId: new mongoose.Types.ObjectId(machineId)
+                }
+            },
+            {
+                $project: {
+                    machineId: 0,
+                    __v: 0
+                }
+            },
+            {
+                $sort: {
+                    timestamp: -1
+                }
+            },
+            {
+                $limit: 10
+            }
+        ])
+        return metrics
+    } catch (error) {
+        throw error
+    }
+}
+
+export async function getLogsMetricsByMachineId(machineId){
+    try {
+        const { oneWeekAgo, thisNightDay } = getTimeWeeksAgo()
+        const metrics = await MachineMetrics.aggregate([
+            {
+                $addFields: helperFormattedTimestamp()
+            },
+            {
+                $match: {
+                    machineId: new mongoose.Types.ObjectId(machineId),
+                    timestamp: {
+                        $gte: oneWeekAgo,
+                        $lte: thisNightDay
+                    }
+                }
+            },
+            {
+                $lookup: {
+                    from: "machines",
+                    localField: "machineId",
+                    foreignField: "_id",
+                    pipeline: [
+                        {
+                            $project: {
+                                _id: 0,
+                                createdAt: 0,
+                                updatedAt: 0,
+                                __v: 0,
+                                activationToken: 0,
+                                hashApiKey: 0,
+                                lastSeen: 0
+                            }
+                        }
+                    ],
+                    as: "machine"
+                }
+            },
+            {
+                $replaceRoot: { newRoot: { $mergeObjects: [ { $arrayElemAt: ["$machine", 0] }, "$$ROOT" ] } }
+            },
+            {
+                $project: {
+                    machine: 0,
+                    machineId: 0,
+                    timestamp: 0,
+                    __v: 0,
+                    _id: 0,
+                }
+            }
+        ])
         return metrics
     } catch (error) {
         throw error

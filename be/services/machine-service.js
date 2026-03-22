@@ -28,7 +28,7 @@ export async function getMachinesService(page, limit) {
   }
 }
 
-export async function getMachineByIdService(id) {
+export async function getMachineByIdService(id, type) {
   try {
     let machine = await findMachineById(id);
     if (!machine) {
@@ -38,7 +38,7 @@ export async function getMachineByIdService(id) {
     }
     const [logs, metrics, highestStats] = await Promise.allSettled([
       getLogsByMachineId(id),
-      getMetricsByMachineId(id),
+      getMetricsByMachineId(id, type),
       getHighestStats(id)
     ])
     return { 
