@@ -2,7 +2,6 @@
 
 import { AreaChart, Area, ResponsiveContainer, Tooltip } from "recharts";
 
-// Data dummy dengan lonjakan kecil di harddisk
 const dummyHardisk = [
   { name: "60", value: 3 }, { name: "55", value: 4 }, { name: "50", value: 3 },
   { name: "45", value: 5 }, { name: "40", value: 8 }, { name: "35", value: 4 },
@@ -35,7 +34,6 @@ export default function GraphicHardisk() {
       
       <div className="w-full h-48 border border-gray-50 rounded-xl overflow-hidden flex items-end bg-[#FAFAFC] relative">
          <ResponsiveContainer width="100%" height="100%">
-             {/* Note: Karena grafiknya sangat linear/kecil lonjakannya, domain tidak di-set agar auto-scale memperlihatkan bentuknya */}
              <AreaChart data={dummyHardisk} margin={{ top: 10, right: 0, left: 0, bottom: 0 }}>
                <Tooltip 
                  contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}

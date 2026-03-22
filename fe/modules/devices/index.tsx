@@ -5,7 +5,7 @@ import InputSearchBar from "../../components/device/inputSearchBar";
 import DropdownFilterBar from "../../components/device/dropdownFilterBar";
 import { getDeviceStats } from "../../service/deviceService";
 
-export default async function DevicesPage({ query, os }: { query?: string, os?: string }) {
+export default async function DevicesPage({ query, os, page }: { query?: string, os?: string, page?: number }) {
     const statsData = await getDeviceStats();
     
     return (
@@ -28,7 +28,7 @@ export default async function DevicesPage({ query, os }: { query?: string, os?: 
             </div>
 
             <div className="mt-8">
-                <CardDevice key={statsData.total} query={query} os={os} />
+                <CardDevice key={`${statsData.total}-${query}-${os}`} query={query} os={os} initialPage={page} />
             </div>
         </div>
     )

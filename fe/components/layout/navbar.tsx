@@ -31,7 +31,7 @@ const Navbar = () => {
     ];
 
     return (
-        <motion.nav className={cn("flex items-center bg-white justify-between px-8 py-4 border-b border-gray-200 shadow-md sticky top-0 z-50 transition-all duration-300 ease-in-out", isScrolled && "scale-90 px-12 rounded-4xl top-5 border border-gray-200 delay-100 bg-white/5 backdrop-blur-[1.5px]")}>
+        <motion.nav className={cn("flex items-center bg-white justify-between px-8 py-4 border-b border-gray-200 shadow-md sticky top-0 z-50 transition-all duration-300 ease-in-out", isScrolled && "scale-90 px-12 rounded-4xl top-5 border border-gray-200 delay-100 bg-white/10 backdrop-blur-[1.5px]")}>
             <div className="flex items-center gap-20 delay-200">
                 {/* Logo Icon */}
                 <div className="flex items-center gap-3">
