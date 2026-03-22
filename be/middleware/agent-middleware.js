@@ -13,7 +13,6 @@ export default async function agentMiddleware(req, res, next) {
     const token = authorization.split(" ")[1];
     const hashedToken = createHash("sha256").update(token).digest("hex");
     const machine = await getMachineByApiKey(hashedToken);
-    console.log(machine);
     if (!machine) {
       error = new Error("Invalid token");
       error.status = 403;
