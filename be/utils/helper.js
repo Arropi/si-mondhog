@@ -1,7 +1,15 @@
 export function getTimeWeeksAgo() {
   const oneWeekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
+  oneWeekAgo.setHours(0, 0, 0, 0);
   const thisNightDay = new Date();
   return { oneWeekAgo, thisNightDay };
+}
+
+export function getDayDate(date) {
+  const highBound = new Date(date);
+  highBound.setHours(23, 59, 59, 999)
+  const lowBound = new Date(highBound - 24 * 60 * 60 * 1000);
+  return { lowBound, highBound };
 }
 
 export function grouppingType(type) {

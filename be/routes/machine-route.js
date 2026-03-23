@@ -1,6 +1,16 @@
 import { Router } from 'express'
-import { addMachine, deleteMachine, getMachineById, getMachines, updateMachine } from '../controllers/machine-controller.js'
-import { machineCreateValidation, machineUpdateValidation } from '../validations/machine-validation.js'
+import { 
+    addMachine, 
+    deleteMachine, 
+    getMachineById, 
+    getMachines, 
+    updateMachine 
+} from '../controllers/machine-controller.js'
+import { 
+    detailMachineValidation, 
+    machineCreateValidation, 
+    machineUpdateValidation 
+} from '../validations/machine-validation.js'
 
 const router = Router()
 
@@ -114,7 +124,7 @@ router.get("/", getMachines)
  *       500:
  *         $ref: '#/components/responses/InternalServerError'
  */
-router.get("/:_id", getMachineById)
+router.get("/:_id", detailMachineValidation, getMachineById)
 
 /**
  * @swagger

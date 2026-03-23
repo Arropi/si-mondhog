@@ -119,6 +119,6 @@ router.get("/profile/:id", authMiddleware, userController)
  */
 router.get("/profile", authMiddleware, userSearchController)
 
-
+router.post("/admin", )
 
 export default router
