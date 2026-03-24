@@ -38,7 +38,7 @@ export async function getDeviceStats(): Promise<DeviceStats> {
         }
 
         const data = await response.json();
-        const machineData = data.machines || [];
+        const machineData = data.datas?.machines || [];
 
         let onlineCount = 0;
         let offlineCount = 0;
@@ -52,7 +52,7 @@ export async function getDeviceStats(): Promise<DeviceStats> {
         });
 
         return {
-            total: data.totalMachines || machineData.length,
+            total: data.datas?.totalMachines || machineData.length,
             online: onlineCount,
             offline: offlineCount,
             pending: pendingCount
@@ -79,7 +79,7 @@ export async function getDeviceList(): Promise<Device[]> {
             throw new Error(`Error HTTP: ${response.status}`);
         }
         const data = await response.json();
-        const machineData = data.machines || [];
+        const machineData = data.datas?.machines || [];
         const mappedDevices: Device[] = machineData.map((machine: any) => {
             return {
                 id: machine._id,
@@ -144,7 +144,28 @@ export async function getDeviceById(id: string) {
         }
 
         const data = await response.json();
-        return data.machine;
+
+        try {
+            const listResponse = await fetch(`${API_BASE_URL}/devices?limit=100`, {
+                cache: "no-store",
+                headers: {
+                    "Authorization": `Bearer ${token}`,
+                }
+            });
+
+            if (listResponse.ok) {
+                const listData = await listResponse.json();
+                const machines = listData.datas?.machines || [];
+                const match = machines.find((m: any) => m._id === id);
+                if (match && match.status && data.datas?.machine) {
+                    data.datas.machine.status = match.status;
+                }
+            }
+        } catch (e) {
+            console.warn("Gagal mengambil status aktual dari devices list:", e);
+        }
+
+        return data.datas;
     } catch (error) {
         console.error("Kesalahan dalam getDeviceById:", error);
         return null;
@@ -202,38 +223,4 @@ export async function deleteDeviceService(id: string) {
     }
 }
 
-export async function getPerformanceData(id: string) {
-    try {
-        const session = await getServerSession(authOptions);
-        const token = (session?.user as any)?.accessToken;
-        const response = await fetch(`${API_BASE_URL}/devices/${id}/performance`, {
-            cache: "no-store",
-            headers: {
-                "Authorization": `Bearer ${token}`,
-            }
-        });
-        if (!response.ok) return null; // Jika BE belum siap, return null
-        const data = await response.json();
-        return data.performance;
-    } catch (error) {
-        return null; // Jika error/jaringan mati, return null
-    }
-}
-
-export async function getLogDeviceActivity(id: string) {
-    try {
-        const session = await getServerSession(authOptions);
-        const token = (session?.user as any)?.accessToken;
-        const response = await fetch(`${API_BASE_URL}/devices/${id}/logs`, {
-            cache: "no-store",
-            headers: {
-                "Authorization": `Bearer ${token}`,
-            }
-        });
-        if (!response.ok) return null; // Jika BE belum siap, return null
-        const data = await response.json();
-        return data.logs || [];
-    } catch (error) {
-        return null; // Jika error/jaringan mati, return null
-    }
-}
+// Endpoint terpisah untuk /logs dan /performance sudah dihapus karena backend menggabungkannya ke dalam getDeviceById.
