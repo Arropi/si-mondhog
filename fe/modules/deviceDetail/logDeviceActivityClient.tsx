@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { getLogDeviceActivity } from "../../service/deviceService";
+// Diparsing utuh dari server
 
 interface LogDeviceActivityProps {
     deviceId: string;
@@ -12,16 +12,8 @@ export default function LogDeviceActivityClient({ deviceId, initialData }: LogDe
     const [logs, setLogs] = useState(initialData);
 
     useEffect(() => {
-        const updateLogs = async () => {
-            const result = await getLogDeviceActivity(deviceId);
-            if (result) {
-                setLogs(result);
-            }
-        };
-
-        const interval = setInterval(updateLogs, 5000);
-        return () => clearInterval(interval);
-    }, [deviceId]);
+        setLogs(initialData);
+    }, [initialData]);
 
     return (
         <div className="bg-white rounded-2xl p-6 shadow-[0_2px_10px_rgba(0,0,0,0.04)] border border-gray-50 flex flex-col mt-2">
@@ -43,10 +35,10 @@ export default function LogDeviceActivityClient({ deviceId, initialData }: LogDe
                             key={i}
                             className="grid grid-cols-4 text-[12px] font-medium text-gray-500 mb-4 last:mb-0 hover:text-gray-800 transition-colors"
                         >
-                            <div>{log.cpu || "-"}%</div>
-                            <div>{log.ram || "-"}%</div>
-                            <div>{log.disk || "-"}%</div>
-                            <div>{log.timestamp || "-"}</div>
+                            <div>{log.cpuUsage ? Math.round(log.cpuUsage) : "-"}%</div>
+                            <div>{log.ramUsage ? Math.round(log.ramUsage) : "-"}%</div>
+                            <div>{log.diskUsage ? Math.round(log.diskUsage) : "-"}%</div>
+                            <div>{log.timestamp ? new Date(log.timestamp).toLocaleString([], { year: 'numeric', month: 'short', day: '2-digit', hour: '2-digit', minute: '2-digit' }) : "-"}</div>
                         </div>
                     ))
                 ) : (

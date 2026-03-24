@@ -1,120 +1,54 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
 
 const Footer = () => {
     return (
-        <footer className="bg--primary text-white py-16 px-4 md:px-12 w-full mt-24">
-            <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between gap-12 md:gap-8">
-                {/* left section */}
-                <div className="flex-1 max-w-sm">
-                    <div className="space-y-1 text-sm font-medium">
-                        <p>Departemen Teknik Elektro dan Informatika</p>
-                        <p>Sekolah Vokasi</p>
-                        <p>Universitas Gadjah Mada</p>
-                        <p className="pb-1">Jl. Yacaranda, Sekip Unit III, Yogyakarta. 55281</p>
-                        <div className="flex items-center gap-2 pt-1">
-                            <Image
-                                src="/images/mailIcon.svg"
-                                alt="mail icon"
-                                width={20}
-                                height={20}
-                            />
-                            <a href="mailto:tedi.sv@ugm.ac.id" className="hover:text-gray-200 transition-colors">
-                                tedi.sv@ugm.ac.id
-                            </a>
-                        </div>
-                        <div className="flex items-center gap-2">
-                            <Image
-                                src="/images/callIcon.svg"
-                                alt="call icon"
-                                width={20}
-                                height={20}
-                            />
-                            <div className="flex items-center gap-2">
-                                <span>(0274) 6491302, 561111</span>
-                                <span>|</span>
-                                <div className="flex items-center gap-2">
-                                    <Image
-                                        src="/images/telephone.svg"
-                                        alt="call icon"
-                                        width={20}
-                                        height={20}
-                                    />
-                                    <span>(0274) 542908</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+        <footer className="bg--primary text-white pt-16 pb-8 px-6 md:px-16 w-full mt-24">
+            <div className="max-w-[1400px] mx-auto flex flex-col lg:flex-row justify-between items-center gap-12 lg:gap-8">
+                {/* Left */}
+                <div className="flex items-center gap-6 md:gap-8">
+                    <Image
+                        src="/images/iconFooter.svg"
+                        alt="SyMon logo"
+                        width={140}
+                        height={140}
+                        className="w-28 h-28 md:w-36 md:h-36 lg:w-44 lg:h-44 object-contain"
+                    />
+                    <span className="font-extrabold text-6xl md:text-8xl lg:text-[100px] tracking-tight">SyMon</span>
                 </div>
 
-                {/* center section */}
-                <div className="flex-1 md:flex-none md:w-48">
-                    <h3 className="text-xl font-bold text-white mb-6">Company</h3>
-                    <ul className="space-y-2 text-sm font-medium">
-                        <li>
-                            <Link href="/dashboard" className="hover:text-white hover:underline transition-colors">
-                                About SyMon
-                            </Link>
-                        </li>
-                        <li>
-                            <Link href="/" className="hover:text-white hover:underline transition-colors">
-                                Our Services
-                            </Link>
-                        </li>
-                        <li>
-                            <Link href="/" className="hover:text-white hover:underline transition-colors">
-                                Privacy Policy
-                            </Link>
-                        </li>
-                        <li>
-                            <Link href="/" className="hover:text-white hover:underline transition-colors">
-                                FAQ
-                            </Link>
-                        </li>
-                    </ul>
-                </div>
-
-                {/* right section */}
-                <div className="flex-1 md:flex-none md:w-48">
-                    <h3 className="text-xl font-bold text-white mb-6">Contact</h3>
-                    <div className="flex items-center gap-4">
-                        <a href="https://instagram.com" target="_blank" rel="noreferrer">
-                            <Image
-                                src="/images/instagram.svg"
-                                alt="call icon"
-                                width={20}
-                                height={20}
-                            />
+                {/* Right */}
+                <div className="flex flex-col items-end lg:max-w-[350px] text-right">
+                    <p className="text-sm md:text-sm leading-tight mb-5 text-white/95">
+                        A robust system monitoring application that
+                        tracks and visualizes real-time hardware
+                        telemetry, including processor load,
+                        memory allocation, and disk space usage,
+                        ensuring optimal system stability and
+                        resource management.
+                    </p>
+                    <div className="flex items-center justify-end gap-5">
+                        <a href="https://www.instagram.com/trisvugm/" target="_blank" rel="noreferrer" className="hover:opacity-80 transition-opacity">
+                            <Image src="/images/instagram.svg" alt="instagram icon" width={24} height={24} className="w-5 h-5 md:w-6 md:h-6" />
                         </a>
-                        <a href="https://instagram.com" target="_blank" rel="noreferrer">
-                            <Image
-                                src="/images/linkedin.svg"
-                                alt="call icon"
-                                width={20}
-                                height={20}
-                            />
+                        <a href="tel:02746491302" target="_blank" rel="noreferrer" className="hover:opacity-80 transition-opacity">
+                            <Image src="/images/callIcon.svg" alt="phone icon" width={24} height={24} className="w-5 h-5 md:w-6 md:h-6" />
                         </a>
-                        <a href="https://instagram.com" target="_blank" rel="noreferrer">
-                            <Image
-                                src="/images/instagram.svg"
-                                alt="call icon"
-                                width={20}
-                                height={20}
-                            />
+                        <a href="mailto:tedi.sv@ugm.ac.id" target="_blank" rel="noreferrer" className="hover:opacity-80 transition-opacity">
+                            <Image src="/images/mailIcon.svg" alt="mail icon" width={24} height={24} className="w-5 h-5 md:w-6 md:h-6" />
                         </a>
                     </div>
                 </div>
             </div>
 
-            <hr className="h-px my-8 bg-white/10 border-0 max-w-7xl mx-auto mt-14" />
+            <hr className="h-px border-0 bg-white/20 max-w-[1400px] mx-auto mt-16 mb-6" />
 
-            <div className="flex justify-center items-center mt-10">
-                <p className="text-sm font-medium text-[#E9D5FF]">© 2026 SyMon - Device Monitoring System. All rights reserved.</p>
+            <div className="flex justify-center items-center">
+                <p className="text-xs md:text-sm font-medium text-white/90">© 2026 SyMon - Device Monitoring System. Made with❤️.</p>
             </div>
         </footer>
-    )
-}
+    );
+};
 
 export default Footer;

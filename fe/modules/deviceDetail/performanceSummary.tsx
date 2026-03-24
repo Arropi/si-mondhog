@@ -1,7 +1,6 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { getPerformanceData } from "../../service/deviceService";
 
 interface PerformanceSummaryProps {
     deviceId: string;
@@ -16,18 +15,8 @@ export default function PerformanceSummaryClient({
     const [data, setData] = useState(initialData); // data akan disimpann di initial data dulu agar tidak memerlukan waktu untuk menampilkannya
 
     useEffect(() => {
-        const updateStats = async () => {
-            const result = await getPerformanceData(deviceId);
-
-            if (result) {
-                setData(result);
-            }
-        };
-
-        const interval = setInterval(updateStats, 5000);
-
-        return () => clearInterval(interval);
-    }, [deviceId]);
+        setData(initialData);
+    }, [initialData]);
 
     return (
         <>
@@ -42,7 +31,7 @@ export default function PerformanceSummaryClient({
                         </div>
                         <div className="flex items-end gap-2">
                             <div className="text-2xl font-extrabold text-gray-900">
-                                {data.highestCpuUsage}
+                                {data.highestCpuUsage}%
                             </div>
                             <div className="text-[11px] font-bold text-green-500 mb-1 tracking-wide">
                                 +{data.cpuChange}%
@@ -55,7 +44,7 @@ export default function PerformanceSummaryClient({
                         </div>
                         <div className="flex items-end gap-2">
                             <div className="text-2xl font-extrabold text-gray-900">
-                                {data.highestRamUsage}
+                                {data.highestRamUsage}%
                             </div>
                             <div className="text-[11px] font-bold text-green-500 mb-1 tracking-wide">
                                 +{data.ramChange}%

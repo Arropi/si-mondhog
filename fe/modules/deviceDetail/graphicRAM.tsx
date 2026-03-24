@@ -1,16 +1,18 @@
 "use client";
 
 import { AreaChart, Area, ResponsiveContainer, Tooltip } from "recharts";
+import { useTimeFilter, filterMetricsByTime } from "../../features/timeFilterContext";
 
-const dummyRAM = [
-  { name: "60", value: 80 }, { name: "55", value: 83 }, { name: "50", value: 81 },
-  { name: "45", value: 84 }, { name: "40", value: 82 }, { name: "35", value: 81 },
-  { name: "30", value: 80 }, { name: "25", value: 85 }, { name: "20", value: 86 },
-  { name: "15", value: 84 }, { name: "10", value: 83 }, { name: "5", value: 81 },
-  { name: "0", value: 80 },
-];
+export default function GraphicRAM({ dataMetrics, totalRam }: { dataMetrics: any[], totalRam: number }) {
+  const { timeFilter } = useTimeFilter();
+  const displayMetrics = filterMetricsByTime(dataMetrics, timeFilter);
 
-export default function GraphicRAM() {
+  const chartData = displayMetrics.map(item => ({
+    name: new Date(item.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+    value: Number(item.averageRamUsage?.toFixed(2) || 0)
+  }));
+  const lastValue = chartData.length > 0 ? chartData[chartData.length - 1].value : 0;
+  const gbUsed = ((lastValue / 100) * totalRam).toFixed(1);
   return (
     <div className="bg-white rounded-2xl p-6 shadow-[0_2px_10px_rgba(0,0,0,0.04)] border border-gray-50">
       <div className="flex justify-between items-center mb-6">
@@ -27,30 +29,30 @@ export default function GraphicRAM() {
             <span className="w-2 h-2 rounded-full bg-purple-600"></span>
             <span className="text-[11px] text-gray-400 font-bold uppercase tracking-widest">Active</span>
           </div>
-          <div className="text-xl font-extrabold text-gray-900">8,0 GB</div>
+          <div className="text-xl font-extrabold text-gray-900">{gbUsed} GB</div>
         </div>
       </div>
-      
+
       <div className="flex justify-end mb-2">
-        <span className="text-[11px] font-bold text-gray-400 tracking-wide">7.4 GB / <span className="text-purple-600">86%</span></span>
+        <span className="text-[11px] font-bold text-gray-400 tracking-wide">{totalRam} GB / <span className="text-purple-600">{lastValue}%</span></span>
       </div>
-      
+
       <div className="w-full h-48 border border-gray-50 rounded-xl overflow-hidden flex items-end bg-[#FAFAFC] relative">
-         <ResponsiveContainer width="100%" height="100%">
-             <AreaChart data={dummyRAM} margin={{ top: 10, right: 0, left: 0, bottom: 0 }}>
-               <Tooltip 
-                 contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
-                 itemStyle={{ color: '#8B5CF6', fontWeight: 'bold' }}
-                 labelStyle={{ color: '#9CA3AF', fontSize: '12px' }}
-               />
-               <Area type="monotone" dataKey="value" stroke="#8B5CF6" fill="#F3E8FF" strokeWidth={2} />
-             </AreaChart>
-         </ResponsiveContainer>
+        <ResponsiveContainer width="100%" height="100%">
+          <AreaChart data={chartData} margin={{ top: 10, right: 0, left: 0, bottom: 0 }}>
+            <Tooltip
+              contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
+              itemStyle={{ color: '#8B5CF6', fontWeight: 'bold' }}
+              labelStyle={{ color: '#9CA3AF', fontSize: '12px' }}
+            />
+            <Area type="monotone" dataKey="value" stroke="#8B5CF6" fill="#F3E8FF" strokeWidth={2} />
+          </AreaChart>
+        </ResponsiveContainer>
       </div>
-      
+
       <div className="flex justify-between mt-3 text-[10px] text-gray-400 font-bold tracking-wide uppercase">
-        <span>60 second</span>
-        <span>0</span>
+        <span>{chartData.length > 0 ? chartData[0].name : "N/A"}</span>
+        <span>{chartData.length > 0 ? chartData[chartData.length - 1].name : "NOW"}</span>
       </div>
     </div>
   );
