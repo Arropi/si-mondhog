@@ -48,3 +48,14 @@ export async function updateUserProfile(id, name) {
         throw error
     }
 }
+
+export async function userToAdmin(email){
+    try {
+        const updatedUser = await User.findOneAndUpdate({email}, {
+            role: "admin"
+        }, {new: true})
+        return updatedUser
+    } catch (error) {
+        throw error
+    }
+}

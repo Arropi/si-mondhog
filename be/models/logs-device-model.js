@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
+import { is } from "zod/v4/locales";
 
-const machineSchema = new mongoose.Schema({
+const LogsDeviceSchema = new mongoose.Schema({
     hostname: {
         type: String,
         required: true,
@@ -11,13 +12,10 @@ const machineSchema = new mongoose.Schema({
         required: true,
         default: 'Windows',
     },
-    activationToken: {
-        type: String,
-        default: null
-    },
-    hashApiKey: {
-        type: String,
-        default: null
+    isActivated: {
+        type: Boolean,
+        required: true,
+        default: false,
     },
     cpuCores: {
         type: Number,
@@ -34,10 +32,17 @@ const machineSchema = new mongoose.Schema({
     lastSeen: {
         type: Date,
         default: null,
+    },
+    action: {
+        type: String,
+        enum: ['Added', 'Updated', 'Deleted'],
+        required: true,
+    },
+    timestamp: {
+        type: Date,
+        default: Date.now,
+        index: true
     }
-}, { timestamps: true })
-
-
-
-const Machine = mongoose.model("Machine", machineSchema)
-export default Machine
+})
+const LogsDevice = mongoose.model("LogsDevice", LogsDeviceSchema)
+export default LogsDevice

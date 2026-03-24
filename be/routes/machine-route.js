@@ -1,6 +1,16 @@
 import { Router } from 'express'
-import { addMachine, deleteMachine, getMachineById, getMachines, updateMachine } from '../controllers/machine-controller.js'
-import { machineCreateValidation, machineUpdateValidation } from '../validations/machine-validation.js'
+import { 
+    addMachine, 
+    deleteMachine, 
+    getMachineById, 
+    getMachines, 
+    updateMachine 
+} from '../controllers/machine-controller.js'
+import { 
+    detailMachineValidation, 
+    machineCreateValidation, 
+    machineUpdateValidation 
+} from '../validations/machine-validation.js'
 
 const router = Router()
 
@@ -9,7 +19,10 @@ const router = Router()
  * /api/devices:
  *   get:
  *     summary: Get paginated machines
- *     description: Mengambil daftar machine dengan pagination dan status machine (Pending, Online, Offline).
+ *     description: |
+ *       Mengambil daftar machine dengan pagination dan status machine (Pending, Online, Offline).
+ *       
+ *       Jika query `search` kosong atau tidak dikirim, endpoint akan mengembalikan semua dokumen sesuai pagination.
  *     tags: [Machines]
  *     security:
  *       - bearerAuth: []
@@ -28,6 +41,14 @@ const router = Router()
  *           minimum: 1
  *           default: 10
  *         description: Jumlah data per halaman
+ *       - in: query
+ *         name: search
+ *         required: false
+ *         schema:
+ *           type: string
+ *           default: ""
+ *         description: Pencarian hostname (case-insensitive, partial match)
+ *         example: LAB-PC
  *     responses:
  *       200:
  *         description: Machines retrieved successfully
@@ -39,13 +60,30 @@ const router = Router()
  *                 message:
  *                   type: string
  *                   example: Machines retrieved successfully
- *                 machines:
- *                   type: array
- *                   items:
- *                     $ref: '#/components/schemas/Machine'
- *                 totalMachines:
- *                   type: integer
- *                   example: 24
+ *                 datas:
+ *                   type: object
+ *                   properties:
+ *                     machines:
+ *                       type: array
+ *                       items:
+ *                         $ref: '#/components/schemas/Machine'
+ *                     stats:
+ *                       type: array
+ *                       items:
+ *                         type: object
+ *                         properties:
+ *                           online:
+ *                             type: integer
+ *                             example: 5
+ *                           offline:
+ *                             type: integer
+ *                             example: 2
+ *                           pending:
+ *                             type: integer
+ *                             example: 1
+ *                     totalMachines:
+ *                       type: integer
+ *                       example: 24
  *       401:
  *         $ref: '#/components/responses/Unauthorized'
  *       403:
@@ -67,8 +105,8 @@ router.get("/", getMachines)
  * @swagger
  * /api/devices/{_id}:
  *   get:
- *     summary: Get machine by ID
- *     description: Mengambil detail satu machine berdasarkan ID.
+ *     summary: Get machine by ID with logs and metrics
+ *     description: Mengambil detail machine, 10 log terbaru, metrics time series, dan highest stats.
  *     tags: [Machines]
  *     security:
  *       - bearerAuth: []
@@ -80,6 +118,14 @@ router.get("/", getMachines)
  *           type: string
  *         description: ID machine
  *         example: 64a1f0c2e1b2c3d4e5f67890
+ *       - in: query
+ *         name: timeSeries
+ *         required: false
+ *         schema:
+ *           type: string
+ *           enum: [1h, 12h, 1d]
+ *           default: 1h
+ *         description: Grouping periode untuk data metrics
  *     responses:
  *       200:
  *         description: Machine retrieved successfully
@@ -91,8 +137,26 @@ router.get("/", getMachines)
  *                 message:
  *                   type: string
  *                   example: Machine retrieved successfully
- *                 machine:
- *                   $ref: '#/components/schemas/Machine'
+ *                 datas:
+ *                   type: object
+ *                   properties:
+ *                     machine:
+ *                       $ref: '#/components/schemas/Machine'
+ *                     logs:
+ *                       type: array
+ *                       nullable: true
+ *                       items:
+ *                         $ref: '#/components/schemas/MachineLog'
+ *                     metrics:
+ *                       type: array
+ *                       nullable: true
+ *                       items:
+ *                         $ref: '#/components/schemas/MachineMetric'
+ *                     highestStats:
+ *                       type: array
+ *                       nullable: true
+ *                       items:
+ *                         $ref: '#/components/schemas/MachineHighestStats'
  *       401:
  *         $ref: '#/components/responses/Unauthorized'
  *       403:
@@ -114,14 +178,14 @@ router.get("/", getMachines)
  *       500:
  *         $ref: '#/components/responses/InternalServerError'
  */
-router.get("/:_id", getMachineById)
+router.get("/:_id", detailMachineValidation, getMachineById)
 
 /**
  * @swagger
  * /api/devices:
  *   post:
  *     summary: Add new machine
- *     description: Menambahkan machine baru dan mengembalikan activation token mentah (sekali saat pembuatan).
+ *     description: Menambahkan machine baru, mengembalikan activation token mentah, dan mengirim token ke email.
  *     tags: [Machines]
  *     security:
  *       - bearerAuth: []
@@ -134,6 +198,7 @@ router.get("/:_id", getMachineById)
  *             required:
  *               - hostname
  *               - os
+ *               - email
  *             properties:
  *               hostname:
  *                 type: string
@@ -142,6 +207,10 @@ router.get("/:_id", getMachineById)
  *                 type: string
  *                 enum: [Windows, Linux, macOS]
  *                 example: Linux
+ *               email:
+ *                 type: string
+ *                 format: email
+ *                 example: user@mail.ugm.ac.id
  *     responses:
  *       201:
  *         description: Machine added successfully
