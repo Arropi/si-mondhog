@@ -118,6 +118,201 @@ export const swaggerComponents = {
           },
         },
       },
+      MachineMetric: {
+        type: "object",
+        properties: {
+          timestamp: {
+            type: "string",
+            example: "2024-01-15 10:00:00",
+            description: "Waktu pengambilan data dalam format YYYY-MM-DD HH:00:00",
+          },
+          averageCpuUsage: {
+            type: "number",
+            format: "double",
+            example: 45.5,
+            description: "Rata-rata penggunaan CPU dalam persen",
+          },
+          averageRamUsage: {
+            type: "number",
+            format: "double",
+            example: 68.2,
+            description: "Rata-rata penggunaan RAM dalam persen",
+          },
+          averageDiskUsage: {
+            type: "number",
+            format: "double",
+            example: 55.7,
+            description: "Rata-rata penggunaan Disk dalam persen",
+          },
+        },
+      },
+      MachineHighestStats: {
+        type: "object",
+        properties: {
+          cpu: {
+            type: "number",
+            format: "double",
+            example: 95.2,
+            description: "Nilai tertinggi penggunaan CPU dalam persen",
+          },
+          ram: {
+            type: "number",
+            format: "double",
+            example: 89.5,
+            description: "Nilai tertinggi penggunaan RAM dalam persen",
+          },
+          disk: {
+            type: "number",
+            format: "double",
+            example: 78.3,
+            description: "Nilai tertinggi penggunaan Disk dalam persen",
+          },
+        },
+      },
+      MachineLog: {
+        type: "object",
+        properties: {
+          _id: {
+            type: "string",
+            example: "64a1f0c2e1b2c3d4e5f67890",
+          },
+          cpuUsage: {
+            type: "number",
+            format: "double",
+            example: 45.5,
+          },
+          ramUsage: {
+            type: "number",
+            format: "double",
+            example: 68.2,
+          },
+          diskUsage: {
+            type: "number",
+            format: "double",
+            example: 55.7,
+          },
+          formattedTimestamp: {
+            type: "string",
+            example: "15/01/2024 10:30:45",
+            description: "Format timestamp DD/MM/YYYY HH:mm:ss",
+          },
+        },
+      },
+      MachineDetailResponse: {
+        type: "object",
+        properties: {
+          machine: {
+            $ref: "#/components/schemas/Machine",
+          },
+          logs: {
+            type: "array",
+            items: {
+              $ref: "#/components/schemas/MachineLog",
+            },
+            description: "Last 10 machine metric logs",
+          },
+          metrics: {
+            type: "array",
+            items: {
+              $ref: "#/components/schemas/MachineMetric",
+            },
+            description: "Aggregated metrics for the last 7 days based on timeSeries parameter (1h, 12h, 1d)",
+          },
+          highestStats: {
+            $ref: "#/components/schemas/MachineHighestStats",
+            description: "Highest statistics for the last 7 days",
+          },
+        },
+      },
+      DashboardSummary: {
+        type: "object",
+        properties: {
+          metrics: {
+            type: "object",
+            properties: {
+              cpu: {
+                type: "number",
+                format: "double",
+                example: 45.5,
+              },
+              ram: {
+                type: "number",
+                format: "double",
+                example: 68.2,
+              },
+              disk: {
+                type: "number",
+                format: "double",
+                example: 55.7,
+              },
+            },
+            description: "Average metrics for the selected period",
+          },
+          peak: {
+            type: "object",
+            properties: {
+              cpu: {
+                type: "number",
+                format: "double",
+                example: 95.2,
+              },
+              ram: {
+                type: "number",
+                format: "double",
+                example: 89.5,
+              },
+              disk: {
+                type: "number",
+                format: "double",
+                example: 78.3,
+              },
+              cpuCores: {
+                type: "number",
+                example: 8,
+              },
+              totalRam: {
+                type: "number",
+                example: 16384,
+                description: "Total RAM in MB",
+              },
+              totalDisk: {
+                type: "number",
+                example: 512000,
+                description: "Total Disk in MB",
+              },
+            },
+            description: "Peak metrics and maximum specification from all machines",
+          },
+          stats: {
+            type: "object",
+            properties: {
+              online: {
+                type: "integer",
+                example: 5,
+              },
+              offline: {
+                type: "integer",
+                example: 2,
+              },
+              pending: {
+                type: "integer",
+                example: 1,
+              },
+            },
+            description: "Status distribution of all machines",
+          },
+          total: {
+            type: "object",
+            properties: {
+              count: {
+                type: "integer",
+                example: 8,
+              },
+            },
+            description: "Total number of machines",
+          },
+        },
+      },
       Error: {
         type: "object",
         properties: {

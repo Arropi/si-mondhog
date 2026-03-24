@@ -12,9 +12,9 @@ import {
 import { randomBytes, createHash } from "crypto";
 
 // GET ALL
-export async function getMachinesService(page, limit) {
+export async function getMachinesService(page, limit, search) {
   try {
-    let { machines, totalMachines, statusMachine } = await getPaginatedMachines(page, limit);
+    let { machines, totalMachines, statusMachine } = await getPaginatedMachines(page, limit, search);
     if (machines.length === 0) {
       const error = new Error("No machines found");
       error.statusCode = 404;

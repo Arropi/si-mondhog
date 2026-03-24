@@ -3,8 +3,12 @@ import { sendEmail } from "../services/node-email-service.js";
 
 export async function getMachines(req, res, next) {
     try {
-        const { page = 1, limit = 10 } = req.query;
-        const { machines, totalMachines, stats } = await getMachinesService(parseInt(page), parseInt(limit));
+        const { page = 1, limit = 10, search = "" } = req.query;
+        const { machines, totalMachines, stats } = await getMachinesService(
+            parseInt(page),
+            parseInt(limit),
+            search
+        );
         res.status(200).json({
             "message": "Machines retrieved successfully",
             "datas": {
