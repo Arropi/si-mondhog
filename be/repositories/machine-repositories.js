@@ -46,11 +46,11 @@ export async function deleteMachine(id) {
 }
 
 // GET ALL
-export async function getPaginatedMachines(page, limit) {
+export async function getPaginatedMachines(page, limit, search) {
   try {
     const [data] = await Machine.aggregate([
       {
-        $match: {},
+        $match: { hostname: { $regex: search, $options: "i" } },
       },
       {
         $addFields: helperStatusMachine(),
