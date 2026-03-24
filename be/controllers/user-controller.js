@@ -32,3 +32,16 @@ export async function userSearchController(req, res, next) {
         next(error)
     }
 }
+
+export async function addAdmin(req, res, next){
+    try {
+        const { id } = req.user
+        const { email } = req.body
+        
+        res.status(200).json({
+            "message": "adding admin "
+        })
+    } catch (error) {
+        next(error)
+    }
+}
