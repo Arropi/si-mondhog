@@ -1,6 +1,5 @@
-import { getLogsByMachineId, 
+import { getShortLogsByMachineId, 
   getMetricsByMachineId, 
-  getMetcricsTest, 
   getHighestStats 
 } from "../repositories/machine-metrics-repositories.js";
 import {
@@ -8,27 +7,27 @@ import {
   deleteMachine,
   findMachineById,
   getPaginatedMachines,
-  getStatsStatusMachine,
   updateMachine,
 } from "../repositories/machine-repositories.js";
 import { randomBytes, createHash } from "crypto";
 
-export async function getMachinesService(page, limit) {
+// GET ALL
+export async function getMachinesService(page, limit, search) {
   try {
-    let { machines, totalMachines } = await getPaginatedMachines(page, limit);
+    let { machines, totalMachines, statusMachine } = await getPaginatedMachines(page, limit, search);
     if (machines.length === 0) {
       const error = new Error("No machines found");
       error.statusCode = 404;
       throw error;
     }
-    const stats = await getStatsStatusMachine()
-    return { machines, totalMachines, stats: stats[0] };
+    return { machines, totalMachines, stats: statusMachine };
   } catch (error) {
     throw error;
   }
 }
 
-export async function getMachineByIdService(id) {
+// CRUD DEVICE
+export async function getMachineByIdService(id, type) {
   try {
     let machine = await findMachineById(id);
     if (!machine) {
@@ -37,8 +36,8 @@ export async function getMachineByIdService(id) {
       throw error;
     }
     const [logs, metrics, highestStats] = await Promise.allSettled([
-      getLogsByMachineId(id),
-      getMetricsByMachineId(id),
+      getShortLogsByMachineId(id),
+      getMetricsByMachineId(id, type),
       getHighestStats(id)
     ])
     return { 
