@@ -1,6 +1,7 @@
 import { Router } from "express";
 import authMiddleware from "../middleware/auth-middleware.js";
-import { userController, userSearchController } from "../controllers/user-controller.js";
+import { addAdmin, userController, userSearchController } from "../controllers/user-controller.js";
+import { adminValidation } from "../validations/user-validation.js";
 
 const router = Router();
 
@@ -119,6 +120,6 @@ router.get("/profile/:id", authMiddleware, userController)
  */
 router.get("/profile", authMiddleware, userSearchController)
 
-
+router.post("/admin", adminValidation, addAdmin)
 
 export default router

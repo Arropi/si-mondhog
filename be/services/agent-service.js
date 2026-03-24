@@ -43,9 +43,9 @@ export async function metricsService(dataMetrics, machineId) {
         const { cpu_percent, ram_percent, disk_percent} = dataMetrics
         const newMetrics = await addNewData({
             machineId: machineId,
-            cpuUsage: Number(cpu_percent),
-            ramUsage: Number(ram_percent),
-            diskUsage: Number(disk_percent)
+            cpuUsage: Number(cpu_percent).toFixed(2),
+            ramUsage: Number(ram_percent).toFixed(2),
+            diskUsage: Number(disk_percent).toFixed(2)
         });
         return newMetrics;
     } catch (error) {
