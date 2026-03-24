@@ -49,8 +49,8 @@ export default function GraphicHardisk({ dataMetrics, totalDisk }: { dataMetrics
       </div>
 
       <div className="flex justify-between mt-3 text-[10px] text-gray-400 font-bold tracking-wide uppercase">
-        <span>{chartData.length > 0 ? chartData[0].name : "N/A"}</span>
-        <span>{chartData.length > 0 ? chartData[chartData.length - 1].name : "NOW"}</span>
+        <span suppressHydrationWarning>{chartData.length > 0 ? chartData[0].name : "N/A"}</span>
+        <span suppressHydrationWarning>{chartData.length > 0 ? chartData[chartData.length - 1].name : "NOW"}</span>
       </div>
     </div>
   );
