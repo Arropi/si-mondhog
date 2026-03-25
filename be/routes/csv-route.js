@@ -1,7 +1,12 @@
 import { Router } from "express";
-import { downloadCSV } from "../controllers/csv-controller.js";
+import { downloadCSVDetail, downloadCSVEvent, downloadCSVPerformance } from "../controllers/csv-controller.js";
+import { dashboardSummaryValidation } from "../validations/dashboard-validation.js";
 
 const router = Router()
+
+router.get("/download/logs/performance", dashboardSummaryValidation, downloadCSVPerformance)
+
+router.get("/download/logs/events", dashboardSummaryValidation, downloadCSVEvent)
 
 /**
  * @swagger
@@ -45,6 +50,6 @@ const router = Router()
  *             example:
  *               message: Failed to download
  */
-router.get('/download/:machineId', downloadCSV)
+router.get('/download/:machineId', downloadCSVDetail)
 
 export default router

@@ -61,7 +61,6 @@ export async function getMetricsByMachineId(machineId, type) {
                   hour: "$_id.hour",
                 },
               },
-              timezone: "Asia/Jakarta",
             },
           },
         },
@@ -80,6 +79,11 @@ export async function getShortLogsByMachineId(machineId) {
         $addFields: helperFormattedTimestamp(),
       },
       {
+        $sort: {
+          timestamp: -1
+        }
+      },
+      {
         $match: {
           machineId: new mongoose.Types.ObjectId(machineId),
         },
@@ -89,6 +93,7 @@ export async function getShortLogsByMachineId(machineId) {
           machineId: 0,
           timestamp: 0,
           __v: 0,
+          _id: 0
         },
       },
       {
@@ -281,6 +286,72 @@ export async function getSummaryMetrics(lowBound, highBound) {
     return datas;
   } catch (error) {
     throw error;
+  }
+}
+
+export async function getLogsMetrics(lowBound, highBound, limit) {
+  try {
+    const metrics = await MachineMetrics.aggregate([
+      {
+        $addFields: helperFormattedTimestamp(),
+      },
+      {
+        $match: {
+          timestamp: {
+            $gte: lowBound,
+            $lte: highBound,
+          },
+        },
+      },
+      limit && (
+        {
+          $limit : limit
+        }
+      ),
+      {
+        $lookup: {
+          from: "machines",
+          localField: "machineId",
+          foreignField: "_id",
+          pipeline: [
+            {
+              $project: {
+                _id: 0,
+                createdAt: 0,
+                updatedAt: 0,
+                __v: 0,
+                activationToken: 0,
+                hashApiKey: 0,
+                lastSeen: 0,
+              },
+            },
+          ],
+          as: "machine",
+        },
+      },
+      {
+        $replaceRoot: {
+          newRoot: {
+            $mergeObjects: [{ $arrayElemAt: ["$machine", 0] }, "$$ROOT"],
+          },
+        },
+      },
+      {
+        $project: {
+          machine: 0,
+          machineId: 0,
+          timestamp: 0,
+          totalRam: 0,
+          cpuCores: 0,
+          totalDisk: 0,
+          __v: 0,
+          _id: 0,
+        },
+      },
+    ].filter(Boolean))
+    return metrics
+  } catch (error) {
+    throw error
   }
 }
 

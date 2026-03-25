@@ -15,7 +15,7 @@ export async function getSummaryDashboard(req, res, next){
 
 export async function getLogsDashboard(req, res, next){
     try {
-
+        const {date } = req.query
     } catch (error) {
         next(error);
     }

@@ -1,60 +1,67 @@
 export function getTimeWeeksAgo() {
-  const oneWeekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
+  const now = new Date()
+  const oneWeekAgo = new Date(now)
+  oneWeekAgo.setDate(oneWeekAgo.getDate() - 6)
   oneWeekAgo.setHours(0, 0, 0, 0);
-  const thisNightDay = new Date();
+  const thisNightDay = new Date(now)
+  thisNightDay.setHours(23, 59, 59, 999)
   return { oneWeekAgo, thisNightDay };
 }
 
 export function getDayDate(date) {
   const highBound = new Date(date);
   highBound.setHours(23, 59, 59, 999)
-  const lowBound = new Date(highBound - 24 * 60 * 60 * 1000);
+  const lowBound = new Date(date)
+  lowBound.setHours(0, 0, 0, 0)
   return { lowBound, highBound };
 }
 
 export function grouppingType(type) {
+  const tz = "Asia/Jakarta";
+
   switch (type) {
     case "1h":
       return {
-        year: { $year: "$timestamp" },
-        month: { $month: "$timestamp" },
-        day: { $dayOfMonth: "$timestamp" },
-        hour: { $hour: "$timestamp" },
+        year: { $year: { date: "$timestamp", timezone: tz } },
+        month: { $month: { date: "$timestamp", timezone: tz } },
+        day: { $dayOfMonth: { date: "$timestamp", timezone: tz } },
+        hour: { $hour: { date: "$timestamp", timezone: tz } },
       };
+
     case "12h":
       return {
-        year: { $year: "$timestamp" },
-        month: { $month: "$timestamp" },
-        day: { $dayOfMonth: "$timestamp" },
+        year: { $year: { date: "$timestamp", timezone: tz } },
+        month: { $month: { date: "$timestamp", timezone: tz } },
+        day: { $dayOfMonth: { date: "$timestamp", timezone: tz } },
         hour: {
           $multiply: [
             {
               $floor: {
                 $divide: [
-                  {
-                    $add: [{ $hour: "$timestamp" }, 7],
-                  },
+                  { $hour: { date: "$timestamp", timezone: tz } },
                   12,
                 ],
               },
             },
-            5,
+            12,
           ],
         },
       };
+
     case "1d":
       return {
-        year: { $year: "$timestamp" },
-        month: { $month: "$timestamp" },
-        day: { $dayOfMonth: "$timestamp" },
-        hour: { $literal: 17 },
+        year: { $year: { date: "$timestamp", timezone: tz } },
+        month: { $month: { date: "$timestamp", timezone: tz } },
+        day: { $dayOfMonth: { date: "$timestamp", timezone: tz } },
+        hour: { $literal: 0 },
       };
+
     default:
       return {
-        year: { $year: "$timestamp" },
-        month: { $month: "$timestamp" },
-        day: { $dayOfMonth: "$timestamp" },
-        hour: { $hour: "$timestamp" },
+        year: { $year: { date: "$timestamp", timezone: tz } },
+        month: { $month: { date: "$timestamp", timezone: tz } },
+        day: { $dayOfMonth: { date: "$timestamp", timezone: tz } },
+        hour: { $hour: { date: "$timestamp", timezone: tz } },
       };
   }
 }

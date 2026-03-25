@@ -39,7 +39,8 @@ export async function getMachineById(req, res, next) {
 export async function addMachine(req, res, next) {
     try {
         const { hostname, os, email } = req.body;
-        const newMachine = await addMachineService(hostname, os);
+        const {id} = req.user
+        const newMachine = await addMachineService(hostname, os, id);
         await sendEmail(email, newMachine.token)
         res.status(201).json({
             "message": "Machine added successfully",
@@ -53,8 +54,9 @@ export async function addMachine(req, res, next) {
 export async function updateMachine(req, res, next) {
     try {
         const { _id } = req.params;
+        const { id } = req.user
         const updateData = req.body;
-        const machine = await updateMachineService(_id, updateData);
+        const machine = await updateMachineService(_id, updateData, id);
         res.status(200).json({
             "message": "Machine updated successfully",
             "machine": machine
@@ -67,9 +69,11 @@ export async function updateMachine(req, res, next) {
 export async function deleteMachine (req, res, next) {
     try {
         const { _id } = req.params;
-        const machine = await deleteMachineService(_id);
+        const {id} = req.user
+        const machine = await deleteMachineService(_id, id);
         res.status(200).json({
-            "message": "Machine deleted successfully"
+            "message": "Machine deleted successfully",
+            "data": machine
         });
     } catch (error) {
         next(error);
