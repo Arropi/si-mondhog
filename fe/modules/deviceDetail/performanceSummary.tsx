@@ -21,9 +21,16 @@ export default function PerformanceSummaryClient({
     return (
         <>
             <div className="bg-transparent mt-2">
-                <h2 className="text-[13px] font-bold text-gray-800 tracking-wide mb-3 px-1">
-                    Performance Summary
-                </h2>
+                <div className="flex justify-between items-center mb-3 px-1">
+                    <h2 className="text-[13px] font-bold text-gray-800 tracking-wide">
+                        Performance Summary
+                    </h2>
+                    {data.timestamp && (
+                        <span className="text-[11px] text-gray-400 font-bold uppercase tracking-widest text-right mt-1.5" suppressHydrationWarning>
+                            {data.timestamp.substring(0, 16)}
+                        </span>
+                    )}
+                </div>
                 <div className="grid grid-cols-2 gap-4">
                     <div className="bg-white rounded-2xl p-5 shadow-[0_2px_10px_rgba(0,0,0,0.02)] border border-gray-50">
                         <div className="text-[11px] font-bold text-gray-400 mb-2 uppercase tracking-wide">

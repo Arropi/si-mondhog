@@ -21,6 +21,21 @@ export interface Device {
     status: "online" | "offline" | "pending";
 }
 
+export async function formatMetricsForChart(dataMetrics: any[]) {
+    if (!dataMetrics || dataMetrics.length === 0) return [];
+
+    return [...dataMetrics].reverse().map(item => {
+        const raw = item.timestamp || "";
+        const formattedName = raw.substring(0, 16);
+        return {
+            name: formattedName,
+            cpu: Number(item.averageCpuUsage || 0),
+            ram: Number(item.averageRamUsage || 0),
+            disk: Number(item.averageDiskUsage || 0)
+        };
+    });
+}
+
 
 export async function getDeviceStats(): Promise<DeviceStats> {
     try {
@@ -126,12 +141,12 @@ export async function createDeviceService(data: { hostname: string; os: "Linux" 
     }
 }
 
-export async function getDeviceById(id: string) {
+export async function getDeviceById(id: string, timeSeries: string = '1h') {
     try {
         const session = await getServerSession(authOptions);
         const token = (session?.user as any)?.accessToken;
 
-        const response = await fetch(`${API_BASE_URL}/devices/${id}`, {
+        const response = await fetch(`${API_BASE_URL}/devices/${id}?timeSeries=${timeSeries}`, {
             cache: "no-store",
             headers: {
                 "Authorization": `Bearer ${token}`,
@@ -223,4 +238,27 @@ export async function deleteDeviceService(id: string) {
     }
 }
 
-// Endpoint terpisah untuk /logs dan /performance sudah dihapus karena backend menggabungkannya ke dalam getDeviceById.
+export async function downloadCsvService(machineId: string) {
+    try {
+        const session = await getServerSession(authOptions);
+        const token = (session?.user as any)?.accessToken;
+
+        const response = await fetch(`${API_BASE_URL}/csv/download/${machineId}`, {
+            method: "GET",
+            headers: {
+                "Authorization": `Bearer ${token}`,
+            }
+        });
+
+        if (!response.ok) {
+            console.error(`Error HTTP: ${response.status}`);
+            return null;
+        }
+
+        const text = await response.text();
+        return text;
+    } catch (error) {
+        console.error("Error in downloadCsvService:", error);
+        return null;
+    }
+}

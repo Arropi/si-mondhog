@@ -32,10 +32,10 @@ const Footer = () => {
                         <a href="https://www.instagram.com/trisvugm/" target="_blank" rel="noreferrer" className="hover:opacity-80 transition-opacity">
                             <Image src="/images/instagram.svg" alt="instagram icon" width={24} height={24} className="w-5 h-5 md:w-6 md:h-6" />
                         </a>
-                        <a href="tel:02746491302" target="_blank" rel="noreferrer" className="hover:opacity-80 transition-opacity">
+                        <a href="tel:+622746491302" target="_blank" rel="noreferrer" className="hover:opacity-80 transition-opacity">
                             <Image src="/images/callIcon.svg" alt="phone icon" width={24} height={24} className="w-5 h-5 md:w-6 md:h-6" />
                         </a>
-                        <a href="mailto:tedi.sv@ugm.ac.id" target="_blank" rel="noreferrer" className="hover:opacity-80 transition-opacity">
+                        <a href="mailto:tri.sv@ugm.ac.id" target="_blank" rel="noreferrer" className="hover:opacity-80 transition-opacity">
                             <Image src="/images/mailIcon.svg" alt="mail icon" width={24} height={24} className="w-5 h-5 md:w-6 md:h-6" />
                         </a>
                     </div>

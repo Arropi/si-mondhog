@@ -1,25 +1,28 @@
 "use client";
 
-import { useState } from "react";
-
-
-
-import { useTimeFilter } from "../../features/timeFilterContext";
+import { useRouter, useSearchParams } from "next/navigation";
 
 export default function DropdownTimeSeries() {
-    const { timeFilter, setTimeFilter } = useTimeFilter();
+    const router = useRouter();
+    const searchParams = useSearchParams();
+    const timeSeries = searchParams.get("timeSeries") || "1h";
+
+    const handleChange = (val: string) => {
+        const params = new URLSearchParams(searchParams.toString());
+        params.set("timeSeries", val);
+        router.push(`?${params.toString()}`);
+    }
 
     return (
         <div className="relative">
             <select
-                value={timeFilter}
-                onChange={(e) => setTimeFilter(e.target.value)}
+                value={timeSeries}
+                onChange={(e) => handleChange(e.target.value)}
                 className="appearance-none bg-white border border-gray-200 text-gray-700 py-2 pl-4 pr-10 rounded-lg text-sm font-medium focus:outline-none focus:ring-2 focus:ring-purple-500 shadow-sm cursor-pointer"
             >
-                <option value="Time Series">Time Series</option>
-                <option value="12 Hours">12 Hours</option>
-                <option value="1 Day">1 Day</option>
-                <option value="3 Week">1 Week</option>
+                <option value="1h">1 Hours</option>
+                <option value="12h">12 Hours</option>
+                <option value="1d">1 Day</option>
             </select>
             <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-500">
                 <svg

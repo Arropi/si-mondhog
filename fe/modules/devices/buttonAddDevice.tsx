@@ -5,6 +5,7 @@ import { createDeviceService } from "../../service/deviceService"
 import AddDeviceModal from "../../components/ui/addDeviceModal";
 import { useRouter } from "next/navigation";
 import SuccessAlertModal from "../../components/ui/successAlertModal";
+import FailedAlertModal from "../../components/ui/failedAlertModal";
 
 export default function ButtonAddDevice() {
     const router = useRouter();
@@ -18,12 +19,25 @@ export default function ButtonAddDevice() {
         show: false,
         emailSentTo: ""
     })
+    const [failedData, setFailedData] = useState({
+        show: false,
+        message: ""
+    })
 
     const handleAddDevice = async (e?: React.FormEvent) => {
         if (e) e.preventDefault();
-        
+
         if (!hostname.trim() || !selectedOS || !email.trim()) {
-            return; 
+            return;
+        }
+
+        const emailRegex = /^[a-zA-Z0-9._%+-]+@(gmail\.com|mail\.ugm\.ac\.id|ugm\.ac\.id)$/;
+        if (!emailRegex.test(email)) {
+            setFailedData({
+                show: true,
+                message: "Email must end with @gmail.com, @mail.ugm.ac.id, or @ugm.ac.id"
+            });
+            return;
         }
 
         setIsLoading(true);
@@ -41,7 +55,10 @@ export default function ButtonAddDevice() {
             setIsOpen(false);
             router.refresh();
         } else {
-            alert(result.message);
+            setFailedData({
+                show: true,
+                message: result.message
+            });
         }
 
         setIsLoading(false);
@@ -76,6 +93,12 @@ export default function ButtonAddDevice() {
                 isOpen={successData.show}
                 onClose={() => setSuccessData({ show: false, emailSentTo: "" })}
                 emailSentTo={successData.emailSentTo}
+            />
+
+            <FailedAlertModal
+                isOpen={failedData.show}
+                onClose={() => setFailedData({ show: false, message: "" })}
+                errorMessage={failedData.message}
             />
         </>
     )

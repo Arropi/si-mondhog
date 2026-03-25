@@ -38,7 +38,7 @@ export default function LogDeviceActivityClient({ deviceId, initialData }: LogDe
                             <div>{log.cpuUsage ? Math.round(log.cpuUsage) : "-"}%</div>
                             <div>{log.ramUsage ? Math.round(log.ramUsage) : "-"}%</div>
                             <div>{log.diskUsage ? Math.round(log.diskUsage) : "-"}%</div>
-                            <div suppressHydrationWarning>{log.timestamp ? new Date(log.timestamp).toLocaleString([], { year: 'numeric', month: 'short', day: '2-digit', hour: '2-digit', minute: '2-digit' }) : "-"}</div>
+                            <div suppressHydrationWarning>{log.formattedTimestamp || "-"}</div>
                         </div>
                     ))
                 ) : (

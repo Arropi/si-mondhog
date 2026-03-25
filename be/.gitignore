@@ -1,3 +1,6 @@
 .env*
 SWAGGER_*
 node_modules/
+.DS_Store
+/node_modules
+/be/node_modules
