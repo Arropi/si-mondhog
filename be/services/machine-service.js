@@ -1,3 +1,4 @@
+import { addLogsEvent } from "../repositories/logs-event-repositories.js";
 import { getShortLogsByMachineId, 
   getMetricsByMachineId, 
   getHighestStats 
@@ -50,11 +51,12 @@ export async function getMachineByIdService(id, type) {
   }
 }
 
-export async function addMachineService(hostname, os) {
+export async function addMachineService(hostname, os, userId) {
   try {
     const activationToken = randomBytes(3).toString("hex");
     const hashedToken = createHash("sha256").update(activationToken).digest("hex");
     let newMachine = await createMachine(hostname, os, hashedToken);
+    await addLogsEvent(newMachine._id,userId, "Added", newMachine.os, newMachine.hostname )
     newMachine = {
       ...newMachine._doc,
       status: "Pending",
@@ -66,7 +68,7 @@ export async function addMachineService(hostname, os) {
   }
 }
 
-export async function updateMachineService(id, updateData) {
+export async function updateMachineService(id, updateData, userId) {
   try {
     let machine = await updateMachine(id, updateData);
     if (!machine) {
@@ -74,6 +76,7 @@ export async function updateMachineService(id, updateData) {
       error.statusCode = 404;
       throw error;
     }
+    await addLogsEvent(machine._id, userId, "Updated", machine.os, machine.hostname)
     machine = {
       ...machine._doc,
       status: machine.activationToken
@@ -89,7 +92,7 @@ export async function updateMachineService(id, updateData) {
   }
 }
 
-export async function deleteMachineService(id) {
+export async function deleteMachineService(id, userId) {
   try {
     const machine = await deleteMachine(id);
     if (!machine) {
@@ -97,6 +100,7 @@ export async function deleteMachineService(id) {
       error.statusCode = 404;
       throw error;
     }
+    await addLogsEvent(id, userId, "Deleted", machine.os, machine.hostname)
     return machine;
   } catch (error) {
     throw error;

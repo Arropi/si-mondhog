@@ -1,4 +1,5 @@
-import { getSummaryMetrics } from "../repositories/machine-metrics-repositories.js";
+import { getLogsEvent } from "../repositories/logs-event-repositories.js";
+import { getLogsMetrics, getSummaryMetrics } from "../repositories/machine-metrics-repositories.js";
 import { getMaxSpecificationMachine } from "../repositories/machine-repositories.js";
 import { getDayDate, getTimeWeeksAgo } from "../utils/helper.js";
 
@@ -10,12 +11,16 @@ export async function getSummaryDashboardService(date){
             lowBound = oneWeekAgo
             highBound = thisNightDay
         }
-        const [summary, maxSpecification] = await Promise.allSettled([
+        const [summary, maxSpecification, metrics, event] = await Promise.allSettled([
             getSummaryMetrics(lowBound, highBound),
-            getMaxSpecificationMachine()
+            getMaxSpecificationMachine(),
+            getLogsMetrics(lowBound, highBound, 10),
+            getLogsEvent(lowBound, highBound, 10)
         ])
-         const sumVal = summary.status === "fulfilled" ? summary.value : {}
+        const sumVal = summary.status === "fulfilled" ? summary.value : {}
         const machine = maxSpecification.status === "fulfilled" ? maxSpecification.value : {}
+        const logMetrics = metrics.status === "fulfilled" ? metrics.value : {}
+        const logEvent = event.status === "fulfilled" ? event.value : {}
         return {
             metrics: sumVal.metrics,
             peak: {
@@ -23,7 +28,11 @@ export async function getSummaryDashboardService(date){
                 ...machine.highestSpecification[0] || {}
             },
             stats: machine.statusMachine[0] || null,
-            total: machine.totalMachine[0] || null
+            total: machine.totalMachine[0] || null,
+            logs: {
+                performance: logMetrics,
+                events: logEvent
+            }
         }
     } catch (error) {
         throw error;
