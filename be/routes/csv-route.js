@@ -4,8 +4,96 @@ import { dashboardSummaryValidation } from "../validations/dashboard-validation.
 
 const router = Router()
 
+/**
+ * @swagger
+ * /api/csv/download/logs/performance:
+ *   get:
+ *     summary: Download performance logs as CSV
+ *     description: |
+ *       Mengunduh ringkasan performance logs dalam format CSV.
+ *
+ *       Jika query `date` tidak diberikan, data default akan menggunakan rentang 7 hari terakhir.
+ *     tags: [CSV]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: query
+ *         name: date
+ *         required: false
+ *         schema:
+ *           type: string
+ *           format: date
+ *           example: 2024-01-15
+ *         description: Filter tanggal untuk performance logs (format YYYY-MM-DD)
+ *     responses:
+ *       200:
+ *         description: Performance CSV downloaded successfully
+ *         content:
+ *           text/csv:
+ *             schema:
+ *               type: string
+ *               format: binary
+ *       400:
+ *         $ref: '#/components/responses/BadRequest'
+ *       401:
+ *         $ref: '#/components/responses/Unauthorized'
+ *       403:
+ *         $ref: '#/components/responses/TokenRequired'
+ *       500:
+ *         description: Failed to download CSV
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *             example:
+ *               message: Failed to download
+ */
 router.get("/download/logs/performance", dashboardSummaryValidation, downloadCSVPerformance)
 
+/**
+ * @swagger
+ * /api/csv/download/logs/events:
+ *   get:
+ *     summary: Download event logs as CSV
+ *     description: |
+ *       Mengunduh event logs dalam format CSV.
+ *
+ *       Jika query `date` tidak diberikan, data default akan menggunakan rentang 7 hari terakhir.
+ *     tags: [CSV]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: query
+ *         name: date
+ *         required: false
+ *         schema:
+ *           type: string
+ *           format: date
+ *           example: 2024-01-15
+ *         description: Filter tanggal untuk event logs (format YYYY-MM-DD)
+ *     responses:
+ *       200:
+ *         description: Events CSV downloaded successfully
+ *         content:
+ *           text/csv:
+ *             schema:
+ *               type: string
+ *               format: binary
+ *       400:
+ *         $ref: '#/components/responses/BadRequest'
+ *       401:
+ *         $ref: '#/components/responses/Unauthorized'
+ *       403:
+ *         $ref: '#/components/responses/TokenRequired'
+ *       500:
+ *         description: Failed to download CSV
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *             example:
+ *               message: Failed to download
+ */
 router.get("/download/logs/events", dashboardSummaryValidation, downloadCSVEvent)
 
 /**
