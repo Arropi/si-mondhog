@@ -53,6 +53,4 @@ const router = Router()
  */
 router.get('/summary', dashboardSummaryValidation, getSummaryDashboard)
 
-// router.get('/logs')
-
 export default router

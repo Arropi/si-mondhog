@@ -120,6 +120,79 @@ router.get("/profile/:id", authMiddleware, userController)
  */
 router.get("/profile", authMiddleware, userSearchController)
 
+/**
+ * @swagger
+ * /api/admin:
+ *   post:
+ *     summary: Add admin by email
+ *     description: |
+ *       Menambahkan user sebagai admin berdasarkan email.
+ *
+ *       **Authentication Required:** Bearer token harus disertakan di header.
+ *
+ *       **Permission Check:** Hanya user dengan role `admin` yang dapat mengakses endpoint ini.
+ *     tags: [User]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - email
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 format: email
+ *                 description: Email user yang akan dijadikan admin (domain UGM)
+ *                 example: admin@mail.ugm.ac.id
+ *     responses:
+ *       200:
+ *         description: Add admin process executed successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: adding admin
+ *             example:
+ *               message: adding admin
+ *       400:
+ *         description: Validation error pada email
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *             examples:
+ *               emailMissing:
+ *                 summary: Email tidak dikirim
+ *                 value:
+ *                   message: Field Email Cannot Be Empty
+ *               emailInvalid:
+ *                 summary: Format email tidak valid
+ *                 value:
+ *                   message: Invalid input on email
+ *               emailDomainInvalid:
+ *                 summary: Domain email bukan domain UGM
+ *                 value:
+ *                   message: Invalid email, please using ugm email
+ *       401:
+ *         $ref: '#/components/responses/Unauthorized'
+ *       403:
+ *         description: Forbidden - User bukan admin
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *             example:
+ *               message: Forbidden
+ *       500:
+ *         $ref: '#/components/responses/InternalServerError'
+ */
 router.post("/admin", adminValidation, addAdmin)
 
 export default router
