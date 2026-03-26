@@ -1,10 +1,19 @@
 import PeakPerformanceClient from "@/modules/dashboard/peakPerformanceClient";
 
-const DUMMY_PEAK = {
-    ram: { used: 10, total: 16, percentage: 80 },
-    cpu: { used: 16, total: 16, percentage: 100 }
-};
-
-export default async function PeakPerformance() {
-    return <PeakPerformanceClient initialData={DUMMY_PEAK} />;
+export default function PeakPerformance({ data }: { data: any }) {
+    const peakData = {
+        ram: { 
+            used: parseFloat((data?.maxRamUsage || 0).toFixed(1)), 
+            total: parseFloat((data?.maxRam || 0).toFixed(1)), 
+            percentage: Math.round(data?.maxRamUsage || 0),
+            unit: "GB"
+        },
+        cpu: { 
+            used: parseFloat((data?.maxCpuUsage || 0).toFixed(1)), 
+            total: data?.maxCpu || 0, 
+            percentage: Math.round(data?.maxCpuUsage || 0),
+            unit: "Cores"
+        }
+    };
+    return <PeakPerformanceClient initialData={peakData} />;
 }
