@@ -1,4 +1,3 @@
-
 import Image from "next/image"
 import ButtonLogin from "./buttonLogin"
 
@@ -33,7 +32,7 @@ const LoginPage = () => {
                             Hello Civitas Akademika
                         </h1>
                         <p className="max-w-2xl text-sm sm:text-base text--text-gray mb-10 leading-relaxed font-medium">
-                            Sistem monitoring ini berfungsi sebagai pusat kontrol terpadu yang memantau kesehatan server secara real-time, menganalisis riwayat aktivitas melalui log, dan mengelola alur data secara efisien untuk menjamin stabilitas infrastruktur IT.
+                            This monitoring system functions as an integrated control center that monitors server health in real time, analyzes activity history through logs, and manages data flow efficiently to ensure the stability of the IT infrastructure.
                         </p>
                         <ButtonLogin />
                     </div>
