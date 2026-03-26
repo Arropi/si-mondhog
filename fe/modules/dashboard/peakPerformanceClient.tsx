@@ -21,7 +21,7 @@ export default function PeakPerformanceClient({ initialData }: { initialData: an
                 </div>
                 <div className="flex items-center justify-between -mt-4">
                     <div className="text-2xl font-black text-gray-900 tracking-tight">
-                        {data.ram.used}/{data.ram.total} <span className="text-gray-400 text-sm font-bold">GB</span>
+                        {data.ram.used}/{data.ram.total} <span className="text-gray-400 text-sm font-bold">{data.ram.unit}</span>
                     </div>
                     <div className="text-5xl font-black transition-colors duration-500" style={{ color: getColor(data.ram.percentage) }}>
                         {data.ram.percentage}%
@@ -44,7 +44,7 @@ export default function PeakPerformanceClient({ initialData }: { initialData: an
                 </div>
                 <div className="flex items-center justify-between -mt-4">
                     <div className="text-2xl font-black text-gray-900 tracking-tight">
-                        {data.cpu.used}/{data.cpu.total} <span className="text-gray-400 text-sm font-bold">GB</span>
+                        {data.cpu.used}/{data.cpu.total} <span className="text-gray-400 text-sm font-bold">{data.cpu.unit}</span>
                     </div>
                     <div className="text-5xl font-black transition-colors duration-500" style={{ color: getColor(data.cpu.percentage) }}>
                         {data.cpu.percentage}%
