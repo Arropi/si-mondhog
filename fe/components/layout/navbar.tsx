@@ -26,8 +26,7 @@ const Navbar = () => {
 
     const navLinks = [
         { name: "Dashboard", href: "/dashboard" },
-        { name: "Devices", href: "/devices" },
-        { name: "Logs", href: "/logs" },
+        { name: "Devices", href: "/devices" }
     ];
 
     return (
@@ -82,7 +81,7 @@ const Navbar = () => {
                         ) : (
                             <div className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center shrink-0">
                                 <span className="text-3xl font-medium text-gray-500">
-                                    {session?.user.name?.charAt(0) ?? "U"}
+                                    {session?.user?.name?.charAt(0) ?? "U"}
                                 </span>
                             </div>
                         )}
