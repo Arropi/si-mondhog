@@ -85,7 +85,7 @@ export default function AddDeviceModal({
                             onInvalid={() => setHasError(true)}
                             onChange={(e) => {
                                 setHasError(false);
-                                setEmail(e.target.value); e
+                                setEmail(e.target.value); 
                             }}
                             disabled={isLoading}
                             className={cn(

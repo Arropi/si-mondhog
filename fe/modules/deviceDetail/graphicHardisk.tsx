@@ -1,16 +1,10 @@
 "use client";
 
-import { AreaChart, Area, ResponsiveContainer, Tooltip } from "recharts";
-
-const dummyHardisk = [
-  { name: "60", value: 3 }, { name: "55", value: 4 }, { name: "50", value: 3 },
-  { name: "45", value: 5 }, { name: "40", value: 8 }, { name: "35", value: 4 },
-  { name: "30", value: 3 }, { name: "25", value: 4 }, { name: "20", value: 12 },
-  { name: "15", value: 5 }, { name: "10", value: 4 }, { name: "5", value: 9 },
-  { name: "0", value: 3 },
-];
-
-export default function GraphicHardisk() {
+import { AreaChart, Area, ResponsiveContainer, Tooltip, XAxis } from "recharts";
+export default function GraphicHardisk({ dataMetrics, totalDisk }: { dataMetrics: any[], totalDisk: number }) {
+  const lastValue = dataMetrics.length > 0 ? Number(dataMetrics[dataMetrics.length - 1].disk.toFixed(2)) : 0;
+  const gbUsed = ((lastValue / 100) * totalDisk).toFixed(1);
+  
   return (
     <div className="bg-white rounded-2xl p-6 shadow-[0_2px_10px_rgba(0,0,0,0.04)] border border-gray-50">
       <div className="flex justify-between items-center mb-6">
@@ -26,28 +20,31 @@ export default function GraphicHardisk() {
           <span className="w-2 h-2 rounded-full bg-red-500"></span>
           <span className="text-[11px] text-gray-400 font-bold uppercase tracking-widest">Space Used</span>
         </div>
+        <div className="text-xl font-extrabold text-gray-900 ml-4">{gbUsed} GB</div>
       </div>
-      
+
       <div className="flex justify-end mb-2">
-        <span className="text-[11px] font-bold text-gray-400 tracking-wide">100%</span>
+        <span className="text-[11px] font-bold text-gray-400 tracking-wide">{totalDisk} GB / <span className="text-red-600">{lastValue}%</span></span>
       </div>
-      
+
       <div className="w-full h-48 border border-gray-50 rounded-xl overflow-hidden flex items-end bg-[#FAFAFC] relative">
-         <ResponsiveContainer width="100%" height="100%">
-             <AreaChart data={dummyHardisk} margin={{ top: 10, right: 0, left: 0, bottom: 0 }}>
-               <Tooltip 
-                 contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
-                 itemStyle={{ color: '#EF4444', fontWeight: 'bold' }}
-                 labelStyle={{ color: '#9CA3AF', fontSize: '12px' }}
-               />
-               <Area type="linear" dataKey="value" stroke="#EF4444" fill="#FEE2E2" strokeWidth={2} />
-             </AreaChart>
-         </ResponsiveContainer>
+        <ResponsiveContainer width="100%" height="100%">
+          <AreaChart data={dataMetrics} margin={{ top: 10, right: 0, left: 0, bottom: 0 }}>
+            <XAxis dataKey="name" hide={true} />
+            <Tooltip
+              contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
+              itemStyle={{ color: '#EF4444', fontWeight: 'bold' }}
+              labelStyle={{ color: '#9CA3AF', fontSize: '12px', fontWeight: 'bold', marginBottom: '8px' }}
+              formatter={(value: any) => [`${Number(value).toFixed(2)}%`, "Usage"]}
+            />
+            <Area type="linear" dataKey="disk" stroke="#EF4444" fill="#FEE2E2" strokeWidth={2} />
+          </AreaChart>
+        </ResponsiveContainer>
       </div>
-      
+
       <div className="flex justify-between mt-3 text-[10px] text-gray-400 font-bold tracking-wide uppercase">
-        <span>60 second</span>
-        <span>0</span>
+        <span suppressHydrationWarning>{dataMetrics.length > 0 ? dataMetrics[0].name : "N/A"}</span>
+        <span suppressHydrationWarning>{dataMetrics.length > 0 ? dataMetrics[dataMetrics.length - 1].name : "NOW"}</span>
       </div>
     </div>
   );

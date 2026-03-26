@@ -2,15 +2,22 @@ import { getDeviceById } from "@/service/deviceService";
 import { notFound } from "next/navigation";
 import DetailDevice from "../../../../modules/deviceDetail";
 
-export default async function DeviceDetailPage({ params }: { params: Promise<{ slug: string }> }) {
+export default async function DeviceDetailPage({ 
+  params,
+  searchParams
+}: { 
+  params: Promise<{ slug: string }>,
+  searchParams: Promise<{ timeSeries?: string }>
+}) {
   const { slug } = await params;
+  const resolvedSearchParams = await searchParams;
+  const timeSeries = resolvedSearchParams.timeSeries || '1h';
 
-  // Mengambil data spesifik (device name & os) dari backend API berdasarkan ID 
-  const machine = await getDeviceById(slug);
+  const deviceData = await getDeviceById(slug, timeSeries);
 
-  if (!machine) {
+  if (!deviceData || !deviceData.machine) {
     return notFound();
   }
 
-  return <DetailDevice machine={machine} />;
+  return <DetailDevice deviceData={deviceData} />;
 }

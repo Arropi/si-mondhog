@@ -4,18 +4,29 @@ import GraphicHardisk from "./graphicHardisk";
 import GraphicCPU from "./graphicCPU";
 import DeviceInfoCardClient from "./DeviceSpecName";
 import DeleteMachineButton from "./buttonDeleteClient";
-import PerformanceSummary from "../../components/detailDevice/performanceSummary";
-import LogDeviceActivity from "../../components/detailDevice/logDeviceActivity";
+import PerformanceSummaryClient from "./performanceSummary";
+import LogDeviceActivityClient from "./logDeviceActivityClient";
+import DropdownTimeSeries from "./dropdownTimeSeries";
+import ButtonDownloadCsv from "./buttonDownloadCsv";
+import Image from "next/image";
+import { formatMetricsForChart } from "@/service/deviceService";
 
-export default function DetailDevice({ machine }: { machine: any }) {
-    // Mapping fallback jika tidak terdapat field status
-    const status = machine.status ? machine.status.toUpperCase() : "PENDING";
+export default async function DetailDevice({ deviceData }: { deviceData: any }) {
+    const { machine, logs, metrics, highestStats } = deviceData;
+
+    const chartData = await formatMetricsForChart(metrics);
+
+    const status = machine.status || "Pending";
     const statusColor =
-        status === "ONLINE"
+        status === "Online"
             ? "bg-green-100 text-green-700"
-            : status === "OFFLINE"
+            : status === "Offline"
                 ? "bg-red-100 text-red-700"
                 : "bg-yellow-100 text-yellow-700";
+
+    const hasNoMetrics = !metrics || metrics.length === 0;
+    const isEmptyPending = status === "Pending" || (hasNoMetrics && status !== "Offline");
+    const isOfflineNoData = status === "Offline" && hasNoMetrics;
 
     return (
         <div className="w-full min-h-screen bg--background pb-10">
@@ -31,47 +42,9 @@ export default function DetailDevice({ machine }: { machine: any }) {
                 </div>
 
                 <div className="flex items-center gap-3">
-                    <button className="flex items-center gap-2 bg-[#6B46C1] hover:bg-purple-800 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors border border-transparent shadow-sm">
-                        <svg
-                            className="w-4 h-4"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                            xmlns="http://www.w3.org/2000/svg"
-                        >
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
-                            />
-                        </svg>
-                        Download CSV
-                    </button>
+                    <ButtonDownloadCsv machineId={machine._id} />
 
-                    <div className="relative">
-                        <select className="appearance-none bg-white border border-gray-200 text-gray-700 py-2 pl-4 pr-10 rounded-lg text-sm font-medium focus:outline-none focus:ring-2 focus:ring-purple-500 shadow-sm cursor-pointer">
-                            <option>12 Hours</option>
-                            <option>24 Hours</option>
-                            <option>3 Days</option>
-                        </select>
-                        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-500">
-                            <svg
-                                className="w-4 h-4"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                                xmlns="http://www.w3.org/2000/svg"
-                            >
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={2}
-                                    d="M19 9l-7 7-7-7"
-                                />
-                            </svg>
-                        </div>
-                    </div>
+                    <DropdownTimeSeries />
                 </div>
             </div>
 
@@ -86,9 +59,42 @@ export default function DetailDevice({ machine }: { machine: any }) {
                         statusColor={statusColor}
                     />
 
-                    <PerformanceSummary deviceId={machine._id} />
+                    {isEmptyPending ? (
+                        <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-50 flex flex-col items-center justify-center text-center h-[300px]">
+                            <Image
+                                src="/images/offlinePendingIcon.svg"
+                                width={50}
+                                height={50}
+                                alt="offline pending icon"
+                            />
+                            <p className="text-gray-500 text-lg mt-8">Device Pending</p>
+                        </div>
+                    ) : isOfflineNoData ? (
+                        <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-50 flex flex-col items-center justify-center text-center h-[300px]">
+                            <Image
+                                src="/images/offlinePendingIcon.svg"
+                                width={50}
+                                height={50}
+                                alt="offline pending icon"
+                            />
+                            <p className="text-gray-500 text-lg mt-8">Device Offline</p>
+                        </div>
+                    ) : (
+                        <>
+                            <PerformanceSummaryClient
+                                deviceId={machine._id}
+                                initialData={{
+                                    highestCpuUsage: highestStats?.length ? Math.round(highestStats[0].cpu) : 0,
+                                    cpuChange: highestStats?.length && logs?.length ? Math.max(0, Math.round(highestStats[0].cpu - logs[0].cpuUsage)) : 0,
+                                    highestRamUsage: highestStats?.length ? Math.round(highestStats[0].ram) : 0,
+                                    ramChange: highestStats?.length && logs?.length ? Math.max(0, Math.round(highestStats[0].ram - logs[0].ramUsage)) : 0,
+                                    timestamp: metrics?.length ? metrics[0].timestamp : ""
+                                }}
+                            />
+                            <LogDeviceActivityClient deviceId={machine._id} initialData={logs || []} />
+                        </>
+                    )}
 
-                    <LogDeviceActivity deviceId={machine._id} />
                     <div className="flex justify-end items-end">
                         <DeleteMachineButton
                             machineId={machine._id}
@@ -99,10 +105,21 @@ export default function DetailDevice({ machine }: { machine: any }) {
 
                 {/* kanan */}
                 <div className="lg:col-span-8 flex flex-col gap-6">
-                    {/* bikin server side dari ke 3 grafik nya di folder components */}
-                    <GraphicRAM />
-                    <GraphicHardisk />
-                    <GraphicCPU />
+                    {isEmptyPending ? (
+                        <div className="bg-white rounded-2xl flex items-center justify-center p-6 shadow-sm border border-gray-50 h-[400px]">
+                            <></>
+                        </div>
+                    ) : isOfflineNoData ? (
+                        <div className="bg-white rounded-2xl flex items-center justify-center p-6 shadow-sm border border-gray-50 h-[400px]">
+                            <></>
+                        </div>
+                    ) : (
+                        <>
+                            <GraphicRAM dataMetrics={chartData} totalRam={machine.totalRam || 8} />
+                            <GraphicHardisk dataMetrics={chartData} totalDisk={machine.totalDisk || 256} />
+                            <GraphicCPU dataMetrics={chartData} />
+                        </>
+                    )}
                 </div>
             </div>
         </div>
