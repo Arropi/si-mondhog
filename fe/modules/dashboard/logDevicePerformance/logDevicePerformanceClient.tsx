@@ -1,9 +1,10 @@
 "use client";
 
 import { useState } from "react";
+import { PerformanceLogFormatted } from "@/types";
 import ButtonDownloadPerformance from "./buttonDownload";
 
-export default function LogsGeneralClient({ initialData }: { initialData: any[] }) {
+export default function LogsGeneralClient({ initialData }: { initialData: PerformanceLogFormatted[] }) {
     const [logs] = useState(initialData);
 
     return (

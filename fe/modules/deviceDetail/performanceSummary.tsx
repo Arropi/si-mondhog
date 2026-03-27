@@ -1,10 +1,11 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import { PerformanceSummaryData } from "@/types";
 
 interface PerformanceSummaryProps {
     deviceId: string;
-    initialData: any;
+    initialData: PerformanceSummaryData;
 }
 
 export default function PerformanceSummaryClient({

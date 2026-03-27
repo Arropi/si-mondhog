@@ -1,8 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import { PeakDataFormatted } from "@/types";
 
-export default function PeakPerformanceClient({ initialData }: { initialData: any }) {
+export default function PeakPerformanceClient({ initialData }: { initialData: PeakDataFormatted }) {
     const [data] = useState(initialData);
 
     const getColor = (percentage: number) => {

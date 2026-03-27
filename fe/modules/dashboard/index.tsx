@@ -22,7 +22,7 @@ export default async function DashboardPage({ date }: { date?: string }) {
     };
 
     return (
-        <div key={date || "weeks"} className="w-full min-h-screen bg--background p-4 lg:p-8 font-sans">
+        <div key={date || "weeks"} className="w-full min-h-screen bg--background p-4 lg:p-8 font-sans animate-fade-in">
             <div className="flex flex-col lg:flex-row gap-8">
                 {/* Main Content (Left) */}
                 <div className="flex-1 flex flex-col gap-6">

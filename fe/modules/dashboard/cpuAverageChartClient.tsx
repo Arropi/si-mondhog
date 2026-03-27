@@ -1,9 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { AreaChart, Area, ResponsiveContainer, Tooltip } from "recharts";
+import { AreaChart, Area, ResponsiveContainer, Tooltip, XAxis } from "recharts";
+import { ChartDataPoint } from "@/types";
 
-export default function CpuAverageChartClient({ initialData }: { initialData: any[] }) {
+export default function CpuAverageChartClient({ initialData }: { initialData: ChartDataPoint[] }) {
     const [data] = useState(initialData);
     const lastValue = data.length > 0 ? Number(data[data.length - 1].cpu.toFixed(1)) : 0;
 
@@ -32,11 +33,12 @@ export default function CpuAverageChartClient({ initialData }: { initialData: an
             <div className="flex-1 w-full border border-gray-100 rounded-xl overflow-hidden relative">
                 <ResponsiveContainer width="100%" height="100%">
                     <AreaChart data={data} margin={{ top: 10, right: 0, left: 0, bottom: 0 }}>
+                        <XAxis dataKey="name" hide={true} />
                         <Tooltip
                             contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
                             itemStyle={{ color: '#84CC16', fontWeight: 'bold' }}
                             labelStyle={{ color: '#9CA3AF', fontSize: '12px', fontWeight: 'bold', marginBottom: '8px' }}
-                            formatter={(value: any) => [`${Number(value).toFixed(2)}%`, "Usage"]}
+                            formatter={(value: number) => [`${Number(value).toFixed(2)}%`, "Usage"]}
                         />
                         <Area type="linear" dataKey="cpu" stroke="#84CC16" fill="#ECFCCB" strokeWidth={2} />
                     </AreaChart>

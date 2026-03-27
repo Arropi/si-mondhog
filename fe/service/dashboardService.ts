@@ -2,10 +2,11 @@
 
 import { getServerSession } from "next-auth";
 import { authOptions } from "../lib/auth";
+import type { RawMetric, ChartDataPoint, DashboardSummary } from "@/types";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3030/api";
 
-export async function getDashboardSummary(date?: string) {
+export async function getDashboardSummary(date?: string): Promise<DashboardSummary | null> {
     try {
         const session = await getServerSession(authOptions);
         const token = (session?.user as any)?.accessToken;
@@ -28,7 +29,7 @@ export async function getDashboardSummary(date?: string) {
     }
 }
 
-export async function formatDashboardMetrics(metrics: any[]) {
+export async function formatDashboardMetrics(metrics: RawMetric[]): Promise<ChartDataPoint[]> {
     if (!metrics) return [];
     return [...metrics].reverse().map(m => ({
         name: m.timestamp.substring(0, 16),

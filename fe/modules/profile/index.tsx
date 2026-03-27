@@ -41,7 +41,7 @@ export default function ProfilePage(profileProps: ProfileProps) {
     }
 
     return (
-        <div className="min-h-screen pb-10">
+        <div className="min-h-screen pb-10 animate-fade-in">
             {showLogoutModal && (
                 <div className="fixed inset-0 z-[99999] flex items-center justify-center bg-black/60 p-4 transition-opacity">
                     <div className="bg-white rounded-3xl p-8 max-w-sm w-full shadow-2xl flex flex-col items-center gap-8 transform transition-transform">

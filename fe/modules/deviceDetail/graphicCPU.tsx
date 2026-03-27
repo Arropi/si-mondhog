@@ -1,7 +1,7 @@
 "use client";
 
-import { AreaChart, Area, ResponsiveContainer, Tooltip, XAxis } from "recharts";
-export default function GraphicCPU({ dataMetrics }: { dataMetrics: any[] }) {
+import { AreaChart, Area, ResponsiveContainer, Tooltip, XAxis } from "recharts";import { ChartDataPoint } from "@/types";
+export default function GraphicCPU({ dataMetrics }: { dataMetrics: ChartDataPoint[] }) {
   const lastValue = dataMetrics.length > 0 ? Number(dataMetrics[dataMetrics.length - 1].cpu.toFixed(2)) : 0;
   return (
     <div className="bg-white rounded-2xl p-6 shadow-[0_2px_10px_rgba(0,0,0,0.04)] border border-gray-50">
@@ -35,7 +35,7 @@ export default function GraphicCPU({ dataMetrics }: { dataMetrics: any[] }) {
               contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
               itemStyle={{ color: '#84CC16', fontWeight: 'bold' }}
               labelStyle={{ color: '#9CA3AF', fontSize: '12px', fontWeight: 'bold', marginBottom: '8px' }}
-              formatter={(value: any) => [`${Number(value).toFixed(2)}%`, "Usage"]}
+              formatter={(value: number) => [`${Number(value).toFixed(2)}%`, "Usage"]}
             />
             <Area type="linear" dataKey="cpu" stroke="#84CC16" fill="#ECFCCB" strokeWidth={2} />
           </AreaChart>

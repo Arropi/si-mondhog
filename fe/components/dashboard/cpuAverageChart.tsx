@@ -1,5 +1,6 @@
 import CpuAverageChartClient from "@/modules/dashboard/cpuAverageChartClient";
 import { formatDashboardMetrics } from "../../service/dashboardService";
+import type { RawMetric } from "@/types";
 
 // const DUMMY_CPU = [
 //   { name: "60", value: 30 }, { name: "55", value: 45 }, { name: "50", value: 35 },
@@ -9,7 +10,7 @@ import { formatDashboardMetrics } from "../../service/dashboardService";
 //   { name: "0", value: 20 },
 // ];
 
-export default async function CpuAverageChart({ data }: { data: any[] }) {
+export default async function CpuAverageChart({ data }: { data: RawMetric[] }) {
   const chartData = await formatDashboardMetrics(data);
 
   return <CpuAverageChartClient initialData={chartData} />;

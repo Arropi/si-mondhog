@@ -1,11 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
-// Diparsing utuh dari server
+import { DeviceActivityLog } from "@/types";
 
 interface LogDeviceActivityProps {
     deviceId: string;
-    initialData: any[];
+    initialData: DeviceActivityLog[];
 }
 
 export default function LogDeviceActivityClient({ deviceId, initialData }: LogDeviceActivityProps) {
@@ -30,7 +30,7 @@ export default function LogDeviceActivityClient({ deviceId, initialData }: LogDe
                 </div>
 
                 {logs.length > 0 ? (
-                    logs.map((log: any, i: number) => (
+                    logs.map((log: DeviceActivityLog, i: number) => (
                         <div
                             key={i}
                             className="grid grid-cols-4 text-[12px] font-medium text-gray-500 mb-4 last:mb-0 hover:text-gray-800 transition-colors"
