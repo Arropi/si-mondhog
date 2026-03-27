@@ -1,7 +1,9 @@
 "use client";
 
 import { AreaChart, Area, ResponsiveContainer, Tooltip, XAxis } from "recharts";
-export default function GraphicRAM({ dataMetrics, totalRam }: { dataMetrics: any[], totalRam: number }) {
+import { ChartDataPoint } from "@/types";
+
+export default function GraphicRAM({ dataMetrics, totalRam }: { dataMetrics: ChartDataPoint[], totalRam: number }) {
   const lastValue = dataMetrics.length > 0 ? Number(dataMetrics[dataMetrics.length - 1].ram.toFixed(2)) : 0;
   const gbUsed = ((lastValue / 100) * totalRam).toFixed(1);
   return (
@@ -36,7 +38,7 @@ export default function GraphicRAM({ dataMetrics, totalRam }: { dataMetrics: any
               contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
               itemStyle={{ color: '#8B5CF6', fontWeight: 'bold' }}
               labelStyle={{ color: '#9CA3AF', fontSize: '12px', fontWeight: 'bold', marginBottom: '8px' }}
-              formatter={(value: any) => [`${Number(value).toFixed(2)}%`, "Usage"]}
+              formatter={(value: number) => [`${Number(value).toFixed(2)}%`, "Usage"]}
             />
             <Area type="monotone" dataKey="ram" stroke="#8B5CF6" fill="#F3E8FF" strokeWidth={2} />
           </AreaChart>

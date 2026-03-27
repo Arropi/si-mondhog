@@ -1,9 +1,10 @@
 "use client";
 
 import { useState } from "react";
+import { EventLogFormatted } from "@/types";
 import ButtonDownloadEvents from "./buttonDownload";
 
-export default function LogsDeviceEventClient({ initialData }: { initialData: any[] }) {
+export default function LogsDeviceEventClient({ initialData }: { initialData: EventLogFormatted[] }) {
     const [logs] = useState(initialData);
 
     return (

@@ -1,6 +1,7 @@
 import PeakPerformanceClient from "@/modules/dashboard/peakPerformanceClient";
+import { PeakMetrics } from "@/types";
 
-export default function PeakPerformance({ data }: { data: any }) {
+export default function PeakPerformance({ data }: { data: PeakMetrics }) {
     const peakData = {
         ram: { 
             used: parseFloat((data?.maxRamUsage || 0).toFixed(1)), 

@@ -1,6 +1,7 @@
 import LogsGeneralClient from "@/modules/dashboard/logDevicePerformance/logDevicePerformanceClient";
+import { PerformanceLog } from "@/types";
 
-export default function LogsGeneral({ data }: { data: any[] }) {
+export default function LogsGeneral({ data }: { data: PerformanceLog[] }) {
     const formattedLogs = (data || []).map(log => ({
         date: log.formattedTimestamp?.split(',')[0] || "",
         name: log.hostname || "",

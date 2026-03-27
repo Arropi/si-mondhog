@@ -20,7 +20,7 @@ export default function DatePickerClient({ selectedDate }: { selectedDate?: stri
 
     const activeDate = selectedDate || dates[dates.length - 1].fullDate;
     const handleClick = (fullDate: string) => {
-        router.push(`/dashboard?date=${fullDate}`);
+        router.push(`/dashboard?date=${fullDate}`, { scroll: false });
     }
 
     return (
