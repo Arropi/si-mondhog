@@ -15,7 +15,7 @@ export default async function DashboardPage({ date }: { date?: string }) {
 
     const summary = data || {
         metrics: [],
-        peak: {},
+        peak: { maxCpuUsage: 0, maxRamUsage: 0, maxDiskUsage: 0, maxRam: 0, maxCpu: 0, maxDisk: 0 },
         stats: { online: 0, offline: 0, pending: 0 },
         total: 0,
         logs: { performance: [], events: [] }
@@ -57,7 +57,7 @@ export default async function DashboardPage({ date }: { date?: string }) {
                 {/* Sidebar (Right) */}
                 <div className="w-full lg:w-[320px] flex flex-col gap-6 pt-1">
                     <PeakPerformance data={summary.peak} />
-                    <DeviceStats data={summary.stats} total={summary.total} />
+                    <DeviceStats data={summary.stats} total={{ count: summary.total }} />
                 </div>
             </div>
         </div>
