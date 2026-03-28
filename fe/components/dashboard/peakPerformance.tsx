@@ -14,6 +14,12 @@ export default function PeakPerformance({ data }: { data: PeakMetrics }) {
             total: data?.maxCpu || 0, 
             percentage: Math.round(data?.maxCpuUsage || 0),
             unit: "Cores"
+        },
+        disk: { 
+            used: parseFloat((data?.maxDiskUsage || 0).toFixed(1)), 
+            total: data?.maxDisk || 0, 
+            percentage: Math.round(data?.maxDiskUsage || 0),
+            unit: "GB"
         }
     };
     return <PeakPerformanceClient initialData={peakData} />;

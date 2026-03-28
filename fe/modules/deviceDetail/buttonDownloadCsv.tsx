@@ -7,7 +7,7 @@ export default function ButtonDownloadCsv({ machineId }: { machineId: string }) 
     const { data: session } = useSession();
 
     const handleDownload = async () => {
-        const token = session?.user?.accessToken;
+        const token = (session?.user as any)?.accessToken;
         if (!token) return alert("Session not found. Please relogin.");
 
         try {

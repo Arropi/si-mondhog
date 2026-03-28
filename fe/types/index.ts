@@ -21,6 +21,7 @@ export interface PeakMetrics {
     maxDiskUsage: number;
     maxRam?: number;
     maxCpu?: number;
+    maxDisk?: number;
 }
 
 /** Statistik device (online/offline/pending) */
@@ -111,6 +112,7 @@ export interface PerformanceSummaryData {
 export interface PeakDataFormatted {
     ram: { used: number; total: number; percentage: number; unit: string; };
     cpu: { used: number; total: number; percentage: number; unit: string; };
+    disk: { used: number; total: number; percentage: number; unit: string; };
 }
 
 export interface PerformanceLogFormatted {
