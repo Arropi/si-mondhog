@@ -1,12 +1,12 @@
 import DeviceStatsClient from "@/modules/dashboard/deviceStatsClient";
+import { DeviceStatsData } from "@/types";
 
-const DUMMY_STATS = {
-    total: 24,
-    online: 24,
-    offline: 24,
-    pending: 24
-};
-
-export default async function DeviceStats() {
-    return <DeviceStatsClient initialData={DUMMY_STATS} />;
+export default function DeviceStats({ data, total }: { data: DeviceStatsData, total: any }) {
+    const statsData = {
+        total: typeof total === 'object' ? (total?.count || 0) : (total || 0),
+        online: data?.online || 0,
+        offline: data?.offline || 0,
+        pending: data?.pending || 0
+    };
+    return <DeviceStatsClient initialData={statsData} />;
 }

@@ -1,8 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import { DeviceStatsData } from "@/types";
 
-export default function DeviceStatsClient({ initialData }: { initialData: any }) {
+export default function DeviceStatsClient({ initialData }: { initialData: DeviceStatsData & { total: number } }) {
     const [stats] = useState(initialData);
 
     return (
