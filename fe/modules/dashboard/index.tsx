@@ -57,7 +57,7 @@ export default async function DashboardPage({ date }: { date?: string }) {
                 {/* Sidebar (Right) */}
                 <div className="w-full lg:w-[320px] flex flex-col gap-6 pt-1">
                     <PeakPerformance data={summary.peak} />
-                    <DeviceStats data={summary.stats} total={{ count: summary.total }} />
+                    <DeviceStats data={summary.stats} total={summary.total} />
                 </div>
             </div>
         </div>
