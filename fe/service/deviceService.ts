@@ -4,6 +4,7 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { revalidatePath } from "next/cache";
+import type { RawMetric, ChartDataPoint, Machine, DeviceDetailData } from "@/types";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3030/api";
 
@@ -21,7 +22,7 @@ export interface Device {
     status: "online" | "offline" | "pending";
 }
 
-export async function formatMetricsForChart(dataMetrics: any[]) {
+export async function formatMetricsForChart(dataMetrics: RawMetric[]): Promise<ChartDataPoint[]> {
     if (!dataMetrics || dataMetrics.length === 0) return [];
 
     return [...dataMetrics].reverse().map(item => {
@@ -59,7 +60,7 @@ export async function getDeviceStats(): Promise<DeviceStats> {
         let offlineCount = 0;
         let pendingCount = 0;
 
-        machineData.forEach((machine: any) => {
+        machineData.forEach((machine: Machine) => {
             const status = machine.status ? machine.status.toLowerCase() : "pending";
             if (status === "online") onlineCount++;
             else if (status === "offline") offlineCount++;
@@ -95,11 +96,11 @@ export async function getDeviceList(): Promise<Device[]> {
         }
         const data = await response.json();
         const machineData = data.datas?.machines || [];
-        const mappedDevices: Device[] = machineData.map((machine: any) => {
+        const mappedDevices: Device[] = machineData.map((machine: Machine) => {
             return {
                 id: machine._id,
                 name: machine.hostname,
-                os: (machine.os.toLowerCase() === "macos" ? "macOS" : machine.os.toLowerCase()) as any,
+                os: (machine.os.toLowerCase() === "macos" ? "macOS" : machine.os.toLowerCase()) as Device["os"],
                 status: machine.status ? machine.status.toLowerCase() : "pending"
             };
         });
@@ -135,13 +136,13 @@ export async function createDeviceService(data: { hostname: string; os: "Linux" 
         }
         revalidatePath('/devices');
         return { success: true, message: "Device berhasil didaftarkan!" };
-    } catch (error: any) {
+    } catch (error: unknown) {
         console.error("Gagal Request:", error);
         return { success: false, message: "Terjadi kesalahan di jaringan peladen." };
     }
 }
 
-export async function getDeviceById(id: string, timeSeries: string = '1h') {
+export async function getDeviceById(id: string, timeSeries: string = '1h'): Promise<DeviceDetailData | null> {
     try {
         const session = await getServerSession(authOptions);
         const token = (session?.user as any)?.accessToken;
@@ -171,7 +172,7 @@ export async function getDeviceById(id: string, timeSeries: string = '1h') {
             if (listResponse.ok) {
                 const listData = await listResponse.json();
                 const machines = listData.datas?.machines || [];
-                const match = machines.find((m: any) => m._id === id);
+                const match = machines.find((m: Machine) => m._id === id);
                 if (match && match.status && data.datas?.machine) {
                     data.datas.machine.status = match.status;
                 }
@@ -208,7 +209,7 @@ export async function updateDeviceService(id: string, data: { hostname?: string;
         revalidatePath(`/devices/${id}`);
         revalidatePath('/devices');
         return { success: true, message: "Device successfully updated!" };
-    } catch (error: any) {
+    } catch (error: unknown) {
         console.error("Gagal Update:", error);
         return { success: false, message: "Terjadi kesalahan di jaringan peladen." };
     }
@@ -232,7 +233,7 @@ export async function deleteDeviceService(id: string) {
         }
 
         return { success: true, message: "Device berhasil dihapus!" };
-    } catch (error: any) {
+    } catch (error: unknown) {
         console.error("Gagal Hapus:", error);
         return { success: false, message: "Terjadi kesalahan di jaringan peladen." };
     }

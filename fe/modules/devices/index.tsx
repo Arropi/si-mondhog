@@ -9,7 +9,7 @@ export default async function DevicesPage({ query, os, page }: { query?: string,
     const statsData = await getDeviceStats();
     
     return (
-        <div className="px-12 py-8">
+        <div className="px-12 py-8 animate-fade-in">
             <header className="bg-background flex justify-between items-center font-bold text--secondary text-2xl">
                 All Devices
                 <ButtonDevice />

@@ -2,7 +2,7 @@ import Link from "next/link";
 import GraphicRAM from "./graphicRAM";
 import GraphicHardisk from "./graphicHardisk";
 import GraphicCPU from "./graphicCPU";
-import DeviceInfoCardClient from "./DeviceSpecName";
+import DeviceInfoCardClient from "./deviceSpecName";
 import DeleteMachineButton from "./buttonDeleteClient";
 import PerformanceSummaryClient from "./performanceSummary";
 import LogDeviceActivityClient from "./logDeviceActivityClient";
@@ -10,8 +10,9 @@ import DropdownTimeSeries from "./dropdownTimeSeries";
 import ButtonDownloadCsv from "./buttonDownloadCsv";
 import Image from "next/image";
 import { formatMetricsForChart } from "@/service/deviceService";
+import { DeviceDetailData } from "@/types";
 
-export default async function DetailDevice({ deviceData }: { deviceData: any }) {
+export default async function DetailDevice({ deviceData }: { deviceData: DeviceDetailData }) {
     const { machine, logs, metrics, highestStats } = deviceData;
 
     const chartData = await formatMetricsForChart(metrics);
@@ -29,7 +30,7 @@ export default async function DetailDevice({ deviceData }: { deviceData: any }) 
     const isOfflineNoData = status === "Offline" && hasNoMetrics;
 
     return (
-        <div className="w-full min-h-screen bg--background pb-10">
+        <div className="w-full min-h-screen bg--background pb-10 animate-fade-in">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center py-6 px-8">
                 <div className="text-sm font-medium text-gray-500 mb-4 md:mb-0">
                     <Link href="/devices" className="hover:text-gray-900">

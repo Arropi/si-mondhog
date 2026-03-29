@@ -1,10 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { AreaChart, Area, ResponsiveContainer, Tooltip } from "recharts";
+import { AreaChart, Area, ResponsiveContainer, Tooltip, XAxis } from "recharts";
+import { ChartDataPoint } from "@/types";
 
-export default function CpuAverageChartClient({ initialData }: { initialData: any[] }) {
+export default function CpuAverageChartClient({ initialData }: { initialData: ChartDataPoint[] }) {
     const [data] = useState(initialData);
+    const lastValue = data.length > 0 ? Number(data[data.length - 1].cpu.toFixed(1)) : 0;
 
     return (
         <div className="bg-white rounded-3xl p-6 shadow-[0_2px_20px_rgba(0,0,0,0.02)] border border-gray-100 flex flex-col h-[300px]">
@@ -19,29 +21,32 @@ export default function CpuAverageChartClient({ initialData }: { initialData: an
                 </div>
                 <div className="flex items-center gap-2">
                     <span className="w-2 h-2 rounded-full bg-lime-500"></span>
-                    <span className="text-[11px] text-gray-400 font-bold uppercase tracking-widest">Load Avg</span>
+                    <span className="text-[11px] text-gray-400 font-bold uppercase tracking-widest">Usage</span>
+                    <span className="text-xl font-extrabold text-gray-900 ml-2">{lastValue}%</span>
                 </div>
             </div>
 
             <div className="flex justify-end mb-1">
-                <span className="text-[11px] font-bold text-gray-400 tracking-wide">100%</span>
+                <span className="text-[11px] font-bold text-gray-400 tracking-wide">100% / <span className="text-lime-600">{lastValue}%</span></span>
             </div>
 
             <div className="flex-1 w-full border border-gray-100 rounded-xl overflow-hidden relative">
                 <ResponsiveContainer width="100%" height="100%">
                     <AreaChart data={data} margin={{ top: 10, right: 0, left: 0, bottom: 0 }}>
+                        <XAxis dataKey="name" hide={true} />
                         <Tooltip
                             contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
                             itemStyle={{ color: '#84CC16', fontWeight: 'bold' }}
-                            labelStyle={{ color: '#9CA3AF', fontSize: '12px' }}
+                            labelStyle={{ color: '#9CA3AF', fontSize: '12px', fontWeight: 'bold', marginBottom: '8px' }}
+                            formatter={(value: any) => [`${Number(value).toFixed(2)}%`, "Usage"]}
                         />
-                        <Area type="linear" dataKey="value" stroke="#84CC16" fill="#ECFCCB" strokeWidth={2} />
+                        <Area type="linear" dataKey="cpu" stroke="#84CC16" fill="#ECFCCB" strokeWidth={2} />
                     </AreaChart>
                 </ResponsiveContainer>
             </div>
 
             <div className="flex justify-between mt-3 text-[10px] text-gray-400 font-bold uppercase tracking-wider">
-                <span>60 second</span>
+                <span>7 Days</span>
                 <span>0</span>
             </div>
         </div>
