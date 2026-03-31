@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef, JSX } from "react";
 import { updateDeviceService } from "@/service/deviceService";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import { useSession } from "next-auth/react";
 
 // Objek untuk memetakan ikon berdasarkan jenis OS
 const OsIcons: Record<string, JSX.Element> = {
@@ -36,6 +37,8 @@ export default function DeviceInfoCardClient({
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [hostname, setHostname] = useState(currentHostname);
     const inputRef = useRef<HTMLInputElement>(null);
+    const { data: session } = useSession();
+    const isAdmin = (session?.user as any)?.role === "admin";
 
     useEffect(() => {
         if (isEditing && inputRef.current) {
@@ -109,19 +112,21 @@ export default function DeviceInfoCardClient({
                 
                 <div className="flex items-center gap-3 mb-2 overflow-hidden">
                     <h1 className="text-2xl font-extrabold text-gray-900 truncate max-w-[250px]">{currentHostname}</h1>
-                    <span className={`${statusColor} text-[10px] font-bold px-2 py-1 rounded-md tracking-widest flex-shrink-0`}>{status}</span>
+                    <span className={`${statusColor} text-[10px] font-bold px-2 py-1 rounded-md tracking-widest shrink-0`}>{status}</span>
                 </div>
             </div>
             
             <div className="flex justify-between items-end">
                 <div className="text-sm font-semibold text-gray-400 capitalize">{currentOs}</div>
-                <button 
-                    onClick={() => setIsEditing(true)}
-                    className="text-[13px] font-bold text-gray-500 flex items-center gap-1.5 hover:text-purple-600 transition-colors cursor-pointer"
-                >
-                    <Image src="/images/editIcon.svg" alt="Edit" width={10} height={10} />
-                    Edit
-                </button>
+                {isAdmin && (
+                    <button 
+                        onClick={() => setIsEditing(true)}
+                        className="text-[13px] font-bold text-gray-500 flex items-center gap-1.5 hover:text-purple-600 transition-colors cursor-pointer"
+                    >
+                        <Image src="/images/editIcon.svg" alt="Edit" width={10} height={10} />
+                        Edit
+                    </button>
+                )}
             </div>
         </div>
     );
