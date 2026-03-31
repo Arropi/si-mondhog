@@ -3,7 +3,7 @@
 import { useSession, signOut } from "next-auth/react";
 import { useState, useEffect } from "react";
 import Image from "next/image";
-
+import AddAdminModal from "../../components/ui/addAdminModal";
 interface ProfileProps {
     name: string;
     email: string;
@@ -20,7 +20,7 @@ export default function ProfilePage(profileProps: ProfileProps) {
     });
 
     const [showLogoutModal, setShowLogoutModal] = useState(false);
-
+    const [showAddAdminModal, setShowAddAdminModal] = useState(false);
     useEffect(() => {
         if (status === "authenticated" && session?.user) {
             setProfile((p) => ({
@@ -67,6 +67,8 @@ export default function ProfilePage(profileProps: ProfileProps) {
                 </div>
             )}
 
+            <AddAdminModal isOpen={showAddAdminModal} onClose={() => setShowAddAdminModal(false)} />
+
             <div className="flex items-center mt-10 ml-10 gap-3">
                 <Image
                     src="/images/profileIcon.svg"
@@ -76,19 +78,27 @@ export default function ProfilePage(profileProps: ProfileProps) {
                 />
                 <h2 className="text-2xl font-semibold text-black">Profile</h2>
 
-                <div className="ml-auto mr-10">
+                <div className="ml-auto mr-10 flex gap-4">
+                    {profile.role === "admin" && (
+                        <button
+                            onClick={() => setShowAddAdminModal(true)}
+                            className="flex items-center gap-2 px-6 py-3 bg--primary text-white font-medium rounded-xl hover:bg-purple-800 transition-colors cursor-pointer duration-300"
+                        >
+                            Add Admin
+                        </button>
+                    )}
                     <button
                         onClick={() => setShowLogoutModal(true)}
-                        className="flex items-center gap-2 px-6 py-2 bg--primary text-white font-medium rounded-lg hover:bg-purple-900 transition-colors cursor-pointer duration-300"
+                        className="flex items-center gap-2 px-6 py-3 bg--secondary text-white font-medium rounded-xl hover:bg-red-800 transition-colors cursor-pointer duration-300"
                     >
-                        Logout
+                        Log Out
                     </button>
                 </div>
             </div>
 
             <div className="max-w-4xl mx-auto mt-8 px-6">
                 <div className="flex flex-col items-center justify-center mb-6">
-                    <div className="w-32 h-32 rounded-full overflow-hidden border-2 border-gray-200">
+                    <div className="w-45 h-45 rounded-full overflow-hidden border-2 border-gray-200">
                         {session?.user?.image ? (
                             <Image
                                 src={session.user.image}
@@ -108,9 +118,9 @@ export default function ProfilePage(profileProps: ProfileProps) {
                     </div>
                 </div>
 
-                <div className="relative bg-white rounded-2xl shadow-xl ring-1 ring-gray-100 p-8 mt-6 overflow-hidden">
+                <div className="relative bg-white rounded-4xl shadow-xl ring-1 ring-gray-100 px-20 py-14 mt-24 overflow-hidden">
                     <div className="absolute top-0 left-0 right-0 h-1" />
-                    <h3 className="text-2xl font-bold text-gray-800 mb-6">
+                    <h3 className="text-2xl font-bold text--secondary mb-6 border-b-2 border-gray-100 pb-4">
                         Detail Information
                     </h3>
 

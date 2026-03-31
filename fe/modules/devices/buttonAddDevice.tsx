@@ -7,7 +7,11 @@ import { useRouter } from "next/navigation";
 import SuccessAlertModal from "../../components/ui/successAlertModal";
 import FailedAlertModal from "../../components/ui/failedAlertModal";
 
+import { useSession } from "next-auth/react";
+
 export default function ButtonAddDevice() {
+    const { data: session } = useSession();
+    const isAdmin = (session?.user as any)?.role === "admin";
     const router = useRouter();
     const [isOpen, setIsOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
@@ -63,6 +67,8 @@ export default function ButtonAddDevice() {
 
         setIsLoading(false);
     };
+
+    if (!isAdmin) return null;
 
     return (
         <>

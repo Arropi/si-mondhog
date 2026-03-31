@@ -3,10 +3,13 @@
 import { useState } from "react";
 import { downloadDashboardCsv } from "@/service/dashboardService";
 import { useSearchParams } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 export default function ButtonDownloadPerformance() {
     const [loading, setLoading] = useState(false);
     const searchParams = useSearchParams();
+    const { data: session } = useSession();
+    const isAdmin = (session?.user as any)?.role === "admin";
 
     const handleDownload = async () => {
         setLoading(true);
@@ -33,6 +36,8 @@ export default function ButtonDownloadPerformance() {
             setLoading(false);
         }
     };
+
+    if (!isAdmin) return null;
 
     return (
         <button

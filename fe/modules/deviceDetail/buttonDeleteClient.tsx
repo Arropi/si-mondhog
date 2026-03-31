@@ -4,12 +4,15 @@ import React, { useState } from "react";
 import { deleteDeviceService } from "@/service/deviceService";
 import { useRouter } from "next/navigation";
 import ConfirmationDeleteDevice from "@/components/ui/confirmationDeleteDevice";
+import { useSession } from "next-auth/react";
 
 export default function DeleteMachineButton({ machineId, deviceName = "Unknown Device" }: { machineId: string, deviceName?: string }) {
     const router = useRouter();
     const [isDeleting, setIsDeleting] = useState(false);
     const [isSuccess, setIsSuccess] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const { data: session } = useSession();
+    const isAdmin = (session?.user as any)?.role === "admin";
 
     const handleConfirmDelete = async () => {
         setIsDeleting(true);
@@ -35,6 +38,8 @@ export default function DeleteMachineButton({ machineId, deviceName = "Unknown D
             setIsDeleting(false);
         }
     };
+
+    if (!isAdmin) return null;
 
     return (
         <>
