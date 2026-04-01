@@ -35,10 +35,10 @@ export default function LogsDeviceEventClient({ initialData }: { initialData: Ev
                                 className="grid grid-cols-5 text-xs font-medium text-gray-500 hover:text-gray-900 transition-colors py-4 items-center"
                             >
                                 <div>{log.date}</div>
-                                <div>{log.name}</div>
-                                <div>{log.deviceName}</div>
-                                <div>{log.os}</div>
-                                <div>{log.event}</div>
+                                <div className="max-w-[100px] truncate">{log.name}</div>
+                                <div className="max-w-[100px] truncate">{log.deviceName}</div>
+                                <div className="max-w-[100px] truncate">{log.os}</div>
+                                <div className="max-w-[100px] truncate">{log.event}</div>
                             </div>
                         ))}
                     </div>

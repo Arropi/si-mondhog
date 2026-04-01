@@ -14,7 +14,7 @@ import { DeviceDetailData } from "@/types";
 
 export default async function DetailDevice({ deviceData }: { deviceData: DeviceDetailData }) {
     const { machine, logs, metrics, highestStats } = deviceData;
-
+    console.log(Math.max(0, Math.round(highestStats[0].ram - logs[0].ramUsage)))
     const chartData = await formatMetricsForChart(metrics);
 
     const status = machine.status || "Pending";
@@ -89,7 +89,6 @@ export default async function DetailDevice({ deviceData }: { deviceData: DeviceD
                                     cpuChange: highestStats?.length && logs?.length ? Math.max(0, Math.round(highestStats[0].cpu - logs[0].cpuUsage)) : 0,
                                     highestRamUsage: highestStats?.length ? Math.round(highestStats[0].ram) : 0,
                                     ramChange: highestStats?.length && logs?.length ? Math.max(0, Math.round(highestStats[0].ram - logs[0].ramUsage)) : 0,
-                                    timestamp: metrics?.length ? metrics[0].timestamp : ""
                                 }}
                             />
                             <LogDeviceActivityClient deviceId={machine._id} initialData={logs || []} />
