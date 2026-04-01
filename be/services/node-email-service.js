@@ -12,6 +12,7 @@ export async function sendEmail(email, code, os) {
             Here is your verification code: <b>${code}</b>, Don't share it with anyone.
             <br>
             Download your agent securely here: <a href="${downloadUrl}">${downloadUrl}</a>
+            <br> Links will expired in 24 hours.
             <br><br>
             How to run:
             <br>- Windows: run the file as <b>Run as Administrator</b>.
