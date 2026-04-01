@@ -3,14 +3,9 @@ import {
   validateActivation,
   metricsService,
   heartbeatService,
-  getAgentDownloadSource
+  getAgentDownloadSource,
+  createR2AgentDownloadUrl
 } from "../services/agent-service.js";
-import path from "path"
-import { fileURLToPath } from "url"
-import { dirname } from "path"
-
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = dirname(__filename)
 
 export async function bootstrapAgent(req, res, next) {
   try {
@@ -66,8 +61,8 @@ export async function downloadAgent(req, res, next) {
   try {
     const { token } = req.params
     const source = getAgentDownloadSource(token)
-    const filePath = path.resolve(__dirname, source.path)
-    return res.download(filePath, source.filename)
+    const signedUrl = await createR2AgentDownloadUrl(source.os)
+    return res.redirect(302, signedUrl)
   } catch (error) {
     next(error)
   }
