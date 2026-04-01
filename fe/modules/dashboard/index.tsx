@@ -60,7 +60,10 @@ export default async function DashboardPage({ date }: { date?: string }) {
                 </div>
 
                 {/* Sidebar (Right) */}
-                <div className="w-full lg:w-[320px] flex flex-col gap-6 pt-1">
+                <div className="w-full lg:w-[320px] flex flex-col gap-6">
+                    <div className="flex items-end mb-2 h-[34px]">
+                        <h2 className="text-sm font-extrabold text-[#FF0B5B] tracking-wide uppercase">Peak Performance</h2>
+                    </div>
                     <PeakPerformance data={summary.peak} />
                     <DeviceStats data={summary.stats} total={summary.total} />
                 </div>
