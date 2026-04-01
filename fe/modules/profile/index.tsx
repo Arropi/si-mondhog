@@ -118,7 +118,7 @@ export default function ProfilePage(profileProps: ProfileProps) {
                     </div>
                 </div>
 
-                <div className="relative bg-white rounded-4xl shadow-xl ring-1 ring-gray-100 px-20 py-14 mt-24 overflow-hidden">
+                <div className="relative bg-white rounded-4xl shadow-xl ring-1 ring-gray-100 px-10 py-12 mt-24 overflow-hidden">
                     <div className="absolute top-0 left-0 right-0 h-1" />
                     <h3 className="text-2xl font-bold text--secondary mb-6 border-b-2 border-gray-100 pb-4">
                         Detail Information
