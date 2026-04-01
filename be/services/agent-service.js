@@ -1,6 +1,106 @@
-import { createHash, timingSafeEqual, randomBytes } from "crypto"
+import { createHash, timingSafeEqual, randomBytes, createCipheriv, createDecipheriv } from "crypto"
 import { getMachineByActivationToken, updateMachine } from "../repositories/machine-repositories.js"
 import { addNewData } from "../repositories/machine-metrics-repositories.js"
+import { PORT } from "../config/env.js"
+
+const DOWNLOAD_TOKEN_TTL_MS = 1000 * 60 * 60 * 24
+const DOWNLOAD_TOKEN_SECRET = process.env.DOWNLOAD_TOKEN_SECRET || "fallback-download-secret"
+const AGENT_DOWNLOAD_BASE_URL = process.env.AGENT_DOWNLOAD_BASE_URL || `http://localhost:${PORT}`
+const DOWNLOAD_ALGORITHM = "aes-256-gcm"
+const DOWNLOAD_KEY = createHash("sha256").update(DOWNLOAD_TOKEN_SECRET).digest()
+
+function getAgentBinaryByOs(os) {
+    switch (os) {
+        case "Windows":
+            return { filename: "agent-windows.exe", path: "../dist/agent-windows.exe" }
+        case "Linux":
+            return { filename: "agent-linux", path: "../dist/agent-linux" }
+        case "macOS":
+            return { filename: "agent-macos", path: "../dist/agent-macos" }
+        default:
+            return null
+    }
+}
+
+export function createAgentDownloadToken(os) {
+    const binary = getAgentBinaryByOs(os)
+    if (!binary) {
+        const error = new Error("Unsupported operating system")
+        error.statusCode = 400
+        throw error
+    }
+
+    const payload = {
+        os,
+        exp: Date.now() + DOWNLOAD_TOKEN_TTL_MS,
+    }
+
+    const iv = randomBytes(12)
+    const cipher = createCipheriv(DOWNLOAD_ALGORITHM, DOWNLOAD_KEY, iv)
+    const encrypted = Buffer.concat([
+        cipher.update(JSON.stringify(payload), "utf8"),
+        cipher.final(),
+    ])
+    const authTag = cipher.getAuthTag()
+
+    return `${iv.toString("base64url")}.${encrypted.toString("base64url")}.${authTag.toString("base64url")}`
+}
+
+export function buildAgentDownloadUrl(os) {
+    const token = createAgentDownloadToken(os)
+    return `${AGENT_DOWNLOAD_BASE_URL}/api/agent/download/${token}`
+}
+
+export function getAgentDownloadSource(token) {
+    if (!token || typeof token !== "string") {
+        const error = new Error("Invalid download token")
+        error.statusCode = 400
+        throw error
+    }
+
+    const tokenParts = token.split(".")
+    if (tokenParts.length !== 3) {
+        const error = new Error("Invalid download token")
+        error.statusCode = 400
+        throw error
+    }
+
+    let payload
+    try {
+        const [ivB64, encryptedB64, authTagB64] = tokenParts
+        const iv = Buffer.from(ivB64, "base64url")
+        const encrypted = Buffer.from(encryptedB64, "base64url")
+        const authTag = Buffer.from(authTagB64, "base64url")
+
+        const decipher = createDecipheriv(DOWNLOAD_ALGORITHM, DOWNLOAD_KEY, iv)
+        decipher.setAuthTag(authTag)
+        const decrypted = Buffer.concat([
+            decipher.update(encrypted),
+            decipher.final(),
+        ])
+
+        payload = JSON.parse(decrypted.toString("utf8"))
+    } catch {
+        const error = new Error("Invalid download token payload")
+        error.statusCode = 403
+        throw error
+    }
+
+    if (!payload.exp || Date.now() > Number(payload.exp)) {
+        const error = new Error("Download token expired")
+        error.statusCode = 403
+        throw error
+    }
+
+    const binary = getAgentBinaryByOs(payload.os)
+    if (!binary) {
+        const error = new Error("Unsupported operating system")
+        error.statusCode = 400
+        throw error
+    }
+
+    return binary
+}
 
 export async function bootstrapService(id, specs){
     try {
