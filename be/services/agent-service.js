@@ -1,22 +1,34 @@
 import { createHash, timingSafeEqual, randomBytes, createCipheriv, createDecipheriv } from "crypto"
+import { S3Client, GetObjectCommand } from "@aws-sdk/client-s3"
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner"
 import { getMachineByActivationToken, updateMachine } from "../repositories/machine-repositories.js"
 import { addNewData } from "../repositories/machine-metrics-repositories.js"
-import { PORT } from "../config/env.js"
+import { PORT, R2_ACCESS_KEY_ID, R2_BUCKET_NAME, R2_ACCOUNT_ID, R2_SECRET_ACCESS_KEY, R2_SIGNED_URL_EXPIRES } from "../config/env.js"
 
 const DOWNLOAD_TOKEN_TTL_MS = 1000 * 60 * 60 * 24
 const DOWNLOAD_TOKEN_SECRET = process.env.DOWNLOAD_TOKEN_SECRET || "fallback-download-secret"
 const AGENT_DOWNLOAD_BASE_URL = process.env.AGENT_DOWNLOAD_BASE_URL || `http://localhost:${PORT}`
 const DOWNLOAD_ALGORITHM = "aes-256-gcm"
 const DOWNLOAD_KEY = createHash("sha256").update(DOWNLOAD_TOKEN_SECRET).digest()
+const R2_SIGNED_URL_TTL_SECONDS = Number(R2_SIGNED_URL_EXPIRES || 300)
+
+const r2Client = new S3Client({
+    region: "auto",
+    endpoint: R2_ACCOUNT_ID ? `https://${R2_ACCOUNT_ID}.r2.cloudflarestorage.com` : undefined,
+    credentials: R2_ACCESS_KEY_ID && R2_SECRET_ACCESS_KEY ? {
+        accessKeyId: R2_ACCESS_KEY_ID,
+        secretAccessKey: R2_SECRET_ACCESS_KEY,
+    } : undefined,
+})
 
 function getAgentBinaryByOs(os) {
     switch (os) {
         case "Windows":
-            return { filename: "agent-windows.exe", path: "../dist/agent-windows.exe" }
+            return { filename: "agent-windows.exe", key: "agent-windows.exe" }
         case "Linux":
-            return { filename: "agent-linux", path: "../dist/agent-linux" }
+            return { filename: "agent-linux", key: "agent-linux" }
         case "macOS":
-            return { filename: "agent-macos", path: "../dist/agent-macos" }
+            return { filename: "agent-macos", key: "agent-macos" }
         default:
             return null
     }
@@ -99,7 +111,37 @@ export function getAgentDownloadSource(token) {
         throw error
     }
 
-    return binary
+    return { os: payload.os, ...binary }
+}
+
+export async function createR2AgentDownloadUrl(os) {
+    if (!R2_BUCKET_NAME) {
+        const error = new Error("R2 bucket name is not configured")
+        error.statusCode = 500
+        throw error
+    }
+
+    if (!R2_ACCOUNT_ID || !R2_ACCESS_KEY_ID || !R2_SECRET_ACCESS_KEY) {
+        const error = new Error("R2 credentials are not configured")
+        error.statusCode = 500
+        throw error
+    }
+
+    const binary = getAgentBinaryByOs(os)
+    if (!binary) {
+        const error = new Error("Unsupported operating system")
+        error.statusCode = 400
+        throw error
+    }
+
+    const command = new GetObjectCommand({
+        Bucket: R2_BUCKET_NAME,
+        Key: binary.key,
+    })
+
+    return getSignedUrl(r2Client, command, {
+        expiresIn: R2_SIGNED_URL_TTL_SECONDS,
+    })
 }
 
 export async function bootstrapService(id, specs){
