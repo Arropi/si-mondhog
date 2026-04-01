@@ -35,7 +35,7 @@ export default function GraphicHardisk({ dataMetrics, totalDisk }: { dataMetrics
               contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
               itemStyle={{ color: '#EF4444', fontWeight: 'bold' }}
               labelStyle={{ color: '#9CA3AF', fontSize: '12px', fontWeight: 'bold', marginBottom: '8px' }}
-              formatter={(value: number) => [`${Number(value).toFixed(2)}%`, "Usage"]}
+              formatter={(value: any) => [`${Number(value).toFixed(2)}%`, "Usage"]}
             />
             <Area type="linear" dataKey="disk" stroke="#EF4444" fill="#FEE2E2" strokeWidth={2} />
           </AreaChart>
