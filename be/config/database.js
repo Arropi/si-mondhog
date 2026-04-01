@@ -1,6 +1,8 @@
 import mongoose from "mongoose";
 import { DB_URI } from "./env.js";
 export const connectDB = async () => {
+    console.log("NODE_ENV:", process.env.NODE_ENV);
+    console.log("DB_URI exists:", !!process.env.DB_URI);
     if (!DB_URI) {
         throw new Error("Need to provide DB_URI")
     }
