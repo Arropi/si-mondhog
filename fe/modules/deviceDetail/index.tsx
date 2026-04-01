@@ -14,7 +14,6 @@ import { DeviceDetailData } from "@/types";
 
 export default async function DetailDevice({ deviceData }: { deviceData: DeviceDetailData }) {
     const { machine, logs, metrics, highestStats } = deviceData;
-    console.log(Math.max(0, Math.round(highestStats[0].ram - logs[0].ramUsage)))
     const chartData = await formatMetricsForChart(metrics);
 
     const status = machine.status || "Pending";
