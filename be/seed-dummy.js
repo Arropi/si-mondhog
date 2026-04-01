@@ -32,27 +32,27 @@ async function seedData() {
         const dummyData = [];
         
         // 1) Spesifik request manual dari kamu (menggunakan tanggal 17/03/2026 sesuai tebakan saya karena di log kamu bulannya maret)
-        dummyData.push({
-            machineId: machineIdStr,
-            cpuUsage: 45,
-            ramUsage: 30,
-            diskUsage: 38.5,
-            timestamp: new Date("2026-03-17T22:00:00+07:00")
-        });
-        dummyData.push({
-            machineId: machineIdStr,
-            cpuUsage: 60,
-            ramUsage: 50,
-            diskUsage: 38.6,
-            timestamp: new Date("2026-03-17T23:00:00+07:00")
-        });
-        dummyData.push({
-            machineId: machineIdStr,
-            cpuUsage: 35,
-            ramUsage: 20,
-            diskUsage: 38.6,
-            timestamp: new Date("2026-03-18T17:00:00+07:00")
-        });
+        // dummyData.push({
+        //     machineId: machineIdStr,
+        //     cpuUsage: 45,
+        //     ramUsage: 30,
+        //     diskUsage: 38.5,
+        //     timestamp: new Date("2026-04-17T22:00:00+07:00")
+        // });
+        // dummyData.push({
+        //     machineId: machineIdStr,
+        //     cpuUsage: 60,
+        //     ramUsage: 50,
+        //     diskUsage: 38.6,
+        //     timestamp: new Date("2026-03-17T23:00:00+07:00")
+        // });
+        // dummyData.push({
+        //     machineId: machineIdStr,
+        //     cpuUsage: 35,
+        //     ramUsage: 20,
+        //     diskUsage: 38.6,
+        //     timestamp: new Date("2026-03-18T17:00:00+07:00")
+        // });
 
         // 2) Kumpulan data 7 Hari full perjam = 168 data untuk support test filter 1h, 12h, 1d mu berkerja
         const now = new Date();

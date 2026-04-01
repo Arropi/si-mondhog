@@ -74,6 +74,7 @@ export async function getMetricsByMachineId(machineId, type) {
 
 export async function getShortLogsByMachineId(machineId) {
   try {
+    const { oneWeekAgo, thisNightDay } = getTimeWeeksAgo();
     const metrics = await MachineMetrics.aggregate([
       {
         $addFields: helperFormattedTimestamp(),
@@ -86,6 +87,10 @@ export async function getShortLogsByMachineId(machineId) {
       {
         $match: {
           machineId: new mongoose.Types.ObjectId(machineId),
+          timestamp: {
+            $gte: oneWeekAgo,
+            $lte: thisNightDay,
+          }
         },
       },
       {
@@ -253,7 +258,6 @@ export async function getSummaryMetrics(lowBound, highBound) {
                         hour: "$_id.hour",
                       },
                     },
-                    timezone: "Asia/Jakarta",
                   },
                 },
                 averageCpuUsage: 1,
