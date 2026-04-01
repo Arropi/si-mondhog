@@ -41,7 +41,7 @@ export async function addMachine(req, res, next) {
         const { hostname, os, email } = req.body;
         const {id} = req.user
         const newMachine = await addMachineService(hostname, os, id);
-        await sendEmail(email, newMachine.token)
+        await sendEmail(email, newMachine.token, os)
         res.status(201).json({
             "message": "Machine added successfully",
             "machine": newMachine

@@ -25,7 +25,7 @@ export async function downloadCSVPerformance(req, res, next) {
         const { date } = req.query
         const csvStream = await csvExportPerformance(date)
         res.setHeader('Content-Type', 'text/csv')
-        res.setHeader('Content-Disposition', `attachment; filename="performance_logs.csv"`)
+        res.setHeader('Content-Disposition', `attachment; filename="performance_logs_${date?? 'weeks'}.csv"`)
         pipeline(csvStream, res, (err) => {
             if(err){
                 const error = new Error("Failed to download")
@@ -43,7 +43,7 @@ export async function downloadCSVEvent(req, res, next) {
         const { date } = req.query
         const csvStream = await csvExportEvents(date)
         res.setHeader('Content-Type', 'text/csv')
-        res.setHeader('Content-Disposition', `attachment; filename="events_logs.csv"`)
+        res.setHeader('Content-Disposition', `attachment; filename="events_logs_${date?? 'weeks'}.csv"`)
         pipeline(csvStream, res, (err) => {
             if(err){
                 const error = new Error("Failed to download")

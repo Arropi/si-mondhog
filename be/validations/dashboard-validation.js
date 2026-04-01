@@ -17,7 +17,8 @@ export async function dashboardSummaryValidation (req, res, next) {
           const sevenDaysAgo = new Date(
             now.getTime() - 7 * 24 * 60 * 60 * 1000
           );
-
+          sevenDaysAgo.setHours(0, 0, 0, 0);
+          console.log(sevenDaysAgo)
           return value >= sevenDaysAgo && value <= now;
         }, {
           message: "Date must be within last 7 days"
