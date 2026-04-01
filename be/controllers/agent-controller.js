@@ -2,8 +2,15 @@ import {
   bootstrapService,
   validateActivation,
   metricsService,
-  heartbeatService
+  heartbeatService,
+  getAgentDownloadSource
 } from "../services/agent-service.js";
+import path from "path"
+import { fileURLToPath } from "url"
+import { dirname } from "path"
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
 
 export async function bootstrapAgent(req, res, next) {
   try {
@@ -52,5 +59,16 @@ export async function heartbeatAgent(req, res, next) {
     res.status(200).json(updatedData);
   } catch (error) {
     next(error);
+  }
+}
+
+export async function downloadAgent(req, res, next) {
+  try {
+    const { token } = req.params
+    const source = getAgentDownloadSource(token)
+    const filePath = path.resolve(__dirname, source.path)
+    return res.download(filePath, source.filename)
+  } catch (error) {
+    next(error)
   }
 }
