@@ -36,7 +36,7 @@ export default function PaginationClient({ currentPage, totalPages, onPageChange
                 {currentPage < totalPages && (
                     <button
                         onClick={() => onPageChange(currentPage + 1)}
-                        className="px-8 py-3 bg-[#7C3AED] hover:bg-[#6D28D9] text-white font-bold rounded-2xl transition-all shadow-md shadow-purple-200 active:scale-95 cursor-pointer"
+                        className="px-8 py-3 bg--primary hover:bg-[#6D28D9] text-white font-bold rounded-2xl transition-all shadow-md shadow-purple-200 active:scale-95 cursor-pointer"
                     >
                         Next
                     </button>
