@@ -58,7 +58,7 @@ export default function ProfilePage(profileProps: ProfileProps) {
                             </button>
                             <button
                                 onClick={() => signOut({ callbackUrl: '/' })}
-                                className="px-8 py-2.5 rounded-2xl bg-[#8B5CF6] text-white font-bold hover:bg-[#7c3aed] transition-colors cursor-pointer"
+                                className="px-8 py-2.5 rounded-2xl bg--primary text-white font-bold hover:bg-[#7c3aed] transition-colors cursor-pointer"
                             >
                                 Yes
                             </button>
@@ -69,48 +69,48 @@ export default function ProfilePage(profileProps: ProfileProps) {
 
             <AddAdminModal isOpen={showAddAdminModal} onClose={() => setShowAddAdminModal(false)} />
 
-            <div className="flex items-center mt-10 ml-10 gap-3">
+            <div className="flex items-center mt-6 lg:mt-10 px-4 lg:px-10 gap-3">
                 <Image
                     src="/images/profileIcon.svg"
                     alt="Profile Icon"
                     width={28}
                     height={28}
                 />
-                <h2 className="text-2xl font-semibold text-black">Profile</h2>
+                <h2 className="text-2xl font-bold text-black">Profile</h2>
 
-                <div className="ml-auto mr-10 flex gap-4">
+                <div className="ml-auto flex gap-4">
                     {profile.role === "admin" && (
                         <button
                             onClick={() => setShowAddAdminModal(true)}
-                            className="flex items-center gap-2 px-6 py-3 bg--primary text-white font-medium rounded-xl hover:bg-purple-800 transition-colors cursor-pointer duration-300"
+                            className="flex items-center gap-2 px-4 py-2 bg--primary text-white font-medium rounded-xl hover:bg-purple-800 transition-colors cursor-pointer duration-300"
                         >
                             Add Admin
                         </button>
                     )}
                     <button
                         onClick={() => setShowLogoutModal(true)}
-                        className="flex items-center gap-2 px-6 py-3 bg--secondary text-white font-medium rounded-xl hover:bg-red-800 transition-colors cursor-pointer duration-300"
+                        className="flex items-center gap-2 px-4 py-2 bg--secondary text-white font-medium rounded-xl hover:bg-red-800 transition-colors cursor-pointer duration-300"
                     >
                         Log Out
                     </button>
                 </div>
             </div>
 
-            <div className="max-w-4xl mx-auto mt-8 px-6">
+            <div className="max-w-4xl mx-auto mt-4 lg:mt-8 px-6">
                 <div className="flex flex-col items-center justify-center mb-6">
-                    <div className="w-32 h-32 lg:w-40 lg:h-40 rounded-full overflow-hidden border-2 border-gray-200">
+                    <div className="w-32 h-32 lg:w-40 lg:h-40 rounded-full overflow-hidden shadow-lg">
                         {session?.user?.image ? (
                             <Image
                                 src={session.user.image}
                                 alt="profile"
-                                width={128}
-                                height={128}
+                                width={160}
+                                height={160}
                                 className="object-cover w-full h-full"
                                 unoptimized
                             />
                         ) : (
                             <div className="w-full h-full bg-gray-200 flex items-center justify-center">
-                                <span className="text-3xl font-medium text-gray-500 uppercase">
+                                <span className="text-4xl font-black text-gray-400 uppercase">
                                     {profile.name?.charAt(0) ?? "U"}
                                 </span>
                             </div>
@@ -118,7 +118,7 @@ export default function ProfilePage(profileProps: ProfileProps) {
                     </div>
                 </div>
 
-                <div className="relative bg-white rounded-4xl shadow-xl ring-1 ring-gray-100 px-10 py-12 mt-24 overflow-hidden">
+                <div className="relative bg-white rounded-3xl shadow-xl ring-1 ring-gray-100 px-6 py-8 lg:px-10 lg:py-12 mt-12 lg:mt-16 overflow-hidden">
                     <div className="absolute top-0 left-0 right-0 h-1" />
                     <h3 className="text-2xl font-bold text--secondary mb-6 border-b-2 border-gray-100 pb-4">
                         Detail Information
