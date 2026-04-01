@@ -1,8 +1,3 @@
-import dotenv from 'dotenv'
-dotenv.config({
-  path: '.env.development.local',
-})
-
 import express from 'express'
 import cors from 'cors'
 import authRoutes from './routes/auth-route.js'
