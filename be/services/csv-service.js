@@ -31,6 +31,7 @@ export async function csvExportPerformance(date) {
       lowBound = oneWeekAgo;
       highBound = thisNightDay;
     }
+    console.log(lowBound, highBound)
     const data = await getLogsMetrics(lowBound, highBound)
     process.nextTick(async () => {
       for (const performance of data) {

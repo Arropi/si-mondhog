@@ -19,7 +19,7 @@ import (
 	"github.com/shirou/gopsutil/v3/mem"
 )
 
-const backendURL = "http://localhost:3030/api/agent"
+const backendURL = "https://si-mondhog.vercel.app/api/agent"
 
 type Config struct {
 	MachineID string `json:"machine_id"`
