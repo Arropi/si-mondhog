@@ -11,12 +11,13 @@ import { specs, swaggerUi } from './config/swagger.js'
 import { errorMiddleware } from './middleware/error-middleware.js'
 import authMiddleware from './middleware/auth-middleware.js'
 import { arcjetMiddleware } from './middleware/arcjet-middleware.js'
+import { PORT } from './config/env.js'
 
 const app = express()
-const PORT = process.env.PORT
 
 app.use(express.json())
 app.use(cors())
+await connectDB()
 
 app.get('/', (req, res) => {
   res.send('Hello World!')
@@ -41,5 +42,4 @@ app.use(errorMiddleware)
 
 app.listen(PORT, async () => {
   console.log(`Server is running on port ${PORT}`)
-  await connectDB()
 })
