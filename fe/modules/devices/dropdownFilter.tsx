@@ -14,6 +14,10 @@ export default function DropdownFilter({ initialOs = "all" }: { initialOs?: stri
         } else {
             params.delete("os");
         }
+        
+        // Reset ke halaman 1 setiap kali filter berubah
+        params.set("page", "1");
+        
         // Update URL untuk fetching ulang data secara otomatis
         replace(`${pathname}?${params.toString()}`);
     };

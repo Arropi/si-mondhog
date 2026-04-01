@@ -26,11 +26,6 @@ export default function PerformanceSummaryClient({
                     <h2 className="text-[13px] font-bold text-gray-800 tracking-wide">
                         Performance Summary
                     </h2>
-                    {data.timestamp && (
-                        <span className="text-[11px] text-gray-400 font-bold uppercase tracking-widest text-right mt-1.5" suppressHydrationWarning>
-                            {data.timestamp.substring(0, 16)}
-                        </span>
-                    )}
                 </div>
                 <div className="grid grid-cols-2 gap-4">
                     <div className="bg-white rounded-2xl p-5 shadow-[0_2px_10px_rgba(0,0,0,0.02)] border border-gray-50">

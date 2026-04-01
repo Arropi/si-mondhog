@@ -143,8 +143,8 @@ export default function AddAdminModal({ isOpen, onClose }: AddAdminModalProps) {
                             if (errorMsg) setErrorMsg("");
                         }}
                         className={`w-full px-4 py-2.5 rounded-lg border focus:outline-none transition-colors ${errorMsg
-                                ? 'border-pink-500 focus:border-pink-500 focus:ring-1 focus:ring-pink-500'
-                                : 'border-gray-300 focus:border-[#8B5CF6] focus:ring-1 focus:ring-[#8B5CF6]'
+                            ? 'border-pink-500 focus:border-pink-500 focus:ring-1 focus:ring-pink-500'
+                            : 'border-gray-300 focus:border-[#8B5CF6] focus:ring-1 focus:ring-[#8B5CF6]'
                             }`}
                         placeholder="Enter admin email..."
                         disabled={status === "loading"}
