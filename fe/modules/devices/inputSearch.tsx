@@ -21,6 +21,8 @@ export default function InputSearch({ initialQuery = "" }: { initialQuery?: stri
             } else {
                 params.delete("query");
             }
+            // Reset ke halaman 1 setiap kali mencari
+            params.set("page", "1");
             // Update URL untuk fetching ulang data secara otomatis
             replace(`${pathname}?${params.toString()}`);
         }, 300);

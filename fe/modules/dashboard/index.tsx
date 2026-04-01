@@ -7,6 +7,7 @@ import PeakPerformance from "@/components/dashboard/peakPerformance";
 import DeviceStats from "@/components/dashboard/deviceStats";
 import LogsDeviceEvent from "../../components/dashboard/logDeviceEvent";
 import { getDashboardSummary } from "../../service/dashboardService";
+import DatePickerWeeks from "./datePickerWeeks";
 
 export default async function DashboardPage({ date }: { date?: string }) {
     const data = await getDashboardSummary(date);
@@ -36,7 +37,11 @@ export default async function DashboardPage({ date }: { date?: string }) {
                     </div>
 
                     {/* Date Picker */}
-                    {!isWeeksMode && <DatePickerClient selectedDate={date} />}
+                    {isWeeksMode ? (
+                        <DatePickerWeeks />
+                    ) : (
+                        <DatePickerClient selectedDate={date} />
+                    )}
 
                     {/* Charts RAM */}
                     <div>

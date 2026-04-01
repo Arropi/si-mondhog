@@ -5,6 +5,7 @@ import { downloadCsvClient } from "../../lib/csvClient";
 
 export default function ButtonDownloadCsv({ machineId }: { machineId: string }) {
     const { data: session } = useSession();
+    const isAdmin = (session?.user as any)?.role === "admin";
 
     const handleDownload = async () => {
         const token = (session?.user as any)?.accessToken;
@@ -25,6 +26,8 @@ export default function ButtonDownloadCsv({ machineId }: { machineId: string }) 
             alert("Gagal mengunduh CSV");
         }
     };
+
+    if (!isAdmin) return null;
 
     return (
         <button

@@ -34,7 +34,7 @@ export default function LogsGeneralClient({ initialData }: { initialData: Perfor
                         {logs.map((log, idx) => (
                             <div
                                 key={idx}
-                                className="grid grid-cols-7 text-xs font-medium text-gray-500 hover:text-gray-900 transition-colors py-4 items-center"
+                                className="grid grid-cols-7 text-xs font-medium text-gray-500 hover:text-gray-900 transition-colors py-4 items-center truncate"
                             >
                                 <div>{log.date}</div>
                                 <div>{log.name}</div>

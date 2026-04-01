@@ -105,7 +105,6 @@ export interface PerformanceSummaryData {
     cpuChange: number;
     highestRamUsage: number;
     ramChange: number;
-    timestamp: string;
 }
 
 /** Data formatting config for Peak Performance Client */
