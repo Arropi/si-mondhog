@@ -1,4 +1,4 @@
-import { profileService, searchUserService } from "../services/user-service.js"
+import { addAdminService, profileService, searchUserService } from "../services/user-service.js"
 
 export async function userController(req, res, next) {
     try {
@@ -35,11 +35,12 @@ export async function userSearchController(req, res, next) {
 
 export async function addAdmin(req, res, next){
     try {
-        const { id } = req.user
         const { email } = req.body
-        
+        const updatedUser = await addAdminService(email)
+
         res.status(200).json({
-            "message": "adding admin "
+            "message": "Admin added successfully",
+            "user": updatedUser
         })
     } catch (error) {
         next(error)
