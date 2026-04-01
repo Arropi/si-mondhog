@@ -98,7 +98,7 @@ export default function ProfilePage(profileProps: ProfileProps) {
 
             <div className="max-w-4xl mx-auto mt-8 px-6">
                 <div className="flex flex-col items-center justify-center mb-6">
-                    <div className="w-45 h-45 rounded-full overflow-hidden border-2 border-gray-200">
+                    <div className="w-32 h-32 lg:w-40 lg:h-40 rounded-full overflow-hidden border-2 border-gray-200">
                         {session?.user?.image ? (
                             <Image
                                 src={session.user.image}
@@ -110,7 +110,7 @@ export default function ProfilePage(profileProps: ProfileProps) {
                             />
                         ) : (
                             <div className="w-full h-full bg-gray-200 flex items-center justify-center">
-                                <span className="text-3xl font-medium text-gray-500">
+                                <span className="text-3xl font-medium text-gray-500 uppercase">
                                     {profile.name?.charAt(0) ?? "U"}
                                 </span>
                             </div>

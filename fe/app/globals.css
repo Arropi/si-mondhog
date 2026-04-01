@@ -1,5 +1,33 @@
 @import "tailwindcss";
 
+/* Responsive global scaling 
+   This will proportionally shrink all elements using Tailwind's rem units 
+   (fonts, paddings, margins, widths, heights) on smaller laptop screens 
+   to match the proportions seen on larger MacBook screens. 
+*/
+html {
+  font-size: 16px; /* Base size for MacBooks & larger displays */
+}
+
+@media (max-width: 1440px) {
+  html {
+    font-size: 15px; /* Slight zoom out for mid-size laptops */
+  }
+}
+
+@media (max-width: 1280px) {
+  html {
+    font-size: 14px; /* More zoom out for smaller laptops */
+  }
+}
+
+@media (max-width: 1024px) {
+  html {
+    font-size: 13px; /* Zoom out for very small screens / tablets in landscape */
+  }
+}
+
+
 :root {
   --background: #F4F7FE;
   --foreground: #171717;
