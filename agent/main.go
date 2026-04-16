@@ -260,7 +260,6 @@ func runAgentLoop() {
 }
 
 func getMachineSpecs() map[string]interface{} {
-	
 
 	hostInfo, _ := host.Info()
 
