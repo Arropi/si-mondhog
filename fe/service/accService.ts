@@ -6,6 +6,13 @@ import { authOptions } from "@/lib/auth";
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3030/api";
 
 export async function addAdminService(email: string) {
+    if (!email.endsWith("@mail.ugm.ac.id") && !email.endsWith("@ugm.ac.id")) {
+        return {
+            success: false,
+            message: "Email must be a valid UGM email (@mail.ugm.ac.id or @ugm.ac.id)"
+        };
+    }
+
     try {
         const session = await getServerSession(authOptions);
         const token = (session?.user as any)?.accessToken;

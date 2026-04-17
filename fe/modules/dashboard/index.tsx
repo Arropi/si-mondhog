@@ -24,12 +24,12 @@ export default async function DashboardPage({ date }: { date?: string }) {
 
     return (
         <div key={date || "weeks"} className="w-full min-h-screen bg--background p-4 lg:p-8 font-sans animate-fade-in">
-            <div className="flex flex-col lg:flex-row gap-8">
+            <div className="grid grid-cols-1 xl:grid-cols-[1fr_320px] gap-8 items-start w-full">
                 {/* Main Content (Left) */}
-                <div className="flex-1 flex flex-col gap-6">
+                <div className="flex flex-col gap-6 min-w-0">
                     {/* Header Summary */}
-                    <div className="flex justify-between items-end mb-2">
-                        <h1 className="text-3xl font-extrabold text-[#FF0B5B] tracking-tight">Summary</h1>
+                    <div className="flex justify-between items-end mb-2 h-[40px] pb-1">
+                        <h1 className="text-3xl font-extrabold text-[#FF0B5B] tracking-tight leading-none">Summary</h1>
                         <div className="flex gap-4 text-sm font-bold uppercase tracking-wider">
                             <a href={`/dashboard?date=${todayDate}`} className={!isWeeksMode ? "text--primary" : "text-gray-300"}>Days</a>
                             <a href={`/dashboard`} className={isWeeksMode ? "text--primary" : "text-gray-300"}>Weeks</a>
@@ -60,7 +60,10 @@ export default async function DashboardPage({ date }: { date?: string }) {
                 </div>
 
                 {/* Sidebar (Right) */}
-                <div className="w-full lg:w-[320px] flex flex-col gap-6 pt-1">
+                <div className="w-full flex flex-col gap-6 lg:sticky lg:top-20">
+                    <div className="flex items-end mb-2 h-[40px] pb-1">
+                        <h2 className="text-sm font-extrabold text--secondary tracking-wide uppercase leading-none">Peak Performance</h2>
+                    </div>
                     <PeakPerformance data={summary.peak} />
                     <DeviceStats data={summary.stats} total={summary.total} />
                 </div>

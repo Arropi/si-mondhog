@@ -14,8 +14,6 @@ export default function PeakPerformanceClient({ initialData }: { initialData: Pe
 
     return (
         <div className="flex flex-col gap-4">
-            <h2 className="text-sm font-extrabold text-[#FF0B5B] tracking-wide mb-1 uppercase">Peak Performance</h2>
-
             <div className="bg-white rounded-2xl p-6 shadow-[0_4px_20px_rgba(0,0,0,0.03)] border border-gray-100 flex flex-col gap-5">
                 <div className="flex items-center justify-between font-black uppercase text-[10px] text-gray-400">
                     Peak RAM
