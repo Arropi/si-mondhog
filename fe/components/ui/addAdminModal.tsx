@@ -63,8 +63,8 @@ export default function AddAdminModal({ isOpen, onClose }: AddAdminModalProps) {
 
     if (status === "success") {
         return (
-            <div className="fixed inset-0 z-[99999] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 transition-opacity animate-in fade-in duration-300">
-                <div className="bg-white rounded-2xl p-10 max-w-sm w-full shadow-2xl flex flex-col items-center gap-4 transform transition-transform zoom-in-95">
+            <div className="fixed inset-0 z-[99999] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-fade-in">
+                <div className="bg-white rounded-2xl p-10 max-w-sm w-full shadow-2xl flex flex-col items-center gap-4 animate-scale-up">
                     <div className="w-16 h-16 rounded-full bg-emerald-400 border-[4px] border-emerald-100 flex items-center justify-center mb-2 shadow-sm">
                         <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round">
                             <polyline points="20 6 9 17 4 12"></polyline>
@@ -86,8 +86,8 @@ export default function AddAdminModal({ isOpen, onClose }: AddAdminModalProps) {
 
     if (status === "error") {
         return (
-            <div className="fixed inset-0 z-[99999] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 transition-opacity animate-in fade-in duration-300">
-                <div className="bg-white rounded-2xl p-10 max-w-sm w-full shadow-2xl flex flex-col items-center gap-4 transform transition-transform zoom-in-95">
+            <div className="fixed inset-0 z-99999 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-fade-in">
+                <div className="bg-white rounded-2xl p-10 max-w-sm w-full shadow-2xl flex flex-col items-center gap-4 animate-scale-up">
                     <div className="w-16 h-16 rounded-full bg-red-500 border-[4px] border-red-100 flex items-center justify-center mb-2 shadow-sm">
                         <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round">
                             <line x1="18" y1="6" x2="6" y2="18"></line>
@@ -119,13 +119,13 @@ export default function AddAdminModal({ isOpen, onClose }: AddAdminModalProps) {
     }
 
     return (
-        <div className="fixed inset-0 z-[99999] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 transition-opacity animate-in fade-in duration-300">
+        <div className="fixed inset-0 z-[99999] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-fade-in">
             <form
                 onSubmit={(e) => {
                     e.preventDefault();
                     handleAdd();
                 }}
-                className="bg-white rounded-2xl p-8 max-w-md w-full shadow-2xl flex flex-col gap-6 transform transition-transform zoom-in-95"
+                className="bg-white rounded-2xl p-8 max-w-md w-full shadow-2xl flex flex-col gap-6 animate-scale-up"
             >
                 <h3 className="text-xl font-bold text-[#8B5CF6]">
                     Add Admin

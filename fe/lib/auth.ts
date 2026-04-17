@@ -25,7 +25,8 @@ export const authOptions: NextAuthOptions = {
         async jwt({ token, user, account }) {
             if (account) {
                 console.log("user nya: ", user.name, "dengan email: ", user.email)
-                const fetching = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/login`, {
+                console.log(process.env.NEXT_PUBLIC_API_URL)
+                const fetching = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/login`, {
                     method: 'POST',
                     credentials: 'include',
                     headers: { 'Content-Type': 'application/json' },

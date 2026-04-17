@@ -36,12 +36,12 @@ export default function LogsGeneralClient({ initialData }: { initialData: Perfor
                                 key={idx}
                                 className="grid grid-cols-7 text-xs font-medium text-gray-500 hover:text-gray-900 transition-colors py-4 items-center truncate"
                             >
-                                <div>{log.date}</div>
-                                <div>{log.name}</div>
-                                <div>{log.os}</div>
-                                <div>{log.cpu}</div>
-                                <div>{log.ram}</div>
-                                <div>{log.disk}</div>
+                                <div className="max-w-[100px] truncate">{log.date}</div>
+                                <div className="max-w-[100px] truncate">{log.name}</div>
+                                <div className="max-w-[100px] truncate">{log.os}</div>
+                                <div className="max-w-[100px] truncate">{log.cpu}</div>
+                                <div className="max-w-[100px] truncate">{log.ram}</div>
+                                <div className="max-w-[100px] truncate">{log.disk}</div>
                                 <div>{log.timestamp}</div>
                             </div>
                         ))}
