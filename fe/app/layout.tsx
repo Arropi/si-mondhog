@@ -4,7 +4,6 @@ import "./globals.css";
 import { Providers } from "../features/providers";
 
 const plusJakartaSans = Plus_Jakarta_Sans({
-  variable: "--font-plus-jakarta-sans",
   subsets: ["latin"],
 });
 
@@ -21,7 +20,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${plusJakartaSans.variable} antialiased `} 
+        className={`${plusJakartaSans.className} antialiased `}
       >
         <Providers>
           {children}

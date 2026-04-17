@@ -16,11 +16,13 @@ export default function GraphicHardisk({ dataMetrics, totalDisk }: { dataMetrics
           </div>
           <h2 className="text-[13px] font-extrabold text-gray-900 tracking-wide">Harddisk Usage</h2>
         </div>
-        <div className="flex items-center gap-2">
-          <span className="w-2 h-2 rounded-full bg-red-500"></span>
-          <span className="text-[11px] text-gray-400 font-bold uppercase tracking-widest">Space Used</span>
+        <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-red-500"></span>
+            <span className="text-[11px] text-gray-400 font-bold uppercase tracking-widest">Space Used</span>
+          </div>
+          <div className="text-xl font-extrabold text-gray-900">{gbUsed} GB</div>
         </div>
-        <div className="text-xl font-extrabold text-gray-900 ml-4">{gbUsed} GB</div>
       </div>
 
       <div className="flex justify-end mb-2">
