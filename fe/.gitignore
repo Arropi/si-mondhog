@@ -11,6 +11,12 @@ node_modules/
 !.yarn/plugins
 !.yarn/releases
 !.yarn/versions
+.open-next/
+
+# wrangler files
+.wrangler
+.dev.vars*
+!.dev.vars.example
 
 # testing
 /coverage

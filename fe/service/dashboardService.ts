@@ -12,11 +12,10 @@ export async function getDashboardSummary(date?: string): Promise<DashboardSumma
         const session = await getServerSession(authOptions);
         const token = (session?.user as any)?.accessToken;
         const url = date ? `${API_BASE_URL}/dashboard/summary?date=${date}` : `${API_BASE_URL}/dashboard/summary`;
+
         console.log(url)
-        console.log(token)
 
         const response = await fetch(url, {
-            cache: "no-store",
             headers: {
                 "Authorization": `Bearer ${token}`,
             }
