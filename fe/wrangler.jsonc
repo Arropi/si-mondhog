@@ -1,15 +1,14 @@
 {
-  "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "my-project",
-  "main": "dist/_worker.js/index.js",
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "main": ".open-next/worker.js",
+  "name": "symon-frontend",
   // Set this to today's date
-  "compatibility_date": "2026-04-17",
-  "compatibility_flags": ["nodejs_compat"],
+  "compatibility_date": "2026-04-20",
+  "compatibility_flags": [
+    "nodejs_compat"
+  ],
   "assets": {
-    "binding": "ASSETS",
-    "directory": "dist",
-  },
-  "observability": {
-    "enabled": true,
-  },
+    "directory": ".open-next/assets",
+    "binding": "ASSETS"
+  }
 }
