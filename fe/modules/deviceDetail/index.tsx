@@ -2,7 +2,7 @@ import Link from "next/link";
 import GraphicRAM from "./graphicRAM";
 import GraphicHardisk from "./graphicHardisk";
 import GraphicCPU from "./graphicCPU";
-import DeviceInfoCardClient from "./DeviceSpecName";
+import DeviceInfoCardClient from "./deviceSpecName";
 import DeleteMachineButton from "./buttonDeleteClient";
 import PerformanceSummaryClient from "./performanceSummary";
 import LogDeviceActivityClient from "./logDeviceActivityClient";

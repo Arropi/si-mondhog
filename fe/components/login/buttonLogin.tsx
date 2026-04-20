@@ -3,8 +3,8 @@
 import { signIn } from "next-auth/react"
 import Image from "next/image"
 
-const handleLogin = async() => {
-    await signIn("google", {callbackUrl: '/dashboard'})
+const handleLogin = async () => {
+    await signIn("google", { callbackUrl: '/dashboard' })
 }
 
 const ButtonLogin = () => {

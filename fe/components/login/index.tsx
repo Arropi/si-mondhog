@@ -3,10 +3,10 @@ import ButtonLogin from "./buttonLogin"
 
 const LoginPage = () => {
     return (
-        <div className="bg--primary min-h-screen flex items-center justify-center">
-            <div className="bg-white w-full rounded-3xl p-4 md:p-6 flex mx-6 md:mx-10 my-6 md:my-10" style={{ minHeight: 'calc(100vh - 48px)' }}>
-                <div className="relative flex-1 rounded-2xl flex flex-col items-center justify-center p-6 md:p-8 text-center">
-                    <svg className="absolute inset-4 w-[calc(100%-32px)] h-[calc(100%-32px)] pointer-events-none" xmlns="http://www.w3.org/2000/svg">
+        <div className="bg--primary min-h-screen w-full overflow-x-hidden flex items-center justify-center">
+            <div className="bg-white w-full rounded-2xl sm:rounded-3xl p-4 md:p-6 flex mx-4 sm:mx-6 md:mx-10 my-4 sm:my-6 md:my-10" style={{ minHeight: 'calc(100vh - 48px)' }}>
+                <div className="relative flex-1 rounded-2xl flex flex-col items-center justify-center p-4 sm:p-6 md:p-8 text-center overflow-hidden">
+                    <svg className="absolute inset-1 sm:inset-4 pointer-events-none w-[calc(100%-8px)] sm:w-[calc(100%-32px)] h-[calc(100%-8px)] sm:h-[calc(100%-32px)]" xmlns="http://www.w3.org/2000/svg">
                         <rect
                             width="100%"
                             height="100%"
