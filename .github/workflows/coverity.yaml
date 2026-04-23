@@ -40,7 +40,8 @@ jobs:
 
       - name: Run Coverity Build
         run: |
-          TOOL_DIR=$(find .. -maxdepth 1 -type d -name "cov-analysis*" | head -n 1)
+          TOOL_DIR=$(find /home/runner/work -type d -name "cov-analysis*" | head -n 1)
+          echo $TOOL_DIR
           $TOOL_DIR/bin/cov-build --dir cov-int npm run build
 
       - name: Compress Analysis
