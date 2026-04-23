@@ -1,0 +1,57 @@
+name: Coverity Scan
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  coverity:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: ./be
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Build Backend
+        run: npm run build
+
+      - name: Download Coverity Tool
+        run: |
+          wget https://scan.coverity.com/download/linux64 \
+            --post-data "project=Arropi/si-mondhog&token=${{ secrets.COVERITY_SCAN_TOKEN }}" \
+            -O coverity_tool.tgz
+
+      - name: Extract Coverity Tool
+        run: tar xzf coverity_tool.tgz
+
+      - name: Run Coverity Build
+        run: |
+          TOOL_DIR=$(find .. -maxdepth 1 -type d -name "cov-analysis*" | head -n 1)
+          $TOOL_DIR/bin/cov-build --dir cov-int npm run build
+
+      - name: Compress Analysis
+        run: tar czf coverity-results.tgz cov-int
+
+      - name: Upload To Coverity
+        run: |
+          curl \
+            --form token=${{ secrets.COVERITY_SCAN_TOKEN }} \
+            --form email=${{ secrets.COVERITY_EMAIL }} \
+            --form file=@coverity-results.tgz \
+            --form version="${{ github.sha }}" \
+            --form description="GitHub Actions Build" \
+            https://scan.coverity.com/builds?project=Arropi/si-mondhog
