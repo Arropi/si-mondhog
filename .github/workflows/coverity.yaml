@@ -12,7 +12,7 @@ jobs:
 
     defaults:
       run:
-        working-directory: ./be
+        working-directory: ./fe
 
     steps:
       - name: Checkout Repository
