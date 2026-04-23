@@ -26,7 +26,7 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
-      - name: Build Backend
+      - name: Build Frontend
         run: npm run build
 
       - name: Download Coverity Tool
@@ -53,5 +53,5 @@ jobs:
             --form email=${{ secrets.COVERITY_EMAIL }} \
             --form file=@coverity-results.tgz \
             --form version="${{ github.sha }}" \
-            --form description="GitHub Actions Build" \
+            --form description="Frontend Coverity Scan" \
             https://scan.coverity.com/builds?project=Arropi/si-mondhog
