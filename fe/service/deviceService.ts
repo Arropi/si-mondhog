@@ -105,7 +105,6 @@ export async function getDeviceList(): Promise<Device[]> {
             };
         });
 
-        console.log("Daftar Device NOWW ====>", mappedDevices);
         return mappedDevices;
     } catch (error) {
         console.error("Kesalahan dalam getDeviceList:", error);
@@ -201,6 +200,7 @@ export async function updateDeviceService(id: string, data: { hostname?: string;
             },
             body: JSON.stringify(data)
         });
+        console.log(response);
 
         if (!response.ok) {
             const errorResponse = await response.json();

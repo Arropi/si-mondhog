@@ -7,13 +7,11 @@ import type { RawMetric, ChartDataPoint, DashboardSummary } from "@/types";
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3030/api";
 
 export async function getDashboardSummary(date?: string): Promise<DashboardSummary | null> {
-    console.log(API_BASE_URL)
     try {
         const session = await getServerSession(authOptions);
         const token = (session?.user as any)?.accessToken;
         const url = date ? `${API_BASE_URL}/dashboard/summary?date=${date}` : `${API_BASE_URL}/dashboard/summary`;
 
-        console.log(url)
 
         const response = await fetch(url, {
             headers: {
@@ -21,7 +19,6 @@ export async function getDashboardSummary(date?: string): Promise<DashboardSumma
             }
         });
 
-        console.log(response)
         if (!response.ok) throw new Error("Failed to fetch dashboard summary");
 
         const data = await response.json();

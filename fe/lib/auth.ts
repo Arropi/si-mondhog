@@ -24,8 +24,6 @@ export const authOptions: NextAuthOptions = {
         },
         async jwt({ token, user, account }) {
             if (account) {
-                console.log("user nya: ", user.name, "dengan email: ", user.email)
-                console.log(process.env.NEXT_PUBLIC_API_URL)
                 const fetching = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/login`, {
                     method: 'POST',
                     credentials: 'include',
@@ -36,7 +34,6 @@ export const authOptions: NextAuthOptions = {
                     }),
                 })
                 const result = await fetching.json()
-                console.log("INI TOKENNYA LEK ====>", result?.token)
                 token.role = result?.user?.role
                 token.accessToken = result?.token
                 token.id = result?.user?._id
