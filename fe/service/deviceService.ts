@@ -6,7 +6,7 @@ import { authOptions } from "@/lib/auth";
 import { revalidatePath } from "next/cache";
 import type { RawMetric, ChartDataPoint, Machine, DeviceDetailData } from "@/types";
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3030/api";
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export interface DeviceStats {
     total: number;
