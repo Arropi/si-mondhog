@@ -12,14 +12,15 @@ export default function ButtonDownloadCsv({ machineId }: { machineId: string }) 
         if (!token) return alert("Session not found. Please relogin.");
 
         try {
-            const blob = await downloadCsvClient(machineId, token);
-            const url = window.URL.createObjectURL(blob);
+            const csvText = await downloadCsvClient(machineId, token);
+            const blob = new Blob([csvText], { type: "text/csv;charset=utf-8;" });
+            const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
             a.download = `${machineId}_metrics.csv`;
             document.body.appendChild(a);
             a.click();
-            window.URL.revokeObjectURL(url);
+            URL.revokeObjectURL(url);
             document.body.removeChild(a);
         } catch (error) {
             console.error(error);
