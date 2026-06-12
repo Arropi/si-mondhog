@@ -6,30 +6,30 @@ export default function GraphicHardisk({ dataMetrics, totalDisk }: { dataMetrics
   const gbUsed = ((lastValue / 100) * totalDisk).toFixed(1);
   
   return (
-    <div className="bg-white rounded-2xl p-6 shadow-[0_2px_10px_rgba(0,0,0,0.04)] border border-gray-50">
+    <div id="device-harddisk-chart-card" className="bg-white rounded-2xl p-6 shadow-[0_2px_10px_rgba(0,0,0,0.04)] border border-gray-50">
       <div className="flex justify-between items-center mb-6">
         <div className="flex items-center gap-3">
-          <div className="p-2 bg-orange-50 rounded-xl text-orange-500">
+          <div id="device-harddisk-chart-icon" className="p-2 bg-orange-50 rounded-xl text-orange-500">
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4" />
             </svg>
           </div>
-          <h2 className="text-[13px] font-extrabold text-gray-900 tracking-wide">Harddisk Usage</h2>
+          <h2 id="device-harddisk-chart-title" className="text-[13px] font-extrabold text-gray-900 tracking-wide">Harddisk Usage</h2>
         </div>
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-red-500"></span>
             <span className="text-[11px] text-gray-400 font-bold uppercase tracking-widest">Space Used</span>
           </div>
-          <div className="text-xl font-extrabold text-gray-900">{gbUsed} GB</div>
+          <div id="device-harddisk-chart-usage" className="text-xl font-extrabold text-gray-900">{gbUsed} GB</div>
         </div>
       </div>
 
-      <div className="flex justify-end mb-2">
+      <div id="device-harddisk-chart-scale" className="flex justify-end mb-2">
         <span className="text-[11px] font-bold text-gray-400 tracking-wide">{totalDisk} GB / <span className="text-red-600">{lastValue}%</span></span>
       </div>
 
-      <div className="w-full h-48 border border-gray-50 rounded-xl overflow-hidden flex items-end bg-[#FAFAFC] relative">
+      <div id="device-harddisk-chart-plot" className="w-full h-48 border border-gray-50 rounded-xl overflow-hidden flex items-end bg-[#FAFAFC] relative">
         <ResponsiveContainer width="100%" height="100%">
           <AreaChart data={dataMetrics} margin={{ top: 10, right: 0, left: 0, bottom: 0 }}>
             <XAxis dataKey="name" hide={true} />
@@ -44,7 +44,7 @@ export default function GraphicHardisk({ dataMetrics, totalDisk }: { dataMetrics
         </ResponsiveContainer>
       </div>
 
-      <div className="flex justify-between mt-3 text-[10px] text-gray-400 font-bold tracking-wide uppercase">
+      <div id="device-harddisk-chart-footer" className="flex justify-between mt-3 text-[10px] text-gray-400 font-bold tracking-wide uppercase">
         <span suppressHydrationWarning>{dataMetrics.length > 0 ? dataMetrics[0].name : "N/A"}</span>
         <span suppressHydrationWarning>{dataMetrics.length > 0 ? dataMetrics[dataMetrics.length - 1].name : "NOW"}</span>
       </div>

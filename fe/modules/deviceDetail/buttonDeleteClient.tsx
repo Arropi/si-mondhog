@@ -44,6 +44,7 @@ export default function DeleteMachineButton({ machineId, deviceName = "Unknown D
     return (
         <>
             <button 
+                id="delete-machine-btn"
                 onClick={() => setIsModalOpen(true)}
                 className={`flex items-center gap-2 bg--secondary hover:bg-red-600 text-white px-4 py-2.5 rounded-xl text-[13px] font-bold transition-colors shadow-sm cursor-pointer`}
             >

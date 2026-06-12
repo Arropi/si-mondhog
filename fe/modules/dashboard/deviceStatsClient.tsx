@@ -19,32 +19,32 @@ export default function DeviceStatsClient({
         Device
       </h2>
 
-      <div className="bg-white rounded-2xl p-4 shadow-[0_2px_10px_rgba(0,0,0,0.02)] border border-gray-100">
+      <div id="device-stats-total-card" className="bg-white rounded-2xl p-4 shadow-[0_2px_10px_rgba(0,0,0,0.02)] border border-gray-100">
         <div className="text-[10px] font-bold text-[#6B46C1] uppercase tracking-widest mb-1">
           TOTAL DEVICE
         </div>
-        <div className="text-2xl font-black text-gray-900">{stats.total}</div>
+        <div id="device-stats-total-value" className="text-2xl font-black text-gray-900">{stats.total}</div>
       </div>
 
-      <div className="bg-white rounded-2xl p-4 shadow-[0_2px_10px_rgba(0,0,0,0.02)] border border-gray-100">
+      <div id="device-stats-online-card" className="bg-white rounded-2xl p-4 shadow-[0_2px_10px_rgba(0,0,0,0.02)] border border-gray-100">
         <div className="text-[10px] font-bold text-[#22C55E] uppercase tracking-widest mb-1">
           ONLINE
         </div>
-        <div className="text-2xl font-black text-gray-900">{stats.online}</div>
+        <div id="device-stats-online-value" className="text-2xl font-black text-gray-900">{stats.online}</div>
       </div>
 
-      <div className="bg-white rounded-2xl p-4 shadow-[0_2px_10px_rgba(0,0,0,0.02)] border border-gray-100">
+      <div id="device-stats-offline-card" className="bg-white rounded-2xl p-4 shadow-[0_2px_10px_rgba(0,0,0,0.02)] border border-gray-100">
         <div className="text-[10px] font-bold text-[#FF0B5B] uppercase tracking-widest mb-1">
           OFFLINE
         </div>
-        <div className="text-2xl font-black text-gray-900">{stats.offline}</div>
+        <div id="device-stats-offline-value" className="text-2xl font-black text-gray-900">{stats.offline}</div>
       </div>
 
-      <div className="bg-white rounded-2xl p-4 shadow-[0_2px_10px_rgba(0,0,0,0.02)] border border-gray-100">
+      <div id="device-stats-pending-card" className="bg-white rounded-2xl p-4 shadow-[0_2px_10px_rgba(0,0,0,0.02)] border border-gray-100">
         <div className="text-[10px] font-bold text-yellow-500 uppercase tracking-widest mb-1">
           PENDING
         </div>
-        <div className="text-2xl font-black text-gray-900">{stats.pending}</div>
+        <div id="device-stats-pending-value" className="text-2xl font-black text-gray-900">{stats.pending}</div>
       </div>
     </div>
   );

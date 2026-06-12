@@ -68,11 +68,12 @@ export default function DeviceInfoCardClient({
 
     if (isEditing) {
         return (
-            <div className="bg-white rounded-2xl p-6 shadow-[0_2px_10px_rgba(0,0,0,0.04)] border border-gray-50 h-[170px] flex flex-col justify-center">
-                <div className="text-[12px] font-bold text-gray-500 uppercase tracking-wider mb-8">Device Name & OS</div>
+            <div id="device-spec-edit-card" className="bg-white rounded-2xl p-6 shadow-[0_2px_10px_rgba(0,0,0,0.04)] border border-gray-50 h-[170px] flex flex-col justify-center">
+                <div id="device-spec-edit-title" className="text-[12px] font-bold text-gray-500 uppercase tracking-wider mb-8">Device Name & OS</div>
                 <div className="flex flex-col gap-4">
                     <div className="relative">
                         <input 
+                            id="device-spec-name-input"
                             ref={inputRef}
                             className={`text-2xl font-extrabold text-gray-900 truncate focus:outline-none bg-transparent border-b pb-1 caret-black w-full transition-colors ${error ? "border-[#FF4D4F]" : "border-gray-200 focus:border-[#6B46C1]"}`}
                             value={hostname}
@@ -89,10 +90,11 @@ export default function DeviceInfoCardClient({
                                 }
                             }}
                         />
-                        {error && <div className="text-[#FF4D4F] text-[13px] absolute mt-0.5">{error}</div>}
+                        {error && <div id="device-spec-name-error" className="text-[#FF4D4F] text-[13px] absolute mt-0.5">{error}</div>}
                     </div>
                     <div className="flex gap-3 mt-2">
                         <button 
+                            id="device-spec-save-btn"
                             onClick={handleUpdate} 
                             disabled={isSubmitting} 
                             className="bg-[#6B46C1] hover:bg-purple-800 text-white font-bold px-5 py-2 rounded-xl text-sm transition-colors cursor-pointer"
@@ -100,6 +102,7 @@ export default function DeviceInfoCardClient({
                             {isSubmitting ? "Saving..." : "Save"}
                         </button>
                         <button 
+                            id="device-spec-cancel-btn"
                             onClick={() => {
                                 setHostname(currentHostname);
                                 setError("");
@@ -116,25 +119,26 @@ export default function DeviceInfoCardClient({
     }
 
     return (
-        <div className="bg-white rounded-2xl p-6 shadow-[0_2px_10px_rgba(0,0,0,0.04)] border border-gray-50 h-[170px] flex flex-col justify-between">
+        <div id="device-spec-info-card" className="bg-white rounded-2xl p-6 shadow-[0_2px_10px_rgba(0,0,0,0.04)] border border-gray-50 h-[170px] flex flex-col justify-between">
             <div>
                 <div className="flex justify-between items-start mb-4">
-                    <div className="text-[12px] font-bold text-gray-500 uppercase tracking-wider">Device Name & OS</div>
-                    <div className="flex items-center justify-center bg-gray-50 w-12 h-12 rounded-xl text-gray-400">
+                    <div id="device-spec-info-title" className="text-[12px] font-bold text-gray-500 uppercase tracking-wider">Device Name & OS</div>
+                    <div id="device-spec-os-icon" className="flex items-center justify-center bg-gray-50 w-12 h-12 rounded-xl text-gray-400">
                         {currentOs ? OsIcons[currentOs.toLowerCase()] || OsIcons["linux"] : OsIcons["linux"]}
                     </div>
                 </div>
                 
                 <div className="flex items-center gap-3 mb-2 overflow-hidden">
-                    <h1 className="text-2xl font-extrabold text-gray-900 truncate max-w-[250px]">{currentHostname}</h1>
-                    <span className={`${statusColor} text-[10px] font-bold px-2 py-1 rounded-md tracking-widest shrink-0`}>{status}</span>
+                    <h1 id="device-spec-hostname" className="text-2xl font-extrabold text-gray-900 truncate max-w-[250px]">{currentHostname}</h1>
+                    <span id="device-spec-status" className={`${statusColor} text-[10px] font-bold px-2 py-1 rounded-md tracking-widest shrink-0`}>{status}</span>
                 </div>
             </div>
             
             <div className="flex justify-between items-end">
-                <div className="text-sm font-semibold text-gray-400 capitalize">{currentOs}</div>
+                <div id="device-spec-os-text" className="text-sm font-semibold text-gray-400 capitalize">{currentOs}</div>
                 {isAdmin && (
                     <button 
+                        id="device-spec-edit-btn"
                         onClick={() => setIsEditing(true)}
                         className="text-[13px] font-bold text-gray-500 flex items-center gap-1.5 hover:text-purple-600 transition-colors cursor-pointer"
                     >

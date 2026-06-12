@@ -11,9 +11,11 @@ const ButtonSwitchAccount = () => {
     return (
         <>
             <button
+                id="switch-account-button"
                 onClick={handleLogin}
                 className="flex items-center justify-center gap-3 px-6 sm:px-8 py-3 bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md hover:bg-gray-50 transition-all font-semibold text-black w-lg cursor-pointer">
                 <Image
+                    id="switch-account-button-icon"
                     src="/images/switchAccIcon.svg"
                     alt="Google Icon"
                     width={24}

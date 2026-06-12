@@ -16,6 +16,7 @@ export default function DropdownTimeSeries() {
     return (
         <div className="relative">
             <select
+                id="device-time-series-dropdown"
                 value={timeSeries}
                 onChange={(e) => handleChange(e.target.value)}
                 className="appearance-none bg-white border border-gray-200 text-gray-700 py-2 pl-4 pr-10 rounded-lg text-sm font-medium focus:outline-none focus:ring-2 focus:ring-purple-500 shadow-sm cursor-pointer"

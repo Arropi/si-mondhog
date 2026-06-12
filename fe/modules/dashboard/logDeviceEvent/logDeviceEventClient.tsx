@@ -32,9 +32,9 @@ export default function LogsDeviceEventClient({
       </div>
 
       <div className="w-full overflow-x-auto">
-        <div className="min-w-[700px]">
+        <div id="event-logs-table" className="min-w-[700px]">
           {/* Table Header */}
-          <div className="grid grid-cols-5 text-[12px] font-bold text-gray-800 border-b border-gray-100 pb-4 pt-2">
+          <div id="event-logs-table-header" className="grid grid-cols-5 text-[12px] font-bold text-gray-800 border-b border-gray-100 pb-4 pt-2">
             <div>Date</div>
             <div>Name</div>
             <div>Device Name</div>
@@ -43,10 +43,11 @@ export default function LogsDeviceEventClient({
           </div>
 
           {/* Table Body */}
-          <div className="flex flex-col">
+          <div id="event-logs-table-body" className="flex flex-col">
             {logs.map((log, idx) => (
               <div
                 key={idx}
+                id={`event-log-row-${idx}`}
                 className="grid grid-cols-5 text-xs font-medium text-gray-500 hover:text-gray-900 transition-colors py-4 items-center"
               >
                 <div>{log.date}</div>
@@ -60,7 +61,7 @@ export default function LogsDeviceEventClient({
         </div>
       </div>
       <div className="mt-4 grid grid-cols-5">
-        <p className="col-start-5 text-xs text-gray-500">
+        <p id="event-logs-note" className="col-start-5 text-xs text-gray-500">
           *Download CSV File to see all data
         </p>
       </div>
