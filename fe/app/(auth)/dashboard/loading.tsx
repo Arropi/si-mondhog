@@ -1,6 +1,6 @@
 export default function Loading() {
     return (
-        <div className="w-full min-h-screen bg--background p-4 lg:p-8 font-sans animate-pulse">
+        <div id="dashboard-loading-screen" className="w-full min-h-screen bg--background p-4 lg:p-8 font-sans animate-pulse">
             <div className="flex flex-col lg:flex-row gap-8">
                 {/* Main Content (Left) */}
                 <div className="flex-1 flex flex-col gap-6">

@@ -32,6 +32,7 @@ export default function ButtonDownloadCsv({ machineId }: { machineId: string }) 
 
     return (
         <button
+            id="device-download-csv-btn"
             onClick={handleDownload}
             className="flex items-center gap-2 bg-[#6B46C1] hover:bg-purple-800 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors border border-transparent shadow-sm cursor-pointer"
         >

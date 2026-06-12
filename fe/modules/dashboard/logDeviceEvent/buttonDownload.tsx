@@ -41,6 +41,7 @@ export default function ButtonDownloadEvents() {
 
     return (
         <button
+            id="download-events-csv-btn"
             onClick={handleDownload}
             disabled={loading}
             className="flex items-center gap-2 bg--primary hover:bg-purple-800 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors border border-transparent shadow-sm cursor-pointer"

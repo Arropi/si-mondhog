@@ -33,7 +33,7 @@ export default function InputSearch({
   };
 
   return (
-    <div className="relative flex flex-1 shrink-0">
+    <div id="devices-search-container" className="relative flex flex-1 shrink-0">
       <label htmlFor="devices-search" className="sr-only">
         Search
       </label>

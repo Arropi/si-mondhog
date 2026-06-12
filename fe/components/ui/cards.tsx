@@ -58,26 +58,27 @@ const OsIcons = {
 export function DeviceCard({ id, name, os, status, className, ...props }: DeviceCardProps) {
     return (
         <div
+            id={`device-card-${id}`}
             className={cn(
                 "bg-white rounded-xl p-6 shadow-sm border border-gray-100 flex flex-col items-center justify-between gap-2 md:gap-3 w-full",
                 className
             )}
             {...props}
         >
-            <div className="flex items-center justify-center flex-1 w-full min-h-[5rem] md:min-h-[6rem]">
+            <div id={`device-card-${id}-os-icon`} className="flex items-center justify-center flex-1 w-full min-h-[5rem] md:min-h-[6rem]">
                 {OsIcons[os]}
             </div>
 
             <div className="flex flex-col items-center gap-1 w-full text-center mt-2">
-                <h3 className="text-base md:text-lg font-bold text-gray-900 truncate w-full">{name}</h3>
-                <span className="text-xs md:text-sm text-gray-500 font-medium capitalize">{os === "macOS" ? "MacOS" : os}</span>
+                <h3 id={`device-card-${id}-name`} className="text-base md:text-lg font-bold text-gray-900 truncate w-full">{name}</h3>
+                <span id={`device-card-${id}-os-name`} className="text-xs md:text-sm text-gray-500 font-medium capitalize">{os === "macOS" ? "MacOS" : os}</span>
             </div>
 
-            <Link href={`/devices/${id}`} className={cn(statusVariants({ status }), "block")}>
-                <span className="block group-hover:hidden">
+            <Link id={`device-card-${id}-link`} href={`/devices/${id}`} className={cn(statusVariants({ status }), "block")}>
+                <span id={`device-card-${id}-status`} className="block group-hover:hidden">
                     {status}
                 </span>
-                <span className="hidden group-hover:block font-bold !normal-case capitalize duration-300 transition-all">
+                <span id={`device-card-${id}-view-detail`} className="hidden group-hover:block font-bold !normal-case capitalize duration-300 transition-all">
                     View Detail &rarr;
                 </span>
             </Link>

@@ -1,6 +1,6 @@
 export default function Loading() {
     return (
-        <div className="w-full min-h-screen bg--background p-4 lg:p-8 font-sans animate-pulse">
+        <div id="app-loading-screen" className="w-full min-h-screen bg--background p-4 lg:p-8 font-sans animate-pulse">
             <div className="flex flex-col gap-6">
                 {/* Header skeleton */}
                 <div className="flex justify-between items-center">

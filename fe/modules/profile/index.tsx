@@ -113,15 +113,15 @@ export default function ProfilePage(profileProps: ProfileProps) {
           >
             <div className="flex flex-col gap-8">
               <div>
-                <p className="text-gray-500 text-sm mb-1">Name</p>
-                <p className="text-gray-800 font-bold">
+                <p id="profile-name-label" className="text-gray-500 text-sm mb-1">Name</p>
+                <p id="profile-name-value" className="text-gray-800 font-bold">
                   {profile.name || "Unknown User"}
                 </p>
               </div>
 
               <div>
-                <p className="text-gray-500 text-sm mb-1">Email</p>
-                <p className="text-gray-800 font-bold line-clamp-2">
+                <p id="profile-email-label" className="text-gray-500 text-sm mb-1">Email</p>
+                <p id="profile-email-value" className="text-gray-800 font-bold line-clamp-2">
                   {profile.email}
                 </p>
               </div>
@@ -129,8 +129,8 @@ export default function ProfilePage(profileProps: ProfileProps) {
 
             <div className="flex flex-col gap-8">
               <div>
-                <p className="text-gray-500 text-sm mb-1">Role</p>
-                <p className="text-gray-800 font-bold">
+                <p id="profile-role-label" className="text-gray-500 text-sm mb-1">Role</p>
+                <p id="profile-role-value" className="text-gray-800 font-bold">
                   {profile.role || (
                     <span className="text-gray-400 italic">Not provided</span>
                   )}
