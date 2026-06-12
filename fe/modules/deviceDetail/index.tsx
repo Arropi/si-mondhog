@@ -2,7 +2,6 @@ import Link from "next/link";
 import GraphicRAM from "./graphicRAM";
 import GraphicHardisk from "./graphicHardisk";
 import GraphicCPU from "./graphicCPU";
-import DeviceInfoCardClient from "./deviceSpecName";
 import DeleteMachineButton from "./buttonDeleteClient";
 import PerformanceSummaryClient from "./performanceSummary";
 import LogDeviceActivityClient from "./logDeviceActivityClient";
@@ -11,6 +10,7 @@ import ButtonDownloadCsv from "./buttonDownloadCsv";
 import Image from "next/image";
 import { formatMetricsForChart } from "@/service/deviceService";
 import { DeviceDetailData } from "@/types";
+import DeviceInfoCardClient from "./DeviceSpecName";
 
 export default async function DetailDevice({
   deviceData,
