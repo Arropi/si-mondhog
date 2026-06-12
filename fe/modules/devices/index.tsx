@@ -5,31 +5,58 @@ import InputSearchBar from "../../components/device/inputSearchBar";
 import DropdownFilterBar from "../../components/device/dropdownFilterBar";
 import { getDeviceStats } from "../../service/deviceService";
 
-export default async function DevicesPage({ query, os, page }: { query?: string, os?: string, page?: number }) {
-    const statsData = await getDeviceStats();
-    
-    return (
-        <div className="px-12 py-8 animate-fade-in">
-            <header className="bg-background flex justify-between items-center font-bold text--secondary text-2xl">
-                All Devices
-                <ButtonDevice />
-            </header>
+export default async function DevicesPage({
+  query,
+  os,
+  page,
+}: {
+  query?: string;
+  os?: string;
+  page?: number;
+}) {
+  const statsData = await getDeviceStats();
 
-            <div className="mt-8">
-                <DeviceMonitor total={statsData.total} pending={statsData.pending} online={statsData.online} offline={statsData.offline} />
-            </div>
+  return (
+    <div id="devices-page" className="px-12 py-8 animate-fade-in">
+      <header
+        id="devices-header"
+        className="bg-background flex justify-between items-center font-bold text--secondary text-2xl"
+      >
+        <span id="devices-title">All Devices</span>
+        <ButtonDevice />
+      </header>
 
-            <div className="mt-8 flex flex-col sm:flex-row justify-between items-center gap-4">
-                <DropdownFilterBar os={os} />
+      <div id="devices-monitor" className="mt-8">
+        <DeviceMonitor
+          total={statsData.total}
+          pending={statsData.pending}
+          online={statsData.online}
+          offline={statsData.offline}
+        />
+      </div>
 
-                <div className="w-full sm:w-auto flex-1 flex justify-end">
-                    <InputSearchBar keyword={query} />
-                </div>
-            </div>
+      <div
+        id="devices-filter-bar"
+        className="mt-8 flex flex-col sm:flex-row justify-between items-center gap-4"
+      >
+        <DropdownFilterBar os={os} />
 
-            <div className="mt-8">
-                <CardDevice key={`${statsData.total}-${query}-${os}`} query={query} os={os} initialPage={page} />
-            </div>
+        <div
+          id="devices-search-panel"
+          className="w-full sm:w-auto flex-1 flex justify-end"
+        >
+          <InputSearchBar keyword={query} />
         </div>
-    )
+      </div>
+
+      <div id="devices-card-list" className="mt-8">
+        <CardDevice
+          key={`${statsData.total}-${query}-${os}`}
+          query={query}
+          os={os}
+          initialPage={page}
+        />
+      </div>
+    </div>
+  );
 }

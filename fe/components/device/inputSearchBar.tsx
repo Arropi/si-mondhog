@@ -1,15 +1,15 @@
 import InputSearch from "../../modules/devices/inputSearch";
 
 interface InputSearchBarProps {
-    keyword?: string;
+  keyword?: string;
 }
 
 export default async function InputSearchBar({ keyword }: InputSearchBarProps) {
-    // Bagian server-side: digunakan untuk menerima dan menyiapkan keyword
-    // dari server page sebelum diteruskan ke client component. 
-    return (
-        <div className="w-full sm:w-80">
-            <InputSearch initialQuery={keyword} />
-        </div>
-    );
+  // Bagian server-side: digunakan untuk menerima dan menyiapkan keyword
+  // dari server page sebelum diteruskan ke client component.
+  return (
+    <div id="devices-search-wrap-server" className="w-full sm:w-80">
+      <InputSearch initialQuery={keyword} />
+    </div>
+  );
 }

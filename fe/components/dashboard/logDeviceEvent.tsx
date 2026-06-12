@@ -2,13 +2,17 @@ import LogsDeviceEventClient from "../../modules/dashboard/logDeviceEvent/logDev
 import { EventLog } from "@/types";
 
 export default function LogsDeviceEvent({ data }: { data: EventLog[] }) {
-    const formattedLogs = (data || []).map(log => ({
-        date: log.formattedTimestamp?.split(',')[0] || "",
-        name: log.name || "",
-        deviceName: log.hostname || "",
-        os: log.os || "",
-        event: log.action || ""
-    }));
+  const formattedLogs = (data || []).map((log) => ({
+    date: log.formattedTimestamp?.split(",")[0] || "",
+    name: log.name || "",
+    deviceName: log.hostname || "",
+    os: log.os || "",
+    event: log.action || "",
+  }));
 
-    return <LogsDeviceEventClient initialData={formattedLogs} />;
+  return (
+    <div id="dashboard-event-logs-server">
+      <LogsDeviceEventClient initialData={formattedLogs} />
+    </div>
+  );
 }

@@ -8,8 +8,8 @@ export default async function Home() {
     redirect("/dashboard");
   }
   return (
-    <>
+    <main id="home-page">
       <LoginPage />
-    </>
+    </main>
   );
 }

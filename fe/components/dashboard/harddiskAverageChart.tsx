@@ -2,7 +2,15 @@ import HarddiskAverageChartClient from "@/modules/dashboard/harddiskAverageChart
 import { formatDashboardMetrics } from "../../service/dashboardService";
 import { RawMetric } from "@/types";
 
-export default async function HarddiskAverageChart({ data }: { data: RawMetric[] }) {
+export default async function HarddiskAverageChart({
+  data,
+}: {
+  data: RawMetric[];
+}) {
   const chartData = await formatDashboardMetrics(data);
-  return <HarddiskAverageChartClient initialData={chartData} />;
+  return (
+    <div id="dashboard-harddisk-chart-server">
+      <HarddiskAverageChartClient initialData={chartData} />
+    </div>
+  );
 }

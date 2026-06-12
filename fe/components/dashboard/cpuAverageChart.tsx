@@ -13,5 +13,9 @@ import type { RawMetric } from "@/types";
 export default async function CpuAverageChart({ data }: { data: RawMetric[] }) {
   const chartData = await formatDashboardMetrics(data);
 
-  return <CpuAverageChartClient initialData={chartData} />;
+  return (
+    <div id="dashboard-cpu-chart-server">
+      <CpuAverageChartClient initialData={chartData} />
+    </div>
+  );
 }
