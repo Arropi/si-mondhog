@@ -129,7 +129,6 @@ export default function CardDevice({
 
       {/* Pagination Section */}
       <Pagination
-        id="devices-pagination"
         currentPage={currentPage}
         totalPages={Math.ceil(devices.length / itemsPerPage)}
         onPageChange={handlePageChange}
